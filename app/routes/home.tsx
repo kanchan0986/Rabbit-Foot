@@ -2,8 +2,8 @@ import type { Route } from "./+types/home";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Rabbit Foot | Home" },
+    { name: "description", content: "A dental services company totally committed for your kids!" },
   ];
 }
 
