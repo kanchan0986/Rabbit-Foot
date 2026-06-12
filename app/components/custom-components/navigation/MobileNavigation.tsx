@@ -30,8 +30,8 @@ export default function MobileNavigation({}: MobileNavigationProps) {
         to="."
         className={({ isActive }) =>
           isActive
-            ? "text-orange-600 flex flex-col items-center gap-x-2 w-[96%]"
-            : "text-sidebar-primary active:text-orange-600 flex flex-col items-center gap-x-2 w-[96%] group"
+            ? "text-rf-primary-100 flex flex-col items-center gap-x-2 w-[96%]"
+            : "text-rf-primary active:text-rf-primary-100 flex flex-col items-center gap-x-2 w-[96%] group"
         }
       >
         {/* active state passed to the Logo component */}
@@ -40,7 +40,7 @@ export default function MobileNavigation({}: MobileNavigationProps) {
             {/* Logo changes color based on active state */}
             <Logo
               className={`size-10 transition-colors ${
-                isActive ? "fill-orange-600" : "group-active:fill-orange-600"
+                isActive ? "fill-rf-primary-100" : "group-active:fill-rf-primary-100"
               }`}
             />
             <span className="font-flavours text-[1.3rem]">Rabbit Foot</span>
@@ -54,7 +54,7 @@ export default function MobileNavigation({}: MobileNavigationProps) {
           {/* Hamburger menu trigger */}
           <DrawerTrigger
             asChild
-            className="cursor-pointer text-orange-600 active:bg-orange-600 active:text-white"
+            className="cursor-pointer text-rf-primary-100 active:bg-rf-primary-100 active:text-white"
           >
             <Button variant="outline" className="capitalize">
               <GiHamburgerMenu />
@@ -62,7 +62,7 @@ export default function MobileNavigation({}: MobileNavigationProps) {
           </DrawerTrigger>
 
           {/* Drawer content with header and navigation items */}
-          <DrawerContent className="data-[vaul-drawer-direction=bottom]:max-h-[50vh] data-[vaul-drawer-direction=top]:max-h-[50vh] bg-orange-100">
+          <DrawerContent className="data-[vaul-drawer-direction=bottom]:max-h-[50vh] data-[vaul-drawer-direction=top]:max-h-[50vh] bg-rf-primary-100">
             <DrawerHeader className="flex-row justify-between">
               <DrawerTitle>
                 {/* Logo inside drawer with close functionality */}
@@ -70,8 +70,8 @@ export default function MobileNavigation({}: MobileNavigationProps) {
                   to="."
                   className={({ isActive }) =>
                     isActive
-                      ? "text-orange-600"
-                      : "text-sidebar-primary active:text-orange-600 group"
+                      ? "text-rf-primary-100"
+                      : "text-rf-primary active:text-rf-primary-100 group"
                   }
                 >
                   {({ isActive }) => (
@@ -79,8 +79,8 @@ export default function MobileNavigation({}: MobileNavigationProps) {
                       <Logo
                         className={`size-10 transition-colors ${
                           isActive
-                            ? "fill-orange-600"
-                            : "group-active:fill-orange-600"
+                            ? "fill-rf-primary-100"
+                            : "group-active:fill-rf-primary-100"
                         }`}
                       />
                       <span className="font-flavours text-[1.3rem]">
@@ -94,7 +94,7 @@ export default function MobileNavigation({}: MobileNavigationProps) {
                 {/* Close button for drawer */}
                 <DrawerClose
                   asChild
-                  className="cursor-pointer active:bg-orange-600 text-orange-600 active:text-white"
+                  className="cursor-pointer active:bg-rf-primary-100 text-rf-primary-100 active:text-white"
                 >
                   <Button variant="outline" className="size-10 rounded-full">
                     <IoCloseCircleOutline className="size-6" />
@@ -110,7 +110,7 @@ export default function MobileNavigation({}: MobileNavigationProps) {
                   to={menuItem.to}
                   key={menuItem.to}
                   className={({ isActive }) =>
-                    isActive ? "text-orange-600" : "active:text-orange-600"
+                    isActive ? "text-rf-primary-100" : "active:text-rf-primary-100"
                   }
                 >
                   {/* Drawer closing button along with the menu content */}
@@ -120,14 +120,14 @@ export default function MobileNavigation({}: MobileNavigationProps) {
                 </NavLink>
               ))}
               {/* Telephone call link */}
-              <a href="tel:+18001234567" className="active:text-orange-600">
+              <a href="tel:+18001234567" className="active:text-rf-primary-100">
                 Call Us Now
               </a>
               {/* Login link */}
               <NavLink
                 to="login"
                 className={({ isActive }) =>
-                  isActive ? "text-orange-600" : "active:text-orange-600"
+                  isActive ? "text-rf-primary-100" : "active:text-rf-primary-100"
                 }
               >
                 Login

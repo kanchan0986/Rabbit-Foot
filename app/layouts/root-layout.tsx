@@ -14,7 +14,7 @@ export default function RootLayout({}: Props) {
 
   // Default navigation menu (mobile)
   let navigationMenu = (
-    <Wrapper className="bg-orange-100 sticky inset-0 w-full">
+    <Wrapper as={'header'} className="bg-rf-primary-300 sticky inset-0 w-full">
       <MobileNavigation />
     </Wrapper>
   );
@@ -22,7 +22,7 @@ export default function RootLayout({}: Props) {
   // Override with tablet navigation if breakpoint matches
   if (isTablet)
     navigationMenu = (
-      <Wrapper className="bg-orange-100 sticky inset-0 w-full">
+      <Wrapper as={'header'} className="bg-rf-primary-300 sticky inset-0 w-full">
         <TabletNavigation />
       </Wrapper>
     );
@@ -30,7 +30,7 @@ export default function RootLayout({}: Props) {
   // Override again with laptop navigation if breakpoint matches
   if (isLaptop)
     navigationMenu = (
-      <Wrapper className="bg-orange-100 sticky inset-0 w-full">
+      <Wrapper as={'header'} className="bg-rf-primary-300 sticky inset-0 w-full">
         <RootNavigation />
       </Wrapper>
     );
@@ -38,7 +38,7 @@ export default function RootLayout({}: Props) {
   return (
     <>
       {/* Top bar navigation always visible */}
-      <Wrapper className="bg-orange-600 py-2">
+      <Wrapper className="bg-rf-primary-100 py-2">
         <TopNavigation />
       </Wrapper>
 

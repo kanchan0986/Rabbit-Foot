@@ -12,8 +12,8 @@ export default function TabletNavigation({}: TabletNavigationProps) {
         to="."
         className={({ isActive }) =>
           isActive
-            ? "text-orange-600 flex flex-col items-center gap-y-1 w-[25%]"
-            : "text-sidebar-primary hover:text-orange-600 active:text-orange-600 flex flex-col items-center gap-y-1 w-[25%] group"
+            ? "text-rf-primary-100 flex flex-col items-center gap-y-1 w-[25%]"
+            : "text-rf-primary hover:text-rf-primary-100 active:text-rf-primary-100 flex flex-col items-center gap-y-1 w-[25%] group"
         }
       >
         {/* active state passed to the Logo component */}
@@ -23,8 +23,8 @@ export default function TabletNavigation({}: TabletNavigationProps) {
             <Logo
               className={`size-10 transition-colors ${
                 isActive
-                  ? "fill-orange-600"
-                  : "group-hover:fill-orange-600 group-active:fill-orange-600"
+                  ? "fill-rf-primary-100"
+                  : "group-hover:fill-rf-primary-100 group-active:fill-rf-primary-100"
               }`}
             />
             <span className="font-flavours text-[1.35rem]">Rabbit Foot</span>
@@ -40,8 +40,8 @@ export default function TabletNavigation({}: TabletNavigationProps) {
             key={menuItem.to}
             className={({ isActive }) =>
               isActive
-                ? "text-orange-600"
-                : "hover:text-orange-600 active:text-orange-600"
+                ? "text-rf-primary-100"
+                : "hover:text-rf-primary-100 active:text-rf-primary-100"
             }
           >
             {menuItem.content}
@@ -49,7 +49,7 @@ export default function TabletNavigation({}: TabletNavigationProps) {
         ))}
 
         {/* Call link */}
-        <a href="tel:+18001234567" className="active:text-orange-600">
+        <a href="tel:+18001234567" className="active:text-rf-primary-100">
           Call Us Now
         </a>
 
@@ -58,8 +58,8 @@ export default function TabletNavigation({}: TabletNavigationProps) {
           to="login"
           className={({ isActive }) =>
             isActive
-              ? "text-orange-600"
-              : "hover:text-orange-600 active:text-orange-600"
+              ? "text-rf-primary-100"
+              : "hover:text-rf-primary-100 active:text-rf-primary-100"
           }
         >
           Login

@@ -14,7 +14,7 @@ export default function TopNavigation({}: TopNavigationProps) {
       </span>
       <Button
         variant="secondary"
-        className="rounded-full bg-white text-orange-400 uppercase text-xs h-6 px-4 py-1 cursor-pointer hover:shadow"
+        className="rounded-full bg-white text-rf-primary-100 uppercase text-xs h-6 px-4 py-1 cursor-pointer hover:shadow"
       >
         Book Now
       </Button>

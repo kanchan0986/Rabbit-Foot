@@ -5,7 +5,7 @@ type LogoProps = {
 };
 
 export default function Logo({ className }: LogoProps) {
-  const styles = twMerge(`fill-sidebar-primary ${className}`);
+  const styles = twMerge(`fill-rf-primary ${className}`);
   return (
     <svg
       width="172"
