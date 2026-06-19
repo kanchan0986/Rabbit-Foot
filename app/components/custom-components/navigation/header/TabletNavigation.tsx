@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import Logo from "../Logo";
+import Logo from "../../vectors/Logo";
 import { navMenuArr } from "./MobileNavigation";
 
 type TabletNavigationProps = {};

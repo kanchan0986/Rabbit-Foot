@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import { IoLogInOutline } from "react-icons/io5";
 import { PiPhoneCallLight } from "react-icons/pi";
 import { navMenuArr } from "./MobileNavigation";
-import Logo from "../Logo";
+import Logo from "../../vectors/Logo";
 
 type RootNavigationProps = {};
 
