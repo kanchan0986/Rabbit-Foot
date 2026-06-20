@@ -16,6 +16,8 @@
 
   /* custom breakpoints */
   --breakpoint-xs: 29.375rem;
+  --breakpoint-xmd: 52rem;
+  --breakpoint-2xmd: 62rem;
 
   /* custom colors */
   --color-rf-primary: #e9784b;
@@ -23,6 +25,7 @@
   --color-rf-primary-200: #fdbb5f;
   --color-rf-primary-300: #ffedd4;
   --color-rf-secondary: #4a9e98;
+  --color-rf-grey-100: #494948;
 }
 
 html,

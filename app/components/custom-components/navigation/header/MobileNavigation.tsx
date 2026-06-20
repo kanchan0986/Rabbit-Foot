@@ -30,8 +30,8 @@ export default function MobileNavigation({}: MobileNavigationProps) {
         to="."
         className={({ isActive }) =>
           isActive
-            ? "text-rf-primary-100 flex flex-col items-center gap-x-2 w-[96%]"
-            : "text-rf-primary active:text-rf-primary-100 flex flex-col items-center gap-x-2 w-[96%] group"
+            ? "text-rf-primary-100 flex flex-col items-center gap-x-2 w-[96%] ml-10"
+            : "text-rf-primary active:text-rf-primary-100 flex flex-col items-center gap-x-2 w-[96%] ml-10 group"
         }
       >
         {/* active state passed to the Logo component */}
