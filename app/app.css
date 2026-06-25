@@ -15,6 +15,7 @@
   --font-flavours: "Flavors", sans-serif;
 
   /* custom breakpoints */
+  --breakpoint-2xs: 18rem;
   --breakpoint-xs: 29.375rem;
   --breakpoint-xmd: 52rem;
   --breakpoint-2xmd: 62rem;
@@ -26,6 +27,7 @@
   --color-rf-primary-300: #ffedd4;
   --color-rf-secondary: #4a9e98;
   --color-rf-grey-100: #494948;
+  --color-rf-white-100: #F8F8F8;
 }
 
 html,

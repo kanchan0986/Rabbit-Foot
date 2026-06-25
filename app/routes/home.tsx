@@ -2,12 +2,24 @@ import Wrapper from "~/components/custom-components/Wrapper";
 import type { Route } from "./+types/home";
 import { Button } from "~/components/ui/button";
 import smilingKid from "~/assets/smiling-kid.png";
+import smilingKidInOrangeShirt from "~/assets/smiling-kid-in-orange-shirt.jpg";
+import smilingGirlWithJacket from "~/assets/smiling-girl-with-jacket.jpg";
+import smilingGirlWithDungree from "~/assets/smiling-girl-with-dungree.jpg";
+import smilingSisters from "~/assets/smiling-sisters.jpg";
 import spacerVectorRabbitBlue from "~/assets/Spacer-Vector-Rabbit-blue.png";
 import leavesLeft from "~/assets/leaves-left.png";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import heart from "~/assets/Heart.png";
 import Logo from "~/components/custom-components/vectors/Logo";
 import { Link } from "react-router";
+import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
+import { FaRegCircle } from "react-icons/fa";
+import { TbDental } from "react-icons/tb";
+import { PiToothFill } from "react-icons/pi";
+import { MdChildCare } from "react-icons/md";
+import { TbEmergencyBed } from "react-icons/tb";
+import type { Card } from "~/components/custom-components/carousels/CarouselItem";
+import Carousel from "~/components/custom-components/carousels/Carousel";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -18,6 +30,45 @@ export function meta({}: Route.MetaArgs) {
     },
   ];
 }
+
+const cardArray: Card[] = [
+  {
+    imageUrl: smilingKidInOrangeShirt,
+    icon: PiToothFill,
+    title: 'preventive care',
+    subtitle: 'exams, cleanings, fluoride sealants.',
+    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque ex suscipit, eaque accusamus doloribus beatae, nesciunt rem architecto saepe ratione odit veniam maxime, placeat eos error! Culpa quasi ducimus unde.',
+    link: '/',
+    type: 'card'
+  },
+  {
+    imageUrl: smilingGirlWithJacket,
+    icon: TbDental,
+    title: 'Treatments',
+    subtitle: 'fillings and crowns for kids treatments.',
+    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus laborum hic totam saepe assumenda officiis ut. Commodi, nam maxime. Non blanditiis fugit quaerat molestias, qui dolorum dignissimos delectus distinctio sunt',
+    link: '/',
+    type: 'card'
+  },
+  {
+    imageUrl: smilingGirlWithDungree,
+    icon: TbEmergencyBed,
+    title: 'emergencies',
+    subtitle: 'same-day appointments available.',
+    details: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id, nobis. Harum repellat itaque totam! At ad ducimus sequi voluptas, veniam delectus molestias aspernatur voluptatibus commodi amet, tenetur ea, doloremque accusantium.',
+    link: '/',
+    type: 'card'
+  },
+  {
+    imageUrl: smilingSisters,
+    icon: MdChildCare,
+    title: 'Approach',
+    subtitle: 'treatments mainly focused on children',
+    details: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore, impedit consequatur! Nostrum doloremque minima cum aspernatur laborum unde velit, esse sequi minus tenetur eum optio eos. Et exercitationem minima explicabo.',
+    link: '/',
+    type: 'card'
+  }
+]
 
 export default function Home() {
   return (
@@ -166,6 +217,45 @@ export default function Home() {
           </div>
         </div>
       </Wrapper>
+
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVector className="fill-rf-white-100"/>
+      </Wrapper>
+
+
+      {/****************************************** Our services section ***********************************************/}
+      <Wrapper
+        as={"section"}
+        className="bg-rf-white-100 py-10 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:py-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:py-40 xl:[&>div]:gap-y-20"
+      >
+       <div className="w-full flex flex-col gap-y-4">
+        {/* subtitle text with icons */}
+         <div className="w-full flex items-center justify-center gap-x-4">
+          <div className="flex items-center">
+            <FaRegCircle className="fill-rf-primary"/><span className="text-rf-grey-100/60">&mdash;&mdash;&mdash;&mdash;</span>
+          </div>
+          <h2 className="uppercase text-rf-secondary text-center text-sm lg:text-xl">Our services</h2>
+          <div className="flex items-center">
+            <span className="text-rf-grey-100/60">&mdash;&mdash;&mdash;&mdash;</span><FaRegCircle className="fill-rf-primary"/>
+          </div>
+         </div>
+         {/* title text */}
+         <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">we make 
+          <div className="inline">
+            <span className="text-rf-primary"> d</span><span className="text-rf-secondary">e</span><span className="text-rf-primary-200">n</span><span className="text-rf-secondary">t</span><span className="text-rf-primary-200">a</span><span className="text-rf-primary">l </span>
+          </div>
+           care simple <span className="text-rf-primary-100 block">and effective</span>
+         </h3>
+         {/* Card carousel */}
+         <Carousel carousel={cardArray}/>          
+       </div>
+      </Wrapper>
+
+      
     </main>
   );
 }
