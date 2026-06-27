@@ -20,6 +20,9 @@ import { MdChildCare } from "react-icons/md";
 import { TbEmergencyBed } from "react-icons/tb";
 import type { Card } from "~/components/custom-components/carousels/CarouselItem";
 import Carousel from "~/components/custom-components/carousels/Carousel";
+import BookingForm from "~/components/custom-components/forms/BookingForm";
+import SpacerVectorDoubleOrange from "~/components/custom-components/vectors/SpacerVectorDoubleOrange";
+import Sky from "~/components/custom-components/vectors/Sky";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -69,6 +72,12 @@ const cardArray: Card[] = [
     type: 'card'
   }
 ]
+
+export const clientAction = async ({ request }: Route.ClientActionArgs) => { 
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData)
+  console.log(data)
+ }
 
 export default function Home() {
   return (
@@ -255,7 +264,34 @@ export default function Home() {
        </div>
       </Wrapper>
 
-      
+      {/******************************************** Book appointment section ********************************************/}
+
+      <Wrapper
+        as={"section"}
+        className="bg-rf-primary py-10 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-5 xs:py-16 xs:[&>div]:gap-y-8 xl:py-40 xl:[&>div]:gap-y-10"
+      >
+        {/* Animating sky background */}
+        <Sky/>
+        <div className="relative flex flex-col items-center gap-y-4 text-rf-white-100 2xmd:w-9/12">
+          {/* title text */}
+          <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">Book a visit now</h3>
+          {/* description text */}
+          <p className="lg:text-xl text-center">We understand the importance of establishing a good oral hygiene regimen early in a child’s life, and we provide children with the necessary knowledge and treatment to maintain a healthy smile. Our practice strives to make this new journey for your child a fun and rewarding experience.</p>
+        </div>
+        <div className="relative">
+          {/* Booking form */}
+          <BookingForm/>
+        </div>
+      </Wrapper>
+
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVectorDoubleOrange/>
+      </Wrapper>
+
     </main>
   );
 }

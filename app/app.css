@@ -28,6 +28,9 @@
   --color-rf-secondary: #4a9e98;
   --color-rf-grey-100: #494948;
   --color-rf-white-100: #F8F8F8;
+
+  /* custom shadows */
+  --shadow-rf-direct-100: 0 0 10px rgba(0,0,0,0.3);
 }
 
 html,

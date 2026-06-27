@@ -1,0 +1,541 @@
+import { AnimatePresence, motion } from "motion/react"
+
+type SkyProps = {}
+
+const cloud = <svg width="71" height="47" viewBox="0 0 71 47" className="fill-rf-white-100/40" xmlns="http://www.w3.org/2000/svg">
+<path d="M33.8635 7.07178C36.197 3.90506 42.0636 -1.82816 46.8635 0.571777C52.8632 3.57182 54.3635 9.07182 54.3635 11.0718C57.5304 10.5718 64.3636 10.1719 66.3635 12.5718C68.8636 15.5719 73.8629 22.5719 64.8635 29.5718C63.6969 30.4051 60.7634 32.2717 58.3635 33.0718C58.3635 36.905 56.8631 44.8715 50.8635 46.0718C43.3637 47.5718 38.8634 47.5715 33.8635 43.0718C31.5303 44.7384 25.8635 47.6714 21.8635 46.0718C16.8635 44.0718 14.3636 42.0719 13.3635 36.5718C8.03019 36.5718 -2.03647 34.0718 0.363525 24.0718C2.76357 14.072 10.0302 13.2384 13.3635 14.0718C14.5302 9.07168 18.7636 -0.328192 26.3635 2.07178C27.8638 2.40532 31.4638 3.87211 33.8635 7.07178ZM43.2756 6.71631C42.1891 6.64627 40.5791 6.76485 39.7747 6.98291C38.7098 7.27177 37.9644 7.90354 37.4436 8.39014C36.6981 9.0868 36.3536 9.81338 36.0354 10.4497C35.5018 11.5169 35.1812 12.2586 34.7786 12.897C34.6741 13.0627 34.5787 13.2642 34.4446 13.3999C34.3104 13.5356 34.1442 13.602 33.9924 13.603C33.2294 13.6081 32.4345 12.6662 31.8303 12.147C31.0473 11.4739 30.1251 10.4591 29.635 9.75146C29.2739 9.22998 28.8481 8.71318 28.262 8.19189C27.7782 7.76168 26.9717 7.80712 26.4348 7.72217C25.8919 7.63629 23.6377 7.53732 22.179 7.8374C21.3676 8.00449 20.9399 8.80818 20.4866 9.61182C20.0406 10.4025 19.7336 11.4198 19.5637 12.2261C19.4344 12.8397 19.3294 13.5658 19.3118 15.189C19.3028 16.0189 19.4613 16.6825 19.6624 17.3042C19.71 17.4517 19.6974 17.6212 19.6477 17.7563C19.5979 17.8916 19.4976 17.9912 19.2307 18.0425C17.8807 18.3017 16.8539 17.6933 16.0471 17.4741C15.2493 17.2574 14.5071 17.2232 11.8655 17.2222C10.3976 17.2217 9.48041 17.8562 8.80786 18.3931C8.09955 18.9584 7.70123 19.5654 7.38306 20.2017C6.87536 21.2171 6.66336 23.1044 6.54321 26.1938C6.51428 26.9379 6.65999 27.3415 6.77661 27.7095C7.00987 28.4447 7.89845 28.6819 8.35181 29.0503C8.93437 29.5237 9.7402 30.1218 10.2786 30.6255C10.816 31.1283 11.5177 31.3971 12.8049 31.6655C14.3744 31.9927 15.9403 31.8011 16.594 31.6001C17.3849 31.3567 17.9871 31.2647 18.1379 31.23C18.7896 31.0809 18.0884 33.7613 18.2883 35.2319C18.3855 35.946 19.0576 36.6225 19.6106 37.5435C20.3935 38.8474 21.1028 39.2045 22.0393 39.9907L22.093 40.0356C22.894 40.7084 23.5054 41.2224 24.5852 41.5347C25.5709 41.8197 27.0245 41.9208 28.1565 41.8042C29.5307 41.6624 31.0535 39.8137 31.4417 39.1753C31.9909 38.2717 32.6643 37.6343 33.4172 36.8804C33.6905 36.6067 34.0053 36.493 34.2893 36.3423C34.4304 36.2674 34.6065 36.2908 34.8743 36.4731C36.4503 37.5465 37.2529 39.2688 37.8088 39.9917C38.4149 40.7797 39.4327 41.4507 40.1038 41.5688C40.9246 41.7134 41.8772 42.0875 42.5999 42.3052C43.1589 42.4735 44.2864 42.625 45.5627 42.7085C48.0406 42.8705 49.1163 42.259 49.9055 41.7896C51.2728 40.9762 51.3983 39.3113 51.5667 38.5562C51.7637 37.6725 51.9348 36.9983 51.9856 36.3765C52.0795 35.2256 51.9369 33.3468 52.0178 31.1548C52.0636 29.9163 53.6081 30.1255 54.5129 30.0239C55.2929 29.9364 56.188 29.3556 57.5608 28.7358C58.3418 28.3833 59.1036 28.1814 59.8088 27.8472C60.4652 27.536 60.8809 26.9771 61.7512 25.9233C62.4655 25.0585 62.9256 23.8626 63.1282 23.2231C63.3051 22.6649 63.3963 21.9841 63.5139 21.2964C63.6414 20.5502 63.6314 18.3468 63.3313 16.9897C63.1706 16.2631 62.1614 15.6506 61.2385 15.0962C60.5232 14.6665 59.9476 14.6752 58.7307 14.5083C54.7891 13.9678 54.2172 14.6412 53.5969 14.8589C53.3125 14.9428 53.043 15.0098 52.7756 15.0767C52.658 15.1061 52.5414 15.1353 52.2219 15.2319C52.121 15.2625 52.0255 15.3213 51.9202 15.3267C51.7037 15.3375 51.4148 15.1671 51.2346 15.0317C51.1873 14.9963 51.1374 14.9635 51.0959 14.9214C50.8678 14.6894 50.5657 13.939 50.261 12.937C50.0139 12.1244 49.6589 11.261 49.4231 10.6558C49.1995 10.0818 48.921 9.58418 48.636 9.06396C48.3622 8.56411 47.7828 8.24298 47.3459 7.84033C46.9411 7.46731 46.1101 7.17082 45.2532 6.93408C44.6144 6.75761 44.0628 6.76708 43.2756 6.71631Z"/>
+</svg>
+
+const star = <svg width="52" height="50" viewBox="0 0 52 50" className="fill-rf-white-100/50 size-3" xmlns="http://www.w3.org/2000/svg">
+<path d="M41.8228 14.6258C39.0497 14.342 35.3712 14.5544 34.6476 13.1009C32.9682 9.72762 32.6401 2.80074 29.8433 0.50236C26.1056 -2.56922 20.3765 9.34453 19.356 11.892C15.7099 14.8069 5.14099 12.104 0.885972 12.6815C-3.86567 16.093 12.0972 22.682 10.9697 26.9491C10.1577 30.0221 5.50155 31.0047 3.73891 33.4623C1.91662 36.0031 -0.450784 44.7104 5.13113 43.6787C6.93705 43.3449 9.16536 42.9614 11.5959 42.3935C15.7824 41.4151 23.3875 36.3424 27.0945 40.8315C29.3615 43.5769 32.3072 49.5936 36.338 49.8154C39.7601 50.0037 42.7357 50.0157 42.8783 49.1877C43.4705 45.7513 40.9963 41.0779 39.7344 38.0598C38.8785 36.0129 36.9365 33.8345 38.0769 31.6907C39.709 28.6223 54.6153 24.4363 50.3858 18.9494C48.584 16.6119 44.6707 14.9173 41.8228 14.6258Z" />
+</svg>
+
+// Sky component renders animated clouds and stars using Framer Motion
+export default function Sky({}: SkyProps) {
+
+  return (
+    <div className="absolute inset-0 size-full overflow-hidden">
+      <AnimatePresence>
+        {/* Cloud animation moving horizontally across the screen */}
+        <motion.div
+          key='clouds'
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, x: 300 },
+            animate: { opacity: [0, 1, 1, 0], x: -300 },
+          }}
+          transition={{
+            duration: 10,
+            ease: "linear",
+            repeat: Infinity,
+            repeatType: "loop",
+          }}
+        >
+          {/* Multiple cloud instances positioned at different coordinates */}
+          <div className="absolute top-30 left-20">{cloud}</div>
+          <div className="absolute top-100 left-40">{cloud}</div>
+          <div className="absolute top-20 left-110">{cloud}</div>
+          <div className="absolute top-135 left-130">{cloud}</div>
+          <div className="absolute top-65 left-210">{cloud}</div>
+          <div className="absolute top-120 left-280">{cloud}</div>
+          <div className="absolute top-25 left-300">{cloud}</div>
+          <div className="absolute top-95 left-350">{cloud}</div>
+          <div className="absolute top-50 left-380">{cloud}</div>
+          <div className="absolute top-125 left-400">{cloud}</div>
+        </motion.div>
+
+        {/* Star animations: fade and scale in/out at different positions with alternative sets having staggered delays to perform twinkling effect */}
+
+        <motion.div
+          key="star-1"
+          className="absolute top-20 left-20"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-2"
+          className="absolute top-80 left-10"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-3"
+          className="absolute top-120 left-40"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-4"
+          className="absolute top-40 left-50"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-5"
+          className="absolute top-8 left-70"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-6"
+          className="absolute top-68 left-80"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-7"
+          className="absolute top-100 left-70"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-8"
+          className="absolute top-130 left-100"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-9"
+          className="absolute top-25 left-120"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-10"
+          className="absolute top-70 left-140"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-11"
+          className="absolute top-115 left-150"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-12"
+          className="absolute top-140 left-180"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-13"
+          className="absolute top-32 left-180"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-14"
+          className="absolute top-40 left-235"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-15"
+          className="absolute top-65 left-200"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-16"
+          className="absolute top-22 left-280"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-17"
+          className="absolute top-100 left-270"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-18"
+          className="absolute top-120 left-230"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-19"
+          className="absolute top-135 left-300"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-20"
+          className="absolute top-70 left-260"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-21"
+          className="absolute top-45 left-315"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-22"
+          className="absolute top-20 left-360"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-23"
+          className="absolute top-90 left-340"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+        
+        <motion.div
+          key="star-24"
+          className="absolute top-125 left-360"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          {star}
+        </motion.div>
+
+        <motion.div
+          key="star-25"
+          className="absolute top-6 left-220"
+          initial="initial"
+          animate="animate"
+          variants={{
+            initial: { opacity: 0, scale: 0 },
+            animate: { opacity: [0, 1, 1, 0], scale: [0, 1, 1, 0] },
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop",
+            delay: 4,
+          }}
+        >
+          {star}
+        </motion.div>
+
+      </AnimatePresence>
+    </div>
+  );
+}
