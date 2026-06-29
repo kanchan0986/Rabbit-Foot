@@ -18,11 +18,16 @@ import { TbDental } from "react-icons/tb";
 import { PiToothFill } from "react-icons/pi";
 import { MdChildCare } from "react-icons/md";
 import { TbEmergencyBed } from "react-icons/tb";
-import type { Card } from "~/components/custom-components/carousels/CarouselItem";
+import type { Card, Testimonial } from "~/components/custom-components/carousels/CarouselItem";
 import Carousel from "~/components/custom-components/carousels/Carousel";
 import BookingForm from "~/components/custom-components/forms/BookingForm";
 import SpacerVectorDoubleOrange from "~/components/custom-components/vectors/SpacerVectorDoubleOrange";
 import Sky from "~/components/custom-components/vectors/Sky";
+import santoshKumar from "~/assets/santosh_kumar.jpg";
+import gregJones from "~/assets/greg_jones.jpg";
+import jamesSmith from "~/assets/james_smith.jpg";
+import jessicaClerk from "~/assets/jessica_clerk.jpg";
+import monica_adams from "~/assets/monica_adams.jpg";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -42,7 +47,7 @@ const cardArray: Card[] = [
     subtitle: 'exams, cleanings, fluoride sealants.',
     details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque ex suscipit, eaque accusamus doloribus beatae, nesciunt rem architecto saepe ratione odit veniam maxime, placeat eos error! Culpa quasi ducimus unde.',
     link: '/',
-    type: 'card'
+    type: "card"
   },
   {
     imageUrl: smilingGirlWithJacket,
@@ -71,6 +76,53 @@ const cardArray: Card[] = [
     link: '/',
     type: 'card'
   }
+]
+
+const testimonialArray: Testimonial[] = [
+  {
+    name: 'Santosh Kumar',
+    role: 'Product Manager',
+    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit harum laborum cupiditate! Cumque, aut cum omnis consectetur autem numquam quas',
+    organization: 'Google',
+    rating: 3.5,
+    imageUrl: santoshKumar,
+    type: "testimonial"
+  },
+  {
+    name: 'James Smith',
+    role: 'Community Manager',
+    details: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis non quod consequatur fugiat, aliquid repudiandae. Fuga minus commodi doloribus odio.',
+    organization: 'Apple',
+    rating: 2.5,
+    imageUrl: jamesSmith,
+    type: "testimonial"
+  },
+  {
+    name: 'Greg Jones',
+    role: 'Graphics Designer',
+    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore cupiditate rerum quo molestias. Corporis qui explicabo numquam temporibus, esse ex.',
+    organization: 'Uniliver',
+    rating: 3.5,
+    imageUrl: gregJones,
+    type: "testimonial"
+  },
+  {
+    name: 'Jessica Clerk',
+    role: 'Frontend Developer',
+    details: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum amet doloremque odio et quidem non consectetur unde quia recusandae velit',
+    organization: 'Oracle',
+    rating: 4,
+    imageUrl: jessicaClerk,
+    type: "testimonial"
+  },
+  {
+    name: 'Monica Adams',
+    role: 'UI Designer',
+    details: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium ex quia nam possimus rerum excepturi quisquam eum, aliquid impedit perferendis',
+    rating: 5,
+    imageUrl: monica_adams,
+    type: "testimonial"
+  },
 ]
 
 export const clientAction = async ({ request }: Route.ClientActionArgs) => { 
@@ -291,6 +343,37 @@ export default function Home() {
       >
         <SpacerVectorDoubleOrange/>
       </Wrapper>
+
+      {/******************************************* Testimonials section *******************************************/}
+      <Wrapper
+        as={"section"}
+        className="bg-rf-white-100 pt-10 pb-5 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:pt-16 xs:pb-8 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:pt-40 xl:pb-20 xl:[&>div]:gap-y-20"
+      >
+       <div className="w-full flex flex-col gap-y-4">
+         <div className="w-full flex relative">
+           <div className="w-full flex flex-col">
+             {/* title text */}
+             <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">What Our
+              <div className="inline">
+                <span className="text-rf-primary"> C</span><span className="text-rf-secondary">l</span><span className="text-rf-primary-200">i</span><span className="text-rf-secondary">e</span><span className="text-rf-primary-200">n</span><span className="text-rf-primary">t </span>
+              </div>
+               Say
+             </h3>
+             {/* subtitle text with icons */}
+             <div className="w-full flex items-center justify-center gap-x-8">
+              <span className="text-rf-primary rotate-90 text-6xl">&#119171;</span>
+              <h2 className="uppercase text-rf-secondary text-center text-sm lg:text-xl">Testimonials</h2>
+              <span className="text-rf-primary rotate-90 text-6xl">&#119171;</span>
+             </div>
+           </div>
+           {/* logo at the top right corner */}
+           <Logo className="absolute right-0 -top-10 xl:right-10 size-10 xs:size-20 fill-rf-secondary/30 -rotate-15 self-center xl:size-30" />
+         </div>
+         {/* Testimonials carousel */}
+         <Carousel carousel={testimonialArray}/>          
+       </div>
+      </Wrapper>
+
 
     </main>
   );

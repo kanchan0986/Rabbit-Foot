@@ -4,11 +4,11 @@ import { FaCircle  } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMediaQuery } from '~/hooks/useMediaQuery';
-import type { Card } from './CarouselItem';
+import type { Card, Testimonial } from './CarouselItem';
 import CarouselItem from './CarouselItem';
 
 type CarouselProps = {
-  carousel: Card[]
+  carousel: Card[] | Testimonial[]
 }
 
 export default function Carousel({carousel}: CarouselProps) {
@@ -58,7 +58,7 @@ export default function Carousel({carousel}: CarouselProps) {
       >
         {/* carousel bounding box */}
         <AnimatePresence>
-          <div className="relative h-138 w-full overflow-hidden z-1 p-5">
+          <div className="relative max-h-138 w-full overflow-hidden z-1 p-5">
             {/* carousel container */}
             <motion.ul 
               className="relative flex justify-center gap-x-4"
