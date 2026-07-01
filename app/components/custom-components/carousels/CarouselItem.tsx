@@ -23,8 +23,12 @@ export type Testimonial = {
   rating: number;
 } & { readonly type: 'testimonial'}
 
+export type Gallery = {
+  imageUrl: string;
+} & { readonly type: 'gallery'}
+
 type CarouselItemProps = {
-    carouselItem: Card | Testimonial
+    carouselItem: Card | Testimonial | Gallery
 }
 
 export default function CarouselItem({carouselItem}: CarouselItemProps) {
@@ -57,6 +61,11 @@ export default function CarouselItem({carouselItem}: CarouselItemProps) {
             </div>
           </div>
         </>
+    }
+    {(carouselItem.type === 'gallery') && 
+        <div className="overflow-hidden rounded-2xl border-2 group-active:border-rf-white-100 group-hover:border-rf-white-100">
+          <div className="w-full h-90 bg-cover bg-center bg-no-repeat transition-transform duration-300 ease-in grayscale-0 lg:grayscale-100 group-active:grayscale-0 group-active:scale-110 group-hover:grayscale-0 group-hover:scale-110" style={{backgroundImage: `url(${carouselItem.imageUrl})`}} />
+        </div>
     }
     </>
   )

@@ -4,11 +4,12 @@ import { FaCircle  } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMediaQuery } from '~/hooks/useMediaQuery';
-import type { Card, Testimonial } from './CarouselItem';
+import type { Card, Gallery, Testimonial } from './CarouselItem';
 import CarouselItem from './CarouselItem';
+import { twMerge } from "tailwind-merge";
 
 type CarouselProps = {
-  carousel: Card[] | Testimonial[]
+  carousel: Card[] | Testimonial[] | Gallery[]
 }
 
 export default function Carousel({carousel}: CarouselProps) {
@@ -98,7 +99,7 @@ export default function Carousel({carousel}: CarouselProps) {
                 const carouselItem = carousel[idx];
                 return (
                   // carousel items
-                  <li key={idx} className='w-full sm:w-1/2 2xmd:w-1/3 xl:w-1/4 flex flex-col bg-rf-white-100 p-4 rounded-2xl shadow-[0px_0px_6px_rgba(0,0,0,0.15)] hover:shadow-[0px_0px_10px_rgba(0,0,0,0.25)]'>
+                  <li key={idx} className={twMerge(`w-full sm:w-1/2 2xmd:w-1/3 xl:w-1/4 flex flex-col bg-rf-white-100 p-4 rounded-2xl shadow-[0px_0px_6px_rgba(0,0,0,0.15)] hover:shadow-[0px_0px_10px_rgba(0,0,0,0.25)] border group ${ carouselItem.type === "gallery" ? "transition-colors duration-300 ease-in bg-rf-secondary/70 xl:bg-rf-white-100 xl:border-rf-secondary/70 hover:bg-rf-secondary/70" : ""}`)}>
                     <CarouselItem carouselItem={carouselItem} />
                   </li>
                 )

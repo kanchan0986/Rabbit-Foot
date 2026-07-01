@@ -18,7 +18,7 @@ import { TbDental } from "react-icons/tb";
 import { PiToothFill, PiTooth } from "react-icons/pi";
 import { MdChildCare } from "react-icons/md";
 import { TbEmergencyBed } from "react-icons/tb";
-import type { Card, Testimonial } from "~/components/custom-components/carousels/CarouselItem";
+import type { Card, Gallery, Testimonial } from "~/components/custom-components/carousels/CarouselItem";
 import Carousel from "~/components/custom-components/carousels/Carousel";
 import BookingForm from "~/components/custom-components/forms/BookingForm";
 import SpacerVectorDoubleOrange from "~/components/custom-components/vectors/SpacerVectorDoubleOrange";
@@ -33,6 +33,12 @@ import OrbitingIconsWheel from "~/components/custom-components/OrbitingIconsWhee
 import dentists_with_kid from "~/assets/dentists_with_kid.jpg"
 import { GoGear } from "react-icons/go";
 import { LuCalendarClock } from "react-icons/lu";
+import dental_clinic from "~/assets/dental_clinic.jpg";
+import dental_clinic_1 from "~/assets/dental_clinic_1.jpg";
+import dental_clinic_2 from "~/assets/dental_clinic_2.jpg";
+import dental_clinic_3 from "~/assets/dental_clinic_3.jpg";
+import dental_clinic_4 from "~/assets/dental_clinic_4.jpg";
+import dental_clinic_5 from "~/assets/dental_clinic_5.jpg";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -127,6 +133,33 @@ const testimonialArray: Testimonial[] = [
     rating: 5,
     imageUrl: monica_adams,
     type: "testimonial"
+  },
+]
+
+const galleryArray : Gallery[] = [
+  {
+    imageUrl: dental_clinic,
+    type: "gallery"
+  },
+  {
+    imageUrl: dental_clinic_1,
+    type: "gallery"
+  },
+  {
+    imageUrl: dental_clinic_2,
+    type: "gallery"
+  },
+  {
+    imageUrl: dental_clinic_3,
+    type: "gallery"
+  },
+  {
+    imageUrl: dental_clinic_4,
+    type: "gallery"
+  },
+  {
+    imageUrl: dental_clinic_5,
+    type: "gallery"
   },
 ]
 
@@ -456,6 +489,25 @@ export default function Home() {
         <SpacerVectorRabitTwoParts className="[&>path:nth-child(1)]:fill-white [&>path:nth-child(2)]:fill-rf-white-100 [&>path:nth-child(3)]:fill-rf-secondary [&>path:nth-child(4)]:fill-rf-secondary"/>
       </Wrapper>
 
+      {/******************************************* Gallery section *******************************************/}
+      <Wrapper
+        as={"section"}
+        className="pt-10 pb-0 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:pt-16  xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:pt-40  xl:[&>div]:gap-y-20"
+      >
+       <div className="w-full flex flex-col gap-y-4">
+         <div className="w-full flex justify-center relative">
+            {/* title text */}
+            <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize relative
+              after:absolute after:bg-[url('~/assets/leaves-right.png')] after:-scale-y-100 after:-right-8 after:-top-8 after:size-10 after:bg-contain after:bg-no-repeat lg:after:size-13 lg:after:-right-11 lg:after:-top-11">Our Kids
+            <div className="inline">
+              <span className="text-rf-primary"> G</span><span className="text-rf-secondary">a</span><span className="text-rf-primary-200">l</span><span className="text-rf-secondary">l</span><span className="text-rf-primary-200">e</span><span className="text-rf-primary">r</span><span className="text-rf-secondary">y</span>
+            </div>
+            </h3>
+         </div>
+         {/* Gallery carousel */}
+         <Carousel carousel={galleryArray}/>          
+       </div>
+      </Wrapper>
 
     </main>
   );
