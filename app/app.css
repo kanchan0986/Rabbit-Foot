@@ -14,6 +14,9 @@
   /* custom fonts */
   --font-flavours: "Flavors", sans-serif;
 
+  /* text size */
+  --text-md: 1.0625rem;
+
   /* custom breakpoints */
   --breakpoint-2xs: 18rem;
   --breakpoint-xs: 29.375rem;

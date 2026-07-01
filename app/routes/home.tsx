@@ -13,9 +13,9 @@ import heart from "~/assets/Heart.png";
 import Logo from "~/components/custom-components/vectors/Logo";
 import { Link } from "react-router";
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
-import { FaRegCircle } from "react-icons/fa";
+import { FaCalendarAlt, FaRegCircle } from "react-icons/fa";
 import { TbDental } from "react-icons/tb";
-import { PiToothFill } from "react-icons/pi";
+import { PiToothFill, PiTooth } from "react-icons/pi";
 import { MdChildCare } from "react-icons/md";
 import { TbEmergencyBed } from "react-icons/tb";
 import type { Card, Testimonial } from "~/components/custom-components/carousels/CarouselItem";
@@ -28,6 +28,11 @@ import gregJones from "~/assets/greg_jones.jpg";
 import jamesSmith from "~/assets/james_smith.jpg";
 import jessicaClerk from "~/assets/jessica_clerk.jpg";
 import monica_adams from "~/assets/monica_adams.jpg";
+import SpacerVectorRabitTwoParts from "~/components/custom-components/vectors/SpacerVectorRabitTwoParts";
+import OrbitingIconsWheel from "~/components/custom-components/OrbitingIconsWheel";
+import dentists_with_kid from "~/assets/dentists_with_kid.jpg"
+import { GoGear } from "react-icons/go";
+import { LuCalendarClock } from "react-icons/lu";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -372,6 +377,83 @@ export default function Home() {
          {/* Testimonials carousel */}
          <Carousel carousel={testimonialArray}/>          
        </div>
+      </Wrapper>
+
+      {/****************************************** Value Proposition section ***********************************************/}
+      <Wrapper
+        as={"section"}
+        className="bg-rf-white-100 pt-5 pb-10 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:pt-8 xs:[&>div]:gap-y-16 md:pb-0 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:pt-20  xl:[&>div]:gap-y-20"
+      >
+       <div className="w-full flex flex-col gap-y-4">
+        {/* subtitle text with icons */}
+         <div className="w-full flex items-center justify-center gap-x-4">
+          <div className="flex items-center">
+            <FaRegCircle className="fill-rf-primary"/><span className="text-rf-grey-100/60">&mdash;&mdash;&mdash;&mdash;</span>
+          </div>
+          <h2 className="uppercase text-rf-secondary text-center text-sm lg:text-xl">Our Promise</h2>
+          <div className="flex items-center">
+            <span className="text-rf-grey-100/60">&mdash;&mdash;&mdash;&mdash;</span><FaRegCircle className="fill-rf-primary"/>
+          </div>
+         </div>
+         {/* title text */}
+         <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">Why should you choose 
+          <div className="block">
+            <span className="text-rf-primary"> R</span><span className="text-rf-secondary">a</span><span className="text-rf-primary-200">b</span><span className="text-rf-secondary">i</span><span className="text-rf-primary-200">t</span><span className="text-rf-primary"> F</span><span className="text-rf-secondary">o</span><span className="text-rf-primary-200">o</span><span className="text-rf-secondary">t</span>
+          </div>
+         </h3>
+         {/* description content */}
+         <div className="flex flex-col gap-y-6 overflow-hidden md:flex-row md:items-center md:my-6 xl:overflow-visible ">
+          {/* description box - left side */}
+          <div className="order-1 flex flex-col items-center justify-between gap-y-6 xmd:order-0 md:w-1/4 2xmd:w-[35%] 2xmd:h-55 xl:h-80 xl:w-[33%]">
+            <div className="flex flex-col items-center md:items-end">
+              <h4 className="font-bold capitalize text-rf-primary text-md md:text-end lg:text-md xl:text-xl">Healthy smile development</h4>
+              <p className="text-sm text-center md:text-end 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, nostrum.</p>
+            </div>
+            <div className="flex flex-col items-center md:items-end">
+              <h4 className="font-bold capitalize text-rf-primary text-md md:text-end lg:text-md xl:text-xl">Cutting-edge technology</h4>
+              <p className="text-sm text-center md:text-end 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, amet!</p>
+            </div>
+          </div>
+          {/* image box */}
+          <OrbitingIconsWheel 
+            className="order-0 mx-auto my-4 md:order-1" 
+            centralImage={dentists_with_kid} 
+            Icon_1={PiTooth} 
+            Icon_2={LuCalendarClock} 
+            Icon_3={GoGear} 
+            Icon_4={MdChildCare} 
+          />
+          {/* description box - right side */}
+          <div className="order-2 flex flex-col items-center justify-between gap-y-6 md:w-1/4 2xmd:w-[35%] 2xmd:h-55 xl:h-80 xl:w-[33%]" >
+            <div className="flex flex-col items-center md:items-start">
+              <h4 className="font-bold capitalize text-rf-primary text-md md:text-start lg:text-md xl:text-xl">Same-day service</h4>
+              <p className="text-sm text-center md:text-start 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, corporis!</p>
+            </div>
+            <div className="flex flex-col items-center md:items-start">
+              <h4 className="font-bold capitalize text-rf-primary text-md md:text-start lg:text-md xl:text-xl">Child-centered approach</h4>
+              <p className="text-sm text-center md:text-start 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere, sint.</p>
+            </div>
+          </div>
+         </div>
+         {/* CTA box */}
+        <div className="mt-6 flex justify-center">
+          <Link to="/" className="bg-rf-primary capitalize flex items-center gap-x-2 rounded-l-full rounded-tr-full py-2 px-2 hover:bg-rf-secondary active:bg-rf-secondary hover:shadow-rf-direct-100 group xl:px-4 xl:py-3">
+            <div className="bg-rf-white-100 p-2 rounded-full">
+              <FaCalendarAlt className="size-6 fill-rf-primary group-hover:fill-rf-secondary group-active:fill-rf-secondary" />
+            </div>
+            <span className="text-rf-white-100">Book an appointment</span>
+          </Link>
+        </div>
+                  
+       </div>
+      </Wrapper>
+
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVectorRabitTwoParts className="[&>path:nth-child(1)]:fill-white [&>path:nth-child(2)]:fill-rf-white-100 [&>path:nth-child(3)]:fill-rf-secondary [&>path:nth-child(4)]:fill-rf-secondary"/>
       </Wrapper>
 
 
