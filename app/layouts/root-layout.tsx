@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useMatch } from "react-router";
 import CopyrightInformation from "~/components/custom-components/navigation/footer/CopyrightInformation";
 import MobileFooterNavigation from "~/components/custom-components/navigation/footer/MobileFooterNavigation";
 import MobileNavigation from "~/components/custom-components/navigation/header/MobileNavigation";
@@ -16,6 +16,8 @@ type Props = {};
 export default function RootLayout({}: Props) {
   const isTablet = useMediaQuery("(min-width: 640px)");
   const isLaptop = useMediaQuery("(min-width: 992px)");
+
+  const isHomepage = useMatch("/");
 
   // Default navigation menu (mobile)
   let navigationMenu = (
@@ -98,7 +100,7 @@ export default function RootLayout({}: Props) {
       <Outlet />
 
       {/* Decorated curvy spacer before the footer */}
-      <SpacerVector className="fill-rf-primary-300 w-full drop-shadow-[0_-8px_4px_rgba(0,0,0,0.12)]" />
+      <SpacerVector className={`[&>path:nth-child(2)]:fill-rf-primary-300 ${isHomepage && '[&>path:nth-child(1)]:fill-rf-secondary'} w-full [&>path:nth-child(2)]:drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]`} />
       
       {/* Responsive footer navigation menu (mobile/tablet/laptop) */}
       {footerMenu}
