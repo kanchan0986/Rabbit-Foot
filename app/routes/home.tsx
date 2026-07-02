@@ -39,6 +39,7 @@ import dental_clinic_2 from "~/assets/dental_clinic_2.jpg";
 import dental_clinic_3 from "~/assets/dental_clinic_3.jpg";
 import dental_clinic_4 from "~/assets/dental_clinic_4.jpg";
 import dental_clinic_5 from "~/assets/dental_clinic_5.jpg";
+import ContactDetails from "~/components/custom-components/ContactDetails";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -509,6 +510,15 @@ export default function Home() {
        </div>
       </Wrapper>
 
+      {/******************************************* Contact Us section *******************************************/}
+      <Wrapper
+        as={"section"}
+        className="py-10 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-4 xs:py-16 xl:py-40"
+      >
+        {/* responsive contact details component */}
+        <ContactDetails/>
+      </Wrapper>
+      
     </main>
   );
 }

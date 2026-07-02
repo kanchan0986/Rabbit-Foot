@@ -34,6 +34,7 @@
 
   /* custom shadows */
   --shadow-rf-direct-100: 0 0 10px rgba(0,0,0,0.3);
+  --shadow-rf-direct-800: 0 0 10px rgba(0,0,0,0.8);
 }
 
 html,
