@@ -3,6 +3,8 @@ import { IoIosMail } from "react-icons/io";
 import { IoCall } from "react-icons/io5";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
 import Wrapper from "./Wrapper";
+import SlideInLeft from "./animations/SlideInLeft";
+import SlideInUp from "./animations/SlideInUp";
 
 type ContactDetailsProps = {}
 
@@ -81,9 +83,9 @@ export default function ContactDetails({}: ContactDetailsProps) {
         {/* tablet view */}
         {(isTablet && !isLaptop) && 
             <div className="relative w-full rounded-2xl overflow-hidden">
-                <div className="w-2/3 flex flex-col gap-y-6 bg-rf-white-100 rounded-2xl shadow-rf-direct-800 overflow-hidden absolute bottom-3 left-1/2 -translate-x-1/2 2xmd:items-center">
+                <SlideInUp className="w-2/3 flex flex-col gap-y-6 bg-rf-white-100 rounded-2xl shadow-rf-direct-800 overflow-hidden absolute bottom-3 left-1/2 -translate-x-1/2 2xmd:items-center">
                 {contactDetails}
-                </div>
+                </SlideInUp>
                 {/* embedded map */}
                 <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3205.4894285501737!2d-117.9232882243562!3d33.739693873276295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDQ0JzIyLjkiTiAxMTfCsDU1JzE0LjYiVw!5e1!3m2!1sen!2sin!4v1782938363530!5m2!1sen!2sin" className="w-full h-113.5" loading="lazy" ></iframe>
             </div>
@@ -91,9 +93,9 @@ export default function ContactDetails({}: ContactDetailsProps) {
         {/* laptop view */}
         {isLaptop && 
             <div className="relative w-full rounded-2xl overflow-hidden">
-                <div className="w-2/5 flex flex-col items-center gap-y-6 bg-rf-white-100 rounded-2xl shadow-rf-direct-100 hover:shadow-rf-direct-800 overflow-hidden absolute bottom-20 left-3">
+                <SlideInLeft className="w-2/5 flex flex-col items-center gap-y-6 bg-rf-white-100 rounded-2xl shadow-rf-direct-100 hover:shadow-rf-direct-800 overflow-hidden absolute bottom-20 left-3">
                 {contactDetails}
-                </div>
+                </SlideInLeft>
                 {/* embedded map */}
                 <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3205.4894285501737!2d-117.9232882243562!3d33.739693873276295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDQ0JzIyLjkiTiAxMTfCsDU1JzE0LjYiVw!5e1!3m2!1sen!2sin!4v1782938363530!5m2!1sen!2sin" className="w-full h-150" loading="lazy"></iframe>
             </div>

@@ -6,7 +6,6 @@ import smilingKidInOrangeShirt from "~/assets/smiling-kid-in-orange-shirt.jpg";
 import smilingGirlWithJacket from "~/assets/smiling-girl-with-jacket.jpg";
 import smilingGirlWithDungree from "~/assets/smiling-girl-with-dungree.jpg";
 import smilingSisters from "~/assets/smiling-sisters.jpg";
-import spacerVectorRabbitBlue from "~/assets/Spacer-Vector-Rabbit-blue.png";
 import leavesLeft from "~/assets/leaves-left.png";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import heart from "~/assets/Heart.png";
@@ -40,6 +39,10 @@ import dental_clinic_3 from "~/assets/dental_clinic_3.jpg";
 import dental_clinic_4 from "~/assets/dental_clinic_4.jpg";
 import dental_clinic_5 from "~/assets/dental_clinic_5.jpg";
 import ContactDetails from "~/components/custom-components/ContactDetails";
+import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
+import SlideInRight from "~/components/custom-components/animations/SlideInRight";
+import SlideInUp from "~/components/custom-components/animations/SlideInUp";
+import FadeIn from "~/components/custom-components/animations/FadeIn";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -172,12 +175,14 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-hidden">
       {/*********************************************** Hero section ***********************************************/}
-      <Wrapper as={"section"} className="py-10 xs:py-16">
-        <div className="flex flex-col-reverse gap-y-4 2xmd:flex-row 2xmd:items-center 2xmd:justify-between">
+      <Wrapper as={"section"} className="py-10 xs:py-16 relative">
+        {/* Animating sky background */}
+        <Sky className="fill-rf-primary-200/40"/>
+        <div className="relative flex flex-col-reverse gap-y-4 2xmd:flex-row 2xmd:items-center 2xmd:justify-between">
           {/* Left section */}
-          <div className="flex flex-col items-center gap-y-2 2xmd:w-2xl 2xmd:flex-row 2xmd:gap-y-7">
+          <SlideInLeft className="flex flex-col items-center gap-y-2 2xmd:w-2xl 2xmd:flex-row 2xmd:gap-y-7">
             {/* Decorative image on the left (only visible on laptop) */}
             <img
               src={leavesLeft}
@@ -203,36 +208,37 @@ export default function Home() {
               </p>
 
               {/* Call-to-action button */}
-              <Link to="/">
-                <Button
-                  variant={"outline"}
-                  size={"lg"}
-                  className="mt-4 rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize  2xmd:hover:shadow-xl 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
-                >
-                  Book an appointment today!
-                </Button>
-              </Link>
+              <SlideInUp delay={0.5}>
+                <Link to="/">
+                  <Button
+                    variant={"outline"}
+                    size={"lg"}
+                    className="mt-4 rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize  2xmd:hover:shadow-xl 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
+                  >
+                    Book an appointment today!
+                  </Button>
+                </Link>
+              </SlideInUp>
             </div>
-          </div>
+          </SlideInLeft>
 
           {/* Right section - Hero Image */}
-          <div className="flex justify-center 2xmd:w-1/2 2xmd:justify-end">
+          <SlideInRight className="flex justify-center 2xmd:w-1/2 2xmd:justify-end">
             <img
               src={smilingKid}
               alt="smiling kid"
               className="w-75 bg-cover 2xmd:w-lg"
             />
-          </div>
+          </SlideInRight>
         </div>
       </Wrapper>
 
       {/******************************** Spacer section with decorative vector image ********************************/}
-      <Wrapper className="w-full [&>div]:w-full">
-        <img
-          src={spacerVectorRabbitBlue}
-          alt="Spacer-Vector-Rabbit-Blue"
-          className="w-full"
-        />
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVectorRabitTwoParts className="[&>path:nth-child(1)]:fill-transparent [&>path:nth-child(2)]:fill-transparent [&>path:nth-child(3)]:fill-rf-secondary [&>path:nth-child(4)]:fill-rf-secondary"/>
       </Wrapper>
 
       {/*********************************************** About section ***********************************************/}
@@ -242,7 +248,7 @@ export default function Home() {
       >
         {/* left section */}
         <div className="flex flex-col xmd:w-full xl:max-w-137.5">
-          <div className="flex flex-col relative">
+          <SlideInLeft className="flex flex-col relative">
             {/* first image with group of kids at top left with pseudo image of leaves on the top right */}
             <div
               className="w-10/12 h-60 bg-cover bg-center bg-[url('~/assets/group-of-kids.jpg')] rounded-tr-2xl rounded-bl-2xl relative
@@ -254,12 +260,14 @@ export default function Home() {
               alt="heart"
               className="w-1/5 -mt-8 ms-4 z-1 xs:-mt-12 xs:ms-8"
             />
-          </div>
+          </SlideInLeft>
           {/* second image of the smiling kid at the bottom right */}
-          <div className="w-2/3 h-40 bg-cover bg-position-[10%_20%] bg-[url('~/assets/single-smiling-girl.jpg')] rounded-tr-2xl rounded-bl-2xl border-6 border-white ms-auto mt-[-40%] relative z-1 xs:h-60 lg:h-70" />
+          <SlideInLeft delay={0.1}>
+            <div className="w-2/3 h-40 bg-cover bg-position-[10%_20%] bg-[url('~/assets/single-smiling-girl.jpg')] rounded-tr-2xl rounded-bl-2xl border-6 border-white ms-auto mt-[-40%] relative z-1 xs:h-60 lg:h-70" />
+          </SlideInLeft>
         </div>
         {/* right section */}
-        <div className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7">
+        <SlideInRight className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7">
           <div className="flex justify-between">
             {/* title text */}
             <div className="font-flavours">
@@ -292,30 +300,34 @@ export default function Home() {
           {/* cta section */}
           <div className="flex flex-col items-center gap-y-4 mt-2 xs:mt-8 xs:gap-y-8">
             {/* read more button */}
-            <Link to="about-us">
-              <Button
-                variant={"default"}
-                size={"lg"}
-                className="bg-rf-secondary uppercase min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
-              >
-                read more
-              </Button>
-            </Link>
+            <SlideInUp delay={0.5}>
+              <Link to="about-us">
+                <Button
+                  variant={"default"}
+                  size={"lg"}
+                  className="bg-rf-secondary uppercase min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                >
+                  read more
+                </Button>
+              </Link>
+            </SlideInUp>
             {/* call us button with leaf image as pseudo element at top right */}
-            <a
-              className="flex items-center gap-x-2 -ml-10 relative
-               after:absolute after:bg-[url('~/assets/leaves-right.png')] after:-right-12 after:top-2 after:size-10 after:bg-contain after:bg-no-repeat xl:after:size-15 xl:after:-right-16 xl:-ml-16"
-              href="tel:+18001234567"
-            >
-              {/* phone icon */}
-              <BiSolidPhoneCall className="size-10 bg-rf-primary rounded-full fill-white p-2 xl:size-20 xl:p-5" />
-              <div className="flex flex-col">
-                <span className="text-xl text-center xl:text-3xl">Call Us</span>
-                <span className="xl-text-2xl">+18001234567</span>
-              </div>
-            </a>
+            <FadeIn delay={0.8}>
+              <a
+                className="flex items-center gap-x-2 -ml-10 relative
+                 after:absolute after:bg-[url('~/assets/leaves-right.png')] after:-right-12 after:top-2 after:size-10 after:bg-contain after:bg-no-repeat xl:after:size-15 xl:after:-right-16 xl:-ml-16"
+                href="tel:+18001234567"
+              >
+                {/* phone icon */}
+                <BiSolidPhoneCall className="size-10 bg-rf-primary rounded-full fill-white p-2 xl:size-20 xl:p-5" />
+                <div className="flex flex-col">
+                  <span className="text-xl text-center xl:text-3xl">Call Us</span>
+                  <span className="xl-text-2xl">+18001234567</span>
+                </div>
+              </a>
+            </FadeIn>
           </div>
-        </div>
+        </SlideInRight>
       </Wrapper>
 
       {/******************************** Spacer section with decorative vector image ********************************/}
@@ -367,12 +379,14 @@ export default function Home() {
           {/* title text */}
           <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">Book a visit now</h3>
           {/* description text */}
-          <p className="lg:text-xl text-center">We understand the importance of establishing a good oral hygiene regimen early in a child’s life, and we provide children with the necessary knowledge and treatment to maintain a healthy smile. Our practice strives to make this new journey for your child a fun and rewarding experience.</p>
+          <FadeIn>
+            <p className="lg:text-xl text-center">We understand the importance of establishing a good oral hygiene regimen early in a child’s life, and we provide children with the necessary knowledge and treatment to maintain a healthy smile. Our practice strives to make this new journey for your child a fun and rewarding experience.</p>
+          </FadeIn>
         </div>
-        <div className="relative">
+        <FadeIn className="relative" delay={0.3}>
           {/* Booking form */}
           <BookingForm formId="form-1"/>
-        </div>
+        </FadeIn>
       </Wrapper>
 
       {/******************************** Spacer section with decorative vector image ********************************/}
@@ -438,7 +452,7 @@ export default function Home() {
          {/* description content */}
          <div className="flex flex-col gap-y-6 overflow-hidden md:flex-row md:items-center md:my-6 xl:overflow-visible ">
           {/* description box - left side */}
-          <div className="order-1 flex flex-col items-center justify-between gap-y-6 xmd:order-0 md:w-1/4 2xmd:w-[35%] 2xmd:h-55 xl:h-80 xl:w-[33%]">
+          <SlideInLeft className="order-1 flex flex-col items-center justify-between gap-y-6 xmd:order-0 md:w-1/4 2xmd:w-[35%] 2xmd:h-55 xl:h-80 xl:w-[33%]">
             <div className="flex flex-col items-center md:items-end">
               <h4 className="font-bold capitalize text-rf-primary text-md md:text-end lg:text-md xl:text-xl">Healthy smile development</h4>
               <p className="text-sm text-center md:text-end 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, nostrum.</p>
@@ -447,7 +461,7 @@ export default function Home() {
               <h4 className="font-bold capitalize text-rf-primary text-md md:text-end lg:text-md xl:text-xl">Cutting-edge technology</h4>
               <p className="text-sm text-center md:text-end 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, amet!</p>
             </div>
-          </div>
+          </SlideInLeft>
           {/* image box */}
           <OrbitingIconsWheel 
             className="order-0 mx-auto my-4 md:order-1" 
@@ -458,7 +472,7 @@ export default function Home() {
             Icon_4={MdChildCare} 
           />
           {/* description box - right side */}
-          <div className="order-2 flex flex-col items-center justify-between gap-y-6 md:w-1/4 2xmd:w-[35%] 2xmd:h-55 xl:h-80 xl:w-[33%]" >
+          <SlideInRight className="order-2 flex flex-col items-center justify-between gap-y-6 md:w-1/4 2xmd:w-[35%] 2xmd:h-55 xl:h-80 xl:w-[33%]" >
             <div className="flex flex-col items-center md:items-start">
               <h4 className="font-bold capitalize text-rf-primary text-md md:text-start lg:text-md xl:text-xl">Same-day service</h4>
               <p className="text-sm text-center md:text-start 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, corporis!</p>
@@ -467,17 +481,17 @@ export default function Home() {
               <h4 className="font-bold capitalize text-rf-primary text-md md:text-start lg:text-md xl:text-xl">Child-centered approach</h4>
               <p className="text-sm text-center md:text-start 2xmd:max-w-2xs xl:max-w-sm xl:text-md">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere, sint.</p>
             </div>
-          </div>
+          </SlideInRight>
          </div>
          {/* CTA box */}
-        <div className="mt-6 flex justify-center">
+        <SlideInUp delay={0.1} className="mt-6 flex justify-center">
           <Link to="/" className="bg-rf-primary capitalize flex items-center gap-x-2 rounded-l-full rounded-tr-full py-2 px-2 hover:bg-rf-secondary active:bg-rf-secondary hover:shadow-rf-direct-100 group xl:px-4 xl:py-3">
             <div className="bg-rf-white-100 p-2 rounded-full">
               <FaCalendarAlt className="size-6 fill-rf-primary group-hover:fill-rf-secondary group-active:fill-rf-secondary" />
             </div>
             <span className="text-rf-white-100">Book an appointment</span>
           </Link>
-        </div>
+        </SlideInUp>
                   
        </div>
       </Wrapper>
@@ -535,20 +549,20 @@ export default function Home() {
       >
         {/* Animating sky background */}
         <Sky/>
-        <div className="bg-rf-white-100/70 px-4 py-8 rounded-xl shadow-rf-direct-100 relative 2xmd:flex gap-x-4 2xmd:w-9/12 2xmd:py-4">
+        <div className="bg-rf-white-100/70 flex gap-x-4 px-4 py-8 rounded-xl shadow-rf-direct-100 relative overflow-hidden h-125 xs:h-120 sm:h-100 md:h-100 2xmd:h-120 2xmd:w-9/12 2xmd:py-4">
           {/* child image visible from tablet screen  */}
           <div className="hidden 2xmd:block w-1/2 bg-[url('~/assets/girl_biting_carrot.jpg')] bg-cover bg-center bg-no-repeat h-auto rounded-xl"/>
-          <div className="flex flex-col items-center gap-y-4 2xmd:w-3/4">
+          <div className="flex flex-col items-center justify-center gap-y-4 2xmd:w-3/4">
             {/* title text */}
             <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">Book an
               <div className="inline">
                 <span className="text-rf-primary"> A</span><span className="text-rf-secondary">p</span><span className="text-rf-primary-200">p</span><span className="text-rf-secondary">o</span><span className="text-rf-primary-200">i</span><span className="text-rf-primary">n</span><span className="text-rf-secondary">t</span><span className="text-rf-primary-200">m</span><span className="text-rf-primary">e</span><span className="text-rf-secondary">n</span><span className="text-rf-primary-200">t</span>
               </div>
             </h3>
-            <div className="relative">
+            <FadeIn className="relative">
               {/* Booking form of split type */}
               <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formId="form-2" formType="split"/>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </Wrapper>
