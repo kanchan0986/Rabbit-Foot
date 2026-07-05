@@ -8,6 +8,7 @@ import SlideInUp from '~/components/custom-components/animations/SlideInUp';
 import { Link } from 'react-router';
 import { Button } from '~/components/ui/button';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
+import Logo from '~/components/custom-components/vectors/Logo';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -80,6 +81,48 @@ export default function AboutUs({}: Route.ComponentProps) {
         className="py-0 [&>div]:w-full"
       >
         <SpacerVectorRabitTwoParts className="[&>path:nth-child(1)]:fill-rf-white-100 [&>path:nth-child(2)]:fill-transparent [&>path:nth-child(3)]:fill-rf-primary-100 [&>path:nth-child(4)]:fill-rf-primary-200"/>
+      </Wrapper>
+
+      {/*********************************************** Introduction section ***********************************************/}
+      <Wrapper
+        as={"section"}
+        className="bg-rf-white-100 pt-10 pb-0 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:pt-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:pt-40 xl:[&>div]:gap-y-20"
+      >
+        {/* left section */}
+        <SlideInLeft className="flex flex-col items-center justify-center xmd:w-full xl:max-w-137.5">
+            {/* styled border around the image */}
+            <div className="relative w-10/12 h-60 before:absolute before:-inset-1 before:size-20 before:bg-rf-primary after:absolute after:-right-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 xs:h-90 xs:w-11/12 lg:h-150">
+              {/* responsive image of the doctor */}
+              <div className="relative size-full bg-cover bg-no-repeat bg-center bg-[url('~/assets/dentist_main.jpg')] rounded-tr-2xl rounded-bl-2xl shadow-rf-direct-100 z-1 min-[360px]:bg-position-[center_top_-4rem] xs:bg-position-[center_top_-6rem] sm:bg-position-[center_top_-8rem] xmd:bg-position-[center_top_-2rem]"/>
+            </div>
+        </SlideInLeft>
+        {/* right section */}
+        <SlideInRight className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7">
+          <div className="flex justify-center sm:justify-between">
+            {/* title text */}
+              <h2 className='self-center w-full font-flavours text-rf-primary text-center text-3xl xmd:w-auto lg:text-4xl'>Dr. Steven Anderson</h2>
+            {/* logo at the top right corner */}
+            <Logo className="hidden sm:block sm:size-20 fill-rf-secondary/30 -rotate-15 self-center xl:size-30" />
+          </div>
+          {/* description text */}
+          <div className="flex flex-col gap-y-4">
+            <SlideInUp delay={0.1}>
+              <p className="text-xbase lg:text-xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti laudantium voluptas cum molestiae sequi voluptatum tenetur, optio reprehenderit vero animi ullam officia repellat earum repudiandae nihil non exercitationem nam sunt amet vel perspiciatis. Veritatis corrupti impedit sunt dolore ipsum at labore quos molestiae quisquam eos, laboriosam rerum exercitationem, architecto iure
+              </p>
+            </SlideInUp>
+            <SlideInUp delay={0.2}>
+              <p className="text-xbase lg:text-xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, labore? Quam pariatur voluptate, est fuga nostrum similique iure repellat, voluptatum eaque voluptas, iusto molestias! Obcaecati voluptas, odit natus modi sit, laborum assumenda est nobis, minima deserunt ea? Inventore, eaque ea.
+              </p>
+            </SlideInUp>
+            <SlideInUp delay={0.3}>
+              <p className="text-xbase lg:text-xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, sequi id vel commodi vero consequuntur aperiam est dignissimos explicabo possimus suscipit animi? Cum, error quo!
+              </p>
+            </SlideInUp>
+          </div>
+        </SlideInRight>
       </Wrapper>
 
     </main>
