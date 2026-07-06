@@ -9,6 +9,8 @@ import { Link } from 'react-router';
 import { Button } from '~/components/ui/button';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
+import { FaClipboardCheck } from 'react-icons/fa6';
+import { funToKnowFacts, goodToKnowFacts } from '../../static-data';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -89,7 +91,7 @@ export default function AboutUs({}: Route.ComponentProps) {
         className="bg-rf-white-100 pt-10 pb-0 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:pt-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:pt-40 xl:[&>div]:gap-y-20"
       >
         {/* left section */}
-        <SlideInLeft className="flex flex-col items-center justify-center xmd:w-full xl:max-w-137.5">
+        <SlideInLeft className="flex flex-col items-center justify-center xmd:w-full xl:max-w-137.5 2xl:max-w-[35%]">
             {/* styled border around the image */}
             <div className="relative w-10/12 h-60 before:absolute before:-inset-1 before:size-20 before:bg-rf-primary after:absolute after:-right-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 xs:h-90 xs:w-11/12 lg:h-150">
               {/* responsive image of the doctor */}
@@ -125,6 +127,50 @@ export default function AboutUs({}: Route.ComponentProps) {
         </SlideInRight>
       </Wrapper>
 
+      {/*********************************************** Facts section ***********************************************/}
+      <Wrapper
+        as={"section"}
+        className="bg-rf-white-100 py-10 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:py-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:py-14 xl:[&>div]:gap-y-20"
+      >
+        {/* left section with styled border around the fact box */}
+        <SlideInLeft className='relative before:absolute before:-inset-1 before:size-20 before:bg-rf-primary after:absolute after:-right-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 xl:w-full'>
+          {/* fact box */}
+          <div className="flex flex-col gap-y-4 overflow-hidden xmd:w-full bg-white p-4 relative size-full rounded-tr-2xl rounded-bl-2xl z-1">
+            {/* title text */}
+            <h2 className="font-flavours text-rf-primary text-center text-2xl lg:text-3xl">Good to know</h2>
+            {/* description box */}
+            <ul className="flex flex-col gap-y-3 lg:text-xl after:absolute after:inset-0 after:size-full after:bg-rf-primary-200/50 after:-z-1">
+              {goodToKnowFacts.map((fact, idx) => {
+                return (
+                  <li className="flex items-baseline gap-x-2" key={idx}>
+                    <FaClipboardCheck className='fill-rf-primary w-1/12'/>
+                    <span className="text-xbase lg:text-xl w-5/6">{fact}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </SlideInLeft>
+        {/* right section with styled border around the fact box */}
+        <SlideInRight className='relative before:absolute before:-top-1 before:-right-1 before:size-20 before:bg-rf-primary after:absolute after:-left-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 xl:w-full'>
+          {/* fact box */}
+          <div className="flex flex-col gap-y-4 overflow-hidden xmd:w-full bg-white p-4 relative size-full rounded-tl-2xl rounded-br-2xl z-1">
+            {/* title text */}
+            <h2 className="font-flavours text-rf-secondary text-center text-2xl lg:text-3xl">Fun to know</h2>
+            {/* description box */}
+            <ul className="flex flex-col gap-y-3 lg:text-xl after:absolute after:inset-0 after:size-full after:bg-rf-secondary/50 after:-z-1">
+              {funToKnowFacts.map((fact, idx) => {
+                return (
+                  <li className="flex items-baseline gap-x-2" key={idx}>
+                    <FaClipboardCheck className='fill-rf-secondary w-1/12'/>
+                    <span className="text-xbase lg:text-xl w-5/6">{fact}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </SlideInRight>
+      </Wrapper>
     </main>
   )
 }
