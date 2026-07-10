@@ -89,7 +89,7 @@ export default function Carousel({carousel}: CarouselProps) {
                 const speed = info.velocity.x;
                 if(swipe > 50 && speed > 500){
                   handleLeftMovement();
-                }else{
+                }else if(swipe < -50 && speed < -500){
                   handleRightMovement()
                 }
               }}

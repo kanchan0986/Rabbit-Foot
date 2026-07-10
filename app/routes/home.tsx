@@ -2,10 +2,6 @@ import Wrapper from "~/components/custom-components/Wrapper";
 import type { Route } from "./+types/home";
 import { Button } from "~/components/ui/button";
 import smilingKid from "~/assets/smiling-kid.png";
-import smilingKidInOrangeShirt from "~/assets/smiling-kid-in-orange-shirt.jpg";
-import smilingGirlWithJacket from "~/assets/smiling-girl-with-jacket.jpg";
-import smilingGirlWithDungree from "~/assets/smiling-girl-with-dungree.jpg";
-import smilingSisters from "~/assets/smiling-sisters.jpg";
 import leavesLeft from "~/assets/leaves-left.png";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import heart from "~/assets/Heart.png";
@@ -13,36 +9,23 @@ import Logo from "~/components/custom-components/vectors/Logo";
 import { Link } from "react-router";
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import { FaCalendarAlt, FaRegCircle } from "react-icons/fa";
-import { TbDental } from "react-icons/tb";
-import { PiToothFill, PiTooth } from "react-icons/pi";
+import { PiTooth } from "react-icons/pi";
 import { MdChildCare } from "react-icons/md";
-import { TbEmergencyBed } from "react-icons/tb";
-import type { Card, Gallery, Testimonial } from "~/components/custom-components/carousels/CarouselItem";
 import Carousel from "~/components/custom-components/carousels/Carousel";
 import BookingForm from "~/components/custom-components/forms/BookingForm";
 import SpacerVectorDoubleOrange from "~/components/custom-components/vectors/SpacerVectorDoubleOrange";
 import Sky from "~/components/custom-components/vectors/Sky";
-import santoshKumar from "~/assets/santosh_kumar.jpg";
-import gregJones from "~/assets/greg_jones.jpg";
-import jamesSmith from "~/assets/james_smith.jpg";
-import jessicaClerk from "~/assets/jessica_clerk.jpg";
-import monica_adams from "~/assets/monica_adams.jpg";
 import SpacerVectorRabitTwoParts from "~/components/custom-components/vectors/SpacerVectorRabitTwoParts";
 import OrbitingIconsWheel from "~/components/custom-components/OrbitingIconsWheel";
 import dentists_with_kid from "~/assets/dentists_with_kid.jpg"
 import { GoGear } from "react-icons/go";
 import { LuCalendarClock } from "react-icons/lu";
-import dental_clinic from "~/assets/dental_clinic.jpg";
-import dental_clinic_1 from "~/assets/dental_clinic_1.jpg";
-import dental_clinic_2 from "~/assets/dental_clinic_2.jpg";
-import dental_clinic_3 from "~/assets/dental_clinic_3.jpg";
-import dental_clinic_4 from "~/assets/dental_clinic_4.jpg";
-import dental_clinic_5 from "~/assets/dental_clinic_5.jpg";
 import ContactDetails from "~/components/custom-components/ContactDetails";
 import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
 import SlideInRight from "~/components/custom-components/animations/SlideInRight";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import FadeIn from "~/components/custom-components/animations/FadeIn";
+import { cardArray, galleryArray, testimonialArray } from "~/data/static-data";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -54,118 +37,9 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-const cardArray: Card[] = [
-  {
-    imageUrl: smilingKidInOrangeShirt,
-    icon: PiToothFill,
-    title: 'preventive care',
-    subtitle: 'exams, cleanings, fluoride sealants.',
-    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque ex suscipit, eaque accusamus doloribus beatae, nesciunt rem architecto saepe ratione odit veniam maxime, placeat eos error! Culpa quasi ducimus unde.',
-    link: '/',
-    type: "card"
-  },
-  {
-    imageUrl: smilingGirlWithJacket,
-    icon: TbDental,
-    title: 'Treatments',
-    subtitle: 'fillings and crowns for kids treatments.',
-    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus laborum hic totam saepe assumenda officiis ut. Commodi, nam maxime. Non blanditiis fugit quaerat molestias, qui dolorum dignissimos delectus distinctio sunt',
-    link: '/',
-    type: 'card'
-  },
-  {
-    imageUrl: smilingGirlWithDungree,
-    icon: TbEmergencyBed,
-    title: 'emergencies',
-    subtitle: 'same-day appointments available.',
-    details: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id, nobis. Harum repellat itaque totam! At ad ducimus sequi voluptas, veniam delectus molestias aspernatur voluptatibus commodi amet, tenetur ea, doloremque accusantium.',
-    link: '/',
-    type: 'card'
-  },
-  {
-    imageUrl: smilingSisters,
-    icon: MdChildCare,
-    title: 'Approach',
-    subtitle: 'treatments mainly focused on children',
-    details: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore, impedit consequatur! Nostrum doloremque minima cum aspernatur laborum unde velit, esse sequi minus tenetur eum optio eos. Et exercitationem minima explicabo.',
-    link: '/',
-    type: 'card'
-  }
-]
-
-const testimonialArray: Testimonial[] = [
-  {
-    name: 'Santosh Kumar',
-    role: 'Product Manager',
-    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit harum laborum cupiditate! Cumque, aut cum omnis consectetur autem numquam quas',
-    organization: 'Google',
-    rating: 3.5,
-    imageUrl: santoshKumar,
-    type: "testimonial"
-  },
-  {
-    name: 'James Smith',
-    role: 'Community Manager',
-    details: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis non quod consequatur fugiat, aliquid repudiandae. Fuga minus commodi doloribus odio.',
-    organization: 'Apple',
-    rating: 2.5,
-    imageUrl: jamesSmith,
-    type: "testimonial"
-  },
-  {
-    name: 'Greg Jones',
-    role: 'Graphics Designer',
-    details: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore cupiditate rerum quo molestias. Corporis qui explicabo numquam temporibus, esse ex.',
-    organization: 'Uniliver',
-    rating: 3.5,
-    imageUrl: gregJones,
-    type: "testimonial"
-  },
-  {
-    name: 'Jessica Clerk',
-    role: 'Frontend Developer',
-    details: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum amet doloremque odio et quidem non consectetur unde quia recusandae velit',
-    organization: 'Oracle',
-    rating: 4,
-    imageUrl: jessicaClerk,
-    type: "testimonial"
-  },
-  {
-    name: 'Monica Adams',
-    role: 'UI Designer',
-    details: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium ex quia nam possimus rerum excepturi quisquam eum, aliquid impedit perferendis',
-    rating: 5,
-    imageUrl: monica_adams,
-    type: "testimonial"
-  },
-]
-
-const galleryArray : Gallery[] = [
-  {
-    imageUrl: dental_clinic,
-    type: "gallery"
-  },
-  {
-    imageUrl: dental_clinic_1,
-    type: "gallery"
-  },
-  {
-    imageUrl: dental_clinic_2,
-    type: "gallery"
-  },
-  {
-    imageUrl: dental_clinic_3,
-    type: "gallery"
-  },
-  {
-    imageUrl: dental_clinic_4,
-    type: "gallery"
-  },
-  {
-    imageUrl: dental_clinic_5,
-    type: "gallery"
-  },
-]
+export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
+  return null;
+ }
 
 export const clientAction = async ({ request }: Route.ClientActionArgs) => { 
   const formData = await request.formData();

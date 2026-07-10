@@ -10,7 +10,7 @@ import { Button } from '~/components/ui/button';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import { FaClipboardCheck, FaRegCircle } from 'react-icons/fa6';
-import { funToKnowFacts, goodToKnowFacts } from '../../static-data';
+import { funToKnowFacts, goodToKnowFacts } from '~/data/static-data';
 import SpacerVector from '~/components/custom-components/vectors/SpacerVector';
 import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
 import FadeIn from '~/components/custom-components/animations/FadeIn';
@@ -23,6 +23,10 @@ export function meta({}: Route.MetaArgs) {
     { name: "description", content: "A dental services company totally committed for your kids!" },
   ];
 }
+
+export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
+  return null;
+ }
 
 export default function AboutUs({}: Route.ComponentProps) {
   return (
