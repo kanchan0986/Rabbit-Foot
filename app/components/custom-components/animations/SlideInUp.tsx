@@ -6,10 +6,26 @@ type SlideInUpProps = {
     className?: string;
     children: React.ReactNode;
     delay?: number;
+    inView?: boolean;
 }
 
-export default function SlideInUp({className, children, delay}: SlideInUpProps) {
-  return (
+export default function SlideInUp({className, children, delay, inView}: SlideInUpProps) {
+  // If inView is explicitly set to false, animate immediately
+  return inView === false ? (
+    <motion.div
+        initial="initial"
+        animate="animate"
+        className={twMerge(className)}
+        variants={{
+            initial: {opacity: 0, y: 100},
+            animate: {opacity: 1, y: 0}
+        }}
+        transition={{ duration: 0.6, ease: 'easeOut', delay: delay || 0 }}
+    >
+        {children}
+    </motion.div>
+  ) : (
+    // If inView is not false, animate when scrolled into view
     <motion.div
         initial="initial"
         whileInView="animate"

@@ -18,6 +18,11 @@ import { TbDental } from "react-icons/tb";
 import { PiToothFill } from "react-icons/pi";
 import { TbEmergencyBed } from "react-icons/tb";
 import { MdChildCare } from "react-icons/md";
+import alexa_thomas from '~/assets/alexa-thomas.jpg';
+import stella_davidson from '~/assets/stella_davidson.jpg';
+import taylor_adams from '~/assets/taylor_adams.jpg';
+import maria_jackson from '~/assets/maria_jackson.jpg';
+import chung_lee from '~/assets/chung_lee.jpg';
 
 export const goodToKnowFacts = [
   "Pediatric Dentistry Specialist",
@@ -146,5 +151,95 @@ export const galleryArray : Gallery[] = [
   {
     imageUrl: dental_clinic_5,
     type: "gallery"
+  },
+]
+
+export type Speciality = "preventive-care" | "sealants" | "fluoride-treatments" | "restorations" | "nerve-treatments" | "crowns" | "space-maintainers" | "mouthguards" | "whitening" | "extractions" | "nitrous-oxide-analgesia" | "hospital-dentistry" | "in-Office-sedation" | "all"
+
+export type Degree = "D.D.S." | "D.M.D." | "M.S." | "M.D.Sc." | "Ph.D."
+
+export type Doctor = {
+  id: string;
+  imageUrl: string;
+  name: string;
+  email: string;
+  address: string;
+  experience: number;
+  speciality: Speciality[];
+  degree: Degree[];
+  fee: number;
+  details: string[];
+  availability: boolean;
+}
+
+export const specialityArray : Speciality[] = [
+  "all", "crowns", "extractions", "fluoride-treatments", "hospital-dentistry", "in-Office-sedation", "mouthguards", "nerve-treatments", "nitrous-oxide-analgesia", "preventive-care", "restorations", "sealants", "space-maintainers", "whitening"
+]
+
+export const doctorArray : Doctor[] = [
+  {
+    id: 'sijh&76JHIUYkjashfksjdf',
+    imageUrl: alexa_thomas,
+    name: 'alexa thomas',
+    email: 'alexa.thomas@gmail.com',
+    address: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, eos.',
+    experience: 8,
+    degree: ["D.D.S.", "D.M.D."],
+    fee: 250,
+    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
+    availability: true,
+    speciality: ["crowns", "extractions"]
+  },
+  {
+    id: 'ldsfkjgldifjg89726346238746KJHKHJKgjzfjasfhk',
+    imageUrl: stella_davidson,
+    name: 'stella davidson',
+    email: 'stella.davidson@gmail.com',
+    address: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, eos.',
+    experience: 5,
+    degree: ["M.D.Sc."],
+    fee: 200,
+    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
+    availability: true,
+    speciality: ["mouthguards", "crowns", "sealants"]
+  },
+  {
+    id: 'hdfoijti9837298GUYsusd',
+    imageUrl: taylor_adams,
+    name: 'taylor adams',
+    email: 'taylor.adams@gmail.com',
+    address: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, eos.',
+    experience: 4,
+    degree: ["M.S."],
+    fee: 275,
+    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
+    availability: true,
+    speciality: ["fluoride-treatments", "hospital-dentistry", "mouthguards", "restorations"]
+  },
+  {
+    id: ';gkj;shd92743HKJHKjhdfjgl',
+    imageUrl: maria_jackson,
+    name: 'maria jackson',
+    email: 'maria.jackson@gmail.com',
+    address: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, eos.',
+    experience: 6,
+    degree: ["D.D.S.", "Ph.D."],
+    fee: 200,
+    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
+    availability: true,
+    speciality: ["nerve-treatments", "crowns", "nitrous-oxide-analgesia", "space-maintainers"]
+  },
+  {
+    id: 'jhksjdf67234KJHHKlskdjsls',
+    imageUrl: chung_lee,
+    name: 'chung lee',
+    email: 'chung.lee@gmail.com',
+    address: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, eos.',
+    experience: 7,
+    degree: ["M.D.Sc.", "Ph.D."],
+    fee: 250,
+    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
+    availability: true,
+    speciality: ["whitening", "restorations", "hospital-dentistry", "mouthguards", "sealants"]
   },
 ]

@@ -23,6 +23,10 @@
   --breakpoint-xs: 29.375rem;
   --breakpoint-xmd: 52rem;
   --breakpoint-2xmd: 62rem;
+  --breakpoint-3xl: 104rem;
+
+  /* custom container size */
+  --container-4xs: 14rem;
 
   /* custom colors */
   --color-rf-primary: #e9784b;
@@ -36,6 +40,7 @@
 
   /* custom shadows */
   --shadow-rf-direct-100: 0 0 10px rgba(0,0,0,0.3);
+  --shadow-rf-direct-200: 0 0 12px rgba(0,0,0,0.5);
   --shadow-rf-direct-800: 0 0 10px rgba(0,0,0,0.8);
 }
 
