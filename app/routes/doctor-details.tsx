@@ -7,7 +7,8 @@ import Logo from "~/components/custom-components/vectors/Logo";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import { IoMdEye, IoMdEyeOff  } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
-import { Link } from "react-router";
+import { Link, data, redirect } from "react-router";
+import BookingFormAdvanced from "~/components/custom-components/forms/BookingFormAdvanced";
 
 export function meta({loaderData}: Route.MetaArgs) {
   // if the loaderData is null or undefined fallback to empty object
@@ -27,9 +28,51 @@ export const clientLoader = async ({params}: Route.ClientLoaderArgs) => {
   return { doctorData }
  }
 
-export default function DoctorDetails({loaderData}: Route.ComponentProps) {
+export type FormError = {
+  speciality?: string; 
+  date?: string; 
+  slot?: string
+}
+
+export const clientAction = async ({request}: Route.ClientActionArgs) => { 
+  const formData = await request.formData()
+  const inputData = Object.fromEntries(formData)
+  const errors: FormError = {
+    speciality: '', date: '', slot: ''
+  };
+  
+  // validation logic
+  if (!inputData.speciality) {
+    errors.speciality = 'Please select a speciality'
+  }
+  if (!inputData.date) {
+    errors.date = 'Please select an available date'
+  }
+  if (!inputData.slot) {
+    errors.slot = 'Please select an available slot'
+  }
+
+  
+  // Check if any errors exist
+  const hasErrors = Object.values(errors).some((error) => error !== "");
+
+  if (hasErrors) {
+    // Return errors + status code
+    return data({ errors }, { status: 400 });
+  }
+
+  // Post data to API or handle booking logic
+  console.log(inputData)
+
+  // else, return success + errors as undefined
+  return redirect('../our-doctors')
+
+ }
+
+export default function DoctorDetails({loaderData, actionData}: Route.ComponentProps) {
   const { doctorData } = loaderData;
   if(!doctorData) return null;
+  const errors = actionData?.errors
   return (
     <main className="overflow-hidden">
       {/*********************************************** Introduction section ***********************************************/}
@@ -103,10 +146,14 @@ export default function DoctorDetails({loaderData}: Route.ComponentProps) {
               <span className=""><small className="text-rf-primary">Appointment Fee:</small> <small className="font-bold">${doctorData.fee}</small></span>
             </Wrapper>
           </SlideInRight>
+          {/************************************ Availabele Slot booking box ************************************/}
+          <SlideInRight className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7">
+            <Wrapper className="border border-rf-grey-100/40 rounded-md [&>div]:flex [&>div]:flex-col [&>div]:gap-y-4">
+              <BookingFormAdvanced doctorData={doctorData} errors={errors}/>
+            </Wrapper>
+          </SlideInRight>
         </div>
       </Wrapper>
     </main>
   )
 }
-
-

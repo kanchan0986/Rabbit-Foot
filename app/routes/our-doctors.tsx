@@ -79,6 +79,8 @@ export default function OurDoctors({ loaderData }: Route.ComponentProps) {
             initialSpeciality={initialSpeciality}
             specialityChangeHandler={handleSpecialityChange}
             data={specialityData}
+            className='shadow-rf-direct-100'
+            reference='speciality-menu'
           />
         </div>
         <div className="relative flex w-full">

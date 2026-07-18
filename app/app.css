@@ -24,6 +24,7 @@
   --breakpoint-xmd: 52rem;
   --breakpoint-2xmd: 62rem;
   --breakpoint-3xl: 104rem;
+  --breakpoint-4xl: 105rem;
 
   /* custom container size */
   --container-4xs: 14rem;

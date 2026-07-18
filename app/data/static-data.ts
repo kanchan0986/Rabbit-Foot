@@ -158,6 +158,13 @@ export type Speciality = "preventive-care" | "sealants" | "fluoride-treatments" 
 
 export type Degree = "D.D.S." | "D.M.D." | "M.S." | "M.D.Sc." | "Ph.D."
 
+export type Slot = '10:00 am' | '11:00 pm' | '12:00 pm' | '01:00 pm' | '03:00 pm' | '04:00 pm' | '05:00 pm';
+
+export type Schedule = {
+  date: string; 
+  slot: Slot[]
+}
+
 export type Doctor = {
   id: string;
   imageUrl: string;
@@ -166,11 +173,12 @@ export type Doctor = {
   address: string;
   experience: number;
   speciality: Speciality[];
+  schedule: Schedule[];
   degree: Degree[];
   fee: number;
   details: string[];
   availability: boolean;
-}
+} & { readonly type: 'doctor'}
 
 export const specialityArray : Speciality[] = [
   "all", "crowns", "extractions", "fluoride-treatments", "hospital-dentistry", "in-Office-sedation", "mouthguards", "nerve-treatments", "nitrous-oxide-analgesia", "preventive-care", "restorations", "sealants", "space-maintainers", "whitening"
@@ -188,7 +196,9 @@ export const doctorArray : Doctor[] = [
     fee: 250,
     details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
     availability: true,
-    speciality: ["crowns", "extractions"]
+    speciality: ["crowns", "extractions"],
+    schedule: [],
+    type: "doctor"
   },
   {
     id: 'ldsfkjgldifjg89726346238746KJHKHJKgjzfjasfhk',
@@ -199,9 +209,20 @@ export const doctorArray : Doctor[] = [
     experience: 5,
     degree: ["M.D.Sc."],
     fee: 200,
-    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
+    details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
     availability: true,
-    speciality: ["mouthguards", "crowns", "sealants"]
+    speciality: ["mouthguards", "crowns", "sealants"],
+    schedule: [
+        {
+            date: '7/20/26',
+            slot: ['10:00 am', '11:00 pm', '12:00 pm', '01:00 pm', '03:00 pm', '04:00 pm', '05:00 pm']
+        },
+        {
+            date: '7/21/26',
+            slot: ['10:00 am', '03:00 pm', '04:00 pm', '05:00 pm']
+        },
+    ],
+    type: "doctor"
   },
   {
     id: 'hdfoijti9837298GUYsusd',
@@ -214,7 +235,9 @@ export const doctorArray : Doctor[] = [
     fee: 275,
     details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
     availability: true,
-    speciality: ["fluoride-treatments", "hospital-dentistry", "mouthguards", "restorations"]
+    speciality: ["fluoride-treatments", "hospital-dentistry", "mouthguards", "restorations"],
+    schedule: [],
+    type: "doctor"
   },
   {
     id: ';gkj;shd92743HKJHKjhdfjgl',
@@ -227,7 +250,9 @@ export const doctorArray : Doctor[] = [
     fee: 200,
     details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
     availability: true,
-    speciality: ["nerve-treatments", "crowns", "nitrous-oxide-analgesia", "space-maintainers"]
+    speciality: ["nerve-treatments", "crowns", "nitrous-oxide-analgesia", "space-maintainers"],
+    schedule: [],
+    type: "doctor"
   },
   {
     id: 'jhksjdf67234KJHHKlskdjsls',
@@ -240,6 +265,8 @@ export const doctorArray : Doctor[] = [
     fee: 250,
     details: ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iure libero quasi laborum, officia expedita dolor harum fuga modi nesciunt ad, sit id ut non eum voluptatum deserunt quidem? Mollitia.'],
     availability: true,
-    speciality: ["whitening", "restorations", "hospital-dentistry", "mouthguards", "sealants"]
+    speciality: ["whitening", "restorations", "hospital-dentistry", "mouthguards", "sealants"],
+    schedule: [],
+    type: "doctor"
   },
 ]
