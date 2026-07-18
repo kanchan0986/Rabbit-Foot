@@ -19,6 +19,7 @@ export default function RootLayout({}: Props) {
 
   const isHomepage = useMatch("/");
   const isAboutUsPage = useMatch("about-us");
+  const isDoctorsDetailsPage = useMatch("our-doctors/:doctor-id");
 
   // Default navigation menu (mobile)
   let navigationMenu = (
@@ -101,7 +102,7 @@ export default function RootLayout({}: Props) {
       <Outlet />
 
       {/* Decorated curvy spacer before the footer */}
-      <SpacerVector className={`[&>path:nth-child(2)]:fill-rf-primary-300  ${(isHomepage || isAboutUsPage) && '[&>path:nth-child(1)]:fill-rf-secondary'} w-full [&>path:nth-child(2)]:drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]`}  />
+      <SpacerVector className={`[&>path:nth-child(2)]:fill-rf-primary-300  ${(isHomepage || isAboutUsPage) && '[&>path:nth-child(1)]:fill-rf-secondary'} ${isDoctorsDetailsPage && '[&>path:nth-child(1)]:fill-rf-white-100'} w-full [&>path:nth-child(2)]:drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]`}  />
       
       {/* Responsive footer navigation menu (mobile/tablet/laptop) */}
       {footerMenu}

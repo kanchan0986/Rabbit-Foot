@@ -41,6 +41,7 @@
   /* custom shadows */
   --shadow-rf-direct-100: 0 0 10px rgba(0,0,0,0.3);
   --shadow-rf-direct-200: 0 0 12px rgba(0,0,0,0.5);
+  --shadow-rf-direct-300: 0 0 6px rgba(0,0,0,0.2);
   --shadow-rf-direct-800: 0 0 10px rgba(0,0,0,0.8);
 }
 

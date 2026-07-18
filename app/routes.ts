@@ -6,6 +6,7 @@ export default [
         route("about-us", "routes/about-us.tsx"),
         ...prefix("our-doctors", [
             index("routes/our-doctors.tsx"),
+            route(":doctor-id", "routes/doctor-details.tsx"),
         ]),
         route("services", "routes/services.tsx"),
         route("office-locations", "routes/office-locations.tsx"),
