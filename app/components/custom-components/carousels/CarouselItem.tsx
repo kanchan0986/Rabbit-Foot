@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { FcGoogle } from "react-icons/fc";
 import { ImQuotesLeft } from "react-icons/im";
 import Ratings from '../Ratings';
+import type { Doctor } from '~/data/static-data';
+import DoctorCard from '../cards/DoctorCard';
 
 export type Card = {
   imageUrl: string;
@@ -28,7 +30,7 @@ export type Gallery = {
 } & { readonly type: 'gallery'}
 
 type CarouselItemProps = {
-    carouselItem: Card | Testimonial | Gallery
+    carouselItem: Card | Testimonial | Gallery | Doctor
 }
 
 export default function CarouselItem({carouselItem}: CarouselItemProps) {
@@ -66,6 +68,11 @@ export default function CarouselItem({carouselItem}: CarouselItemProps) {
         <div className="overflow-hidden rounded-2xl border-2 group-active:border-rf-white-100 group-hover:border-rf-white-100">
           <div className="w-full h-90 bg-cover bg-center bg-no-repeat transition-transform duration-300 ease-in grayscale-0 lg:grayscale-100 group-active:grayscale-0 group-active:scale-110 group-hover:grayscale-0 group-hover:scale-110" style={{backgroundImage: `url(${carouselItem.imageUrl})`}} />
         </div>
+    }
+    {(carouselItem.type === 'doctor') && 
+        <Link to={`../${carouselItem.id}`} relative='path'>
+          <DoctorCard doctorData={carouselItem} as={"div"}/>
+        </Link>
     }
     </>
   )

@@ -7,9 +7,10 @@ import { useMediaQuery } from '~/hooks/useMediaQuery';
 import type { Card, Gallery, Testimonial } from './CarouselItem';
 import CarouselItem from './CarouselItem';
 import { twMerge } from "tailwind-merge";
+import type { Doctor } from '~/data/static-data';
 
 type CarouselProps = {
-  carousel: Card[] | Testimonial[] | Gallery[]
+  carousel: Card[] | Testimonial[] | Gallery[] | Doctor[]
 }
 
 export default function Carousel({carousel}: CarouselProps) {
@@ -99,7 +100,7 @@ export default function Carousel({carousel}: CarouselProps) {
                 const carouselItem = carousel[idx];
                 return (
                   // carousel items
-                  <li key={idx} className={twMerge(`w-full sm:w-1/2 2xmd:w-1/3 xl:w-1/4 flex flex-col bg-rf-white-100 p-4 rounded-2xl shadow-[0px_0px_6px_rgba(0,0,0,0.15)] hover:shadow-[0px_0px_10px_rgba(0,0,0,0.25)] border group ${ carouselItem.type === "gallery" ? "transition-colors duration-300 ease-in bg-rf-secondary/70 xl:bg-rf-white-100 xl:border-rf-secondary/70 hover:bg-rf-secondary/70" : ""}`)}>
+                  <li key={idx} className={twMerge(`w-full sm:w-1/2 2xmd:w-1/3 xl:w-1/4 flex flex-col bg-rf-white-100 p-4 rounded-2xl shadow-[0px_0px_6px_rgba(0,0,0,0.15)] hover:shadow-[0px_0px_10px_rgba(0,0,0,0.25)] border group ${ carouselItem.type === "gallery" ? "transition-colors duration-300 ease-in bg-rf-secondary/70 xl:bg-rf-white-100 xl:border-rf-secondary/70 hover:bg-rf-secondary/70" : ""} ${ carouselItem.type === "doctor" && "p-0 shadow-none hover:shadow-none"}`)}>
                     <CarouselItem carouselItem={carouselItem} />
                   </li>
                 )

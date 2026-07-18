@@ -7,8 +7,10 @@ import Logo from "~/components/custom-components/vectors/Logo";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import { IoMdEye, IoMdEyeOff  } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
+import Carousel from "~/components/custom-components/carousels/Carousel";
 import { Link, data, redirect } from "react-router";
 import BookingFormAdvanced from "~/components/custom-components/forms/BookingFormAdvanced";
+import DoctorCard from "~/components/custom-components/cards/DoctorCard";
 
 export function meta({loaderData}: Route.MetaArgs) {
   // if the loaderData is null or undefined fallback to empty object
@@ -25,7 +27,8 @@ export const clientLoader = async ({params}: Route.ClientLoaderArgs) => {
   const doctorId = params["doctor-id"];
   // fetch data from api
   const doctorData = doctorArray.find(doctor => doctor.id === doctorId);
-  return { doctorData }
+  const relatedDoctorArray = doctorArray.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId)
+  return { doctorData, relatedDoctorArray }
  }
 
 export type FormError = {
@@ -70,8 +73,8 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
  }
 
 export default function DoctorDetails({loaderData, actionData}: Route.ComponentProps) {
-  const { doctorData } = loaderData;
-  if(!doctorData) return null;
+  const { doctorData, relatedDoctorArray } = loaderData;
+  if(!doctorData || !relatedDoctorArray) return null;
   const errors = actionData?.errors
   return (
     <main className="overflow-hidden">
@@ -154,6 +157,46 @@ export default function DoctorDetails({loaderData, actionData}: Route.ComponentP
           </SlideInRight>
         </div>
       </Wrapper>
+
+      {/****************************************** Related Doctors section ***********************************************/}
+      {/* only show this section when there is atleast one related doctor present with same speciality other than the current doctor */}
+      {relatedDoctorArray.length > 0 &&
+        <Wrapper
+          as={"section"}
+          className="bg-rf-white-100 py-6 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:py-8 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:py-20 xl:[&>div]:gap-y-20"
+        >
+          <div className="w-full flex flex-col gap-y-4">
+            <div className="flex flex-col">
+              {/* title text */}
+              <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">Related
+                <div className="inline">
+                  <span className="text-rf-primary"> d</span><span className="text-rf-secondary">o</span><span className="text-rf-primary-200">c</span><span className="text-rf-secondary">t</span><span className="text-rf-primary-200">o</span><span className="text-rf-primary">r</span><span className="text-rf-secondary">s</span>
+                </div>
+              </h3>
+              {/* subtitle text with icons */}
+              <div className="w-full flex items-center justify-center gap-x-8">
+                <span className="hidden min-[360px]:block text-rf-primary rotate-90 text-6xl">&#119171;</span>
+                <h2 className="text-rf-secondary text-center text-sm lg:text-xl">Extensive list of trusted doctors.</h2>
+                <span className="hidden min-[360px]:block text-rf-primary rotate-90 text-6xl">&#119171;</span>
+              </div>
+            </div>
+            {relatedDoctorArray.length > 3 ?
+                // Show Doctor carousel when related doctors are more than 3
+                <Carousel carousel={relatedDoctorArray}/> :
+                // otherwise default to normal column wise look for the related doctors
+                <ul className="grid grid-cols-1 py-10 gap-4 xs:grid-cols-2 xs:py-12 md:w-full md:h-fit md:ms-auto 2xmd:flex justify-center 2xmd:[&>div]:w-[20%]">
+                  {relatedDoctorArray.map(doctor => (
+                    <SlideInUp key={doctor.id} inView={false}>
+                      <Link to={`../${doctor.id}`} relative="path">
+                        <DoctorCard doctorData={doctor} />
+                      </Link>
+                    </SlideInUp>
+                  ))}
+                </ul>
+              }          
+          </div>
+        </Wrapper>
+      }
     </main>
   )
 }
