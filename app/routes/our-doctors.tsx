@@ -9,10 +9,11 @@ import SpecialityButtonGroup from '~/components/custom-components/SpecialityButt
 import SlideInLeft from '~/components/custom-components/animations/SlideInLeft';
 import SlideInUp from '~/components/custom-components/animations/SlideInUp';
 import Sky from '~/components/custom-components/vectors/Sky';
+import { tabLabel } from '~/helper/tabLabel';
 
-export function meta({}: Route.MetaArgs) {
+export function meta({location}: Route.MetaArgs) {
   return [
-    { title: "Rabbit Foot | Our Doctors" },
+    { title: `Rabbit Foot | ${tabLabel({ data: {...location, type: 'location'} })}` },
     { name: "description", content: "A dental services company totally committed for your kids!" },
   ];
 }

@@ -4,13 +4,13 @@ import { FaCircle  } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMediaQuery } from '~/hooks/useMediaQuery';
-import type { Card, Gallery, Testimonial } from './CarouselItem';
+import type { Gallery, Testimonial } from './CarouselItem';
 import CarouselItem from './CarouselItem';
 import { twMerge } from "tailwind-merge";
-import type { Doctor } from '~/data/static-data';
+import type { Doctor, Service } from '~/data/static-data';
 
 type CarouselProps = {
-  carousel: Card[] | Testimonial[] | Gallery[] | Doctor[]
+  carousel: Service[] | Testimonial[] | Gallery[] | Doctor[]
 }
 
 export default function Carousel({carousel}: CarouselProps) {

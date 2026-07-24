@@ -11,14 +11,13 @@ import Carousel from "~/components/custom-components/carousels/Carousel";
 import { Link, data, redirect } from "react-router";
 import BookingFormAdvanced from "~/components/custom-components/forms/BookingFormAdvanced";
 import DoctorCard from "~/components/custom-components/cards/DoctorCard";
+import { tabLabel } from "~/helper/tabLabel";
 
 export function meta({loaderData}: Route.MetaArgs) {
   // if the loaderData is null or undefined fallback to empty object
   const { doctorData } = loaderData ?? {}
-  // regex to find the first letter of each word and turn it to uppercase
-  const capitalizedName = doctorData?.name.replace(/\b\w/g, char => char.toUpperCase())
   return [
-    { title: `Rabbit Foot | ${doctorData ? 'Dr. ' + capitalizedName : 'Doctor Details'}` },
+    { title: `Rabbit Foot | ${doctorData ? 'Dr. ' + tabLabel({data: doctorData}) : 'Doctor Details'}` },
     { name: "description", content: "A dental services company totally committed for your kids!" },
   ];
 }

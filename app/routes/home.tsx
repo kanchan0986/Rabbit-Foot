@@ -25,11 +25,12 @@ import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
 import SlideInRight from "~/components/custom-components/animations/SlideInRight";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import FadeIn from "~/components/custom-components/animations/FadeIn";
-import { cardArray, galleryArray, testimonialArray } from "~/data/static-data";
+import { servicesArray, galleryArray, testimonialArray } from "~/data/static-data";
+import { tabLabel } from "~/helper/tabLabel";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({location}: Route.MetaArgs) {
   return [
-    { title: "Rabbit Foot | Home" },
+    { title: `Rabbit Foot | ${tabLabel({ data: {...location, type: 'location'} })}` },
     {
       name: "description",
       content: "A dental services company totally committed for your kids!",
@@ -38,7 +39,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
-  return null;
+  // fetch data from api
+  const servicesData = servicesArray
+  return {servicesData};
  }
 
 export const clientAction = async ({ request }: Route.ClientActionArgs) => { 
@@ -47,7 +50,8 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
   console.log(data)
  }
 
-export default function Home() {
+export default function Home({loaderData} : Route.ComponentProps) {
+  const { servicesData } = loaderData
   return (
     <main className="overflow-x-hidden">
       {/*********************************************** Hero section ***********************************************/}
@@ -237,7 +241,7 @@ export default function Home() {
            care simple <span className="text-rf-primary-100 block">and effective</span>
          </h3>
          {/* Card carousel */}
-         <Carousel carousel={cardArray}/>          
+         <Carousel carousel={servicesData}/>          
        </div>
       </Wrapper>
 

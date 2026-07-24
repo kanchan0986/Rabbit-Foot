@@ -16,10 +16,11 @@ import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/Spa
 import FadeIn from '~/components/custom-components/animations/FadeIn';
 import BookingForm from '~/components/custom-components/forms/BookingForm';
 import heart from '~/assets/Heart.png';
+import { tabLabel } from '~/helper/tabLabel';
 
-export function meta({}: Route.MetaArgs) {
+export function meta({location}: Route.MetaArgs) {
   return [
-    { title: "Rabbit Foot | About Us" },
+    { title: `Rabbit Foot | ${tabLabel({ data: {...location, type: 'location'} })}` },
     { name: "description", content: "A dental services company totally committed for your kids!" },
   ];
 }
