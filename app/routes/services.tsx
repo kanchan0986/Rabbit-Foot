@@ -10,6 +10,8 @@ import SlideInRight from '~/components/custom-components/animations/SlideInRight
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import heart from '~/assets/Heart.png';
+import { servicesArray } from '~/data/static-data';
+import Summary from '~/components/custom-components/Summary';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -19,10 +21,13 @@ export function meta({location}: Route.MetaArgs) {
 }
 
 export const clientLoader = ({} : Route.ClientLoaderArgs) => { 
-  return null;
+  // make api call
+  const servicesData = servicesArray
+  return { servicesData };
  }
 
-export default function Services({}: Route.ComponentProps) {
+export default function Services({ loaderData }: Route.ComponentProps) {
+  const { servicesData } = loaderData
   return (
     <main className="overflow-hidden">
       {/*********************************************** Summary section ***********************************************/}
@@ -79,7 +84,7 @@ export default function Services({}: Route.ComponentProps) {
           <div className="flex flex-col items-center gap-y-4 mt-8 xs:mt-8 xs:gap-y-8">
             {/* read more button */}
             <SlideInUp delay={0.5}>
-              <Link to=".">
+              <Link to="./#service-default">
                 <Button
                   variant={"default"}
                   size={"lg"}
@@ -101,6 +106,107 @@ export default function Services({}: Route.ComponentProps) {
         <SpacerVectorRabitTwoParts className="[&>path:nth-child(1)]:fill-rf-white-100 [&>path:nth-child(2)]:fill-transparent [&>path:nth-child(3)]:fill-rf-primary-100 [&>path:nth-child(4)]:fill-rf-primary-200"/>
       </Wrapper>
 
+      {/*********************************************** All Services section ***********************************************/}
+      <Wrapper
+        as={"section"}
+        className="bg-rf-white-100 py-15 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-6 xs:py-16 xs:[&>div]:gap-y-10 xmd:[&>div]:gap-20 xl:py-30 xl:[&>div]:gap-y-30"
+        id='service-default'
+      >
+        {servicesData.map((service, idx) => {
+          const allEvenServices = idx % 2 === 0; // find all even services in servicesData
+          const allOddServices = idx % 2 !== 0; // find all odd services in servicesData
+          return (
+            <div key={service.id}>
+              {allEvenServices && (
+                <div className="flex flex-col items-center gap-y-8 xmd:flex-row xmd:gap-x-8 xmd:items-stretch">
+                  {/* left section */}
+                  <SlideInLeft delay={0.55} className="flex w-full flex-col items-center justify-center xmd:h-auto xl:max-w-137.5 2xl:max-w-[35%]">
+                      {/* styled border around the image */}
+                      <div className="relative h-[50vh] w-full before:absolute before:-inset-1 before:size-20 before:bg-rf-primary after:absolute after:-right-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 sm:h-[90vh] md:h-screen xmd:h-full">
+                        {/* responsive image of the doctor */}
+                        <div style={{backgroundImage: `url(${service.imageUrl})`}} className="relative size-full bg-cover bg-no-repeat bg-center rounded-tr-2xl rounded-bl-2xl shadow-rf-direct-100 z-1"/>
+                      </div>
+                  </SlideInLeft>
+                  {/* right section */}
+                  <SlideInRight delay={0.55} className="flex flex-col gap-y-4 xmd:w-full xmd:h-full xmd:py-4 2xmd:gap-y-7 2xmd:py-8">
+                      {/* Heading box */}
+                      <div className="flex justify-center sm:justify-between">
+                        <div className="self-center flex flex-col gap-y-2 text-center sm:text-start">
+                          {/* title text */}
+                          <h2 className='font-flavours capitalize text-rf-primary text-3xl lg:text-4xl'>{service.title}</h2>
+                          {/* sub-title text */}
+                          <h3 className='text-rf-secondary text-xl lg:text-2xl'>{service.subtitle}</h3>
+                        </div>
+                        {/* logo at the top right corner */}
+                        <Logo className="hidden sm:block sm:size-20 fill-rf-secondary/30 -rotate-15 self-center xl:size-30" />
+                      </div>
+                    {/* description text */}
+                    <div className="flex flex-col gap-y-4">
+                      {/* summary text */}
+                      <Summary summary={service.overview?.summary}/>
+                      {/* cta button */}
+                        <SlideInUp delay={0.5} className="flex justify-center mt-8 min-h-20 xs:min-h-18 xs:gap-y-8">
+                          <Link to={service.id}>
+                            <Button
+                              variant={"default"}
+                              size={"lg"}
+                              className="bg-rf-secondary min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                            >
+                              Know in details
+                            </Button>
+                          </Link>
+                        </SlideInUp>
+                    </div>
+                  </SlideInRight>
+                </div>
+              )}
+              {allOddServices && (
+                <div className="flex flex-col items-center gap-y-8 xmd:flex-row-reverse xmd:gap-x-8 xmd:items-stretch">
+                  {/* Right section */}
+                  <SlideInRight delay={0.55} className="flex w-full flex-col items-center justify-center xmd:h-auto xl:max-w-137.5 2xl:max-w-[35%]">
+                      {/* styled border around the image */}
+                      <div className="relative h-[50vh] w-full before:absolute before:-right-1 before:-top-1 before:size-20 before:bg-rf-primary after:absolute after:-left-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 sm:h-[90vh] md:h-screen xmd:h-full">
+                        {/* responsive image of the doctor */}
+                        <div style={{backgroundImage: `url(${service.imageUrl})`}} className="relative size-full bg-cover bg-no-repeat bg-center rounded-tl-2xl rounded-br-2xl shadow-rf-direct-100 z-1"/>
+                      </div>
+                  </SlideInRight>
+                  {/* Left section */}
+                  <SlideInLeft delay={0.55} className="flex flex-col gap-y-4 xmd:w-full xmd:h-full xmd:py-4 2xmd:gap-y-7 2xmd:py-8">
+                      {/* Heading Box */}
+                      <div className="flex justify-center sm:justify-between">
+                        <div className="self-center flex flex-col gap-y-2 text-center sm:text-start">
+                          {/* title text */}
+                          <h2 className='font-flavours capitalize text-rf-primary text-3xl lg:text-4xl'>{service.title}</h2>
+                          {/* sub-title text */}
+                          <h3 className='text-rf-secondary text-xl lg:text-2xl'>{service.subtitle}</h3>
+                        </div>
+                        {/* logo at the top right corner */}
+                        <Logo className="hidden sm:block sm:size-20 fill-rf-secondary/30 -rotate-15 self-center xl:size-30" />
+                      </div>
+                    {/* description text */}
+                    <div className="flex flex-col gap-y-4">
+                      {/* summary text */}
+                      <Summary summary={service.overview?.summary}/>
+                      {/* cta button */}
+                      <SlideInUp delay={0.5} className="flex justify-center mt-8 min-h-20 xs:min-h-18 xs:gap-y-8">
+                        <Link to={service.id}>
+                          <Button
+                            variant={"default"}
+                            size={"lg"}
+                            className="bg-rf-secondary min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                          >
+                            Know in details
+                          </Button>
+                        </Link>
+                      </SlideInUp>
+                    </div>
+                  </SlideInLeft>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </Wrapper>
     </main>
   )
 }
