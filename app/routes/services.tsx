@@ -11,6 +11,9 @@ import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/Sp
 import Logo from '~/components/custom-components/vectors/Logo';
 import heart from '~/assets/Heart.png';
 import { servicesArray } from '~/data/static-data';
+import FadeIn from '~/components/custom-components/animations/FadeIn';
+import BookingForm from '~/components/custom-components/forms/BookingForm';
+import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
 import Summary from '~/components/custom-components/Summary';
 
 export function meta({location}: Route.MetaArgs) {
@@ -207,6 +210,41 @@ export default function Services({ loaderData }: Route.ComponentProps) {
           )
         })}
       </Wrapper>
+
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVectorDoubleOrange className='[&>path:nth-child(3)]:fill-rf-secondary [&>rect]:fill-rf-white-100'/>
+      </Wrapper>
+
+      {/******************************************** Book appointment section ********************************************/}
+
+      <Wrapper
+        as={"section"}
+        className="bg-rf-secondary py-8 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-5 xs:py-16 xs:[&>div]:gap-y-8 xl:py-30 xl:[&>div]:gap-y-10"
+      >
+        {/* Animating sky background */}
+        <Sky/>
+        <div className="bg-rf-white-100/70 flex gap-x-4 px-4 py-8 rounded-xl shadow-rf-direct-100 relative overflow-hidden h-125 xs:h-120 sm:h-100 md:h-100 2xmd:h-120 2xmd:w-9/12 2xmd:py-4">
+          {/* child image visible from tablet screen  */}
+          <div className="hidden 2xmd:block w-1/2 bg-[url('~/assets/girl_biting_carrot.jpg')] bg-cover bg-center bg-no-repeat h-auto rounded-xl"/>
+          <div className="flex flex-col items-center justify-center gap-y-4 2xmd:w-3/4">
+            {/* title text */}
+            <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize">Book an
+              <div className="inline">
+                <span className="text-rf-primary"> A</span><span className="text-rf-secondary">p</span><span className="text-rf-primary-200">p</span><span className="text-rf-secondary">o</span><span className="text-rf-primary-200">i</span><span className="text-rf-primary">n</span><span className="text-rf-secondary">t</span><span className="text-rf-primary-200">m</span><span className="text-rf-primary">e</span><span className="text-rf-secondary">n</span><span className="text-rf-primary-200">t</span>
+              </div>
+            </h3>
+            <FadeIn className="relative min-h-90 xs:min-h-fit lg:min-h-90">
+              {/* Booking form of split type */}
+              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formId="form-4" formType="split"/>
+            </FadeIn>
+          </div>
+        </div>
+      </Wrapper>
+
     </main>
   )
 }
