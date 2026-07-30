@@ -1,7 +1,6 @@
 import Wrapper from "../../Wrapper";
 import Logo from "../../vectors/Logo";
 import { Form, Link, NavLink } from "react-router";
-import { navMenuArr } from "../header/MobileNavigation";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoCall } from "react-icons/io5";
 import { IoIosMail } from "react-icons/io";
@@ -11,12 +10,15 @@ import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 import { Button } from "~/components/ui/button";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
+import type { NavMenu } from "~/data/static-data";
 
-type Props = {};
+type RootFooterNavigationProps = {
+  navMenu: NavMenu[];
+};
 
-export default function RootFooterNavigation({}: Props) {
+export default function RootFooterNavigation({navMenu}: RootFooterNavigationProps) {
   const isDesktop = useMediaQuery("(min-width: 1280px)");
-  const updatedNavMenuArr = [{ to: ".", content: "Home" }, ...navMenuArr];
+  const updatedNavMenuArr = [{ to: ".", content: "Home" }, ...navMenu];
   return (
     <Wrapper className="py-10">
       <div className="flex items-start gap-x-4">

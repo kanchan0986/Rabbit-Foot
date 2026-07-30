@@ -3,6 +3,9 @@ import smilingKidInOrangeShirt from "~/assets/smiling-kid-in-orange-shirt.jpg";
 import smilingGirlWithJacket from "~/assets/smiling-girl-with-jacket.jpg";
 import smilingGirlWithDungree from "~/assets/smiling-girl-with-dungree.jpg";
 import smilingSisters from "~/assets/smiling-sisters.jpg";
+import smiling_boy_thumbs_up from "~/assets/smiling_boy_thumbs_up.jpg";
+import smiling_boy_thumbs_up_double from "~/assets/smiling_boy_thumbs_up_double.jpg";
+import smiling_boy from "~/assets/smiling-boy.jpg";
 import santoshKumar from "~/assets/santosh_kumar.jpg";
 import gregJones from "~/assets/greg_jones.jpg";
 import jamesSmith from "~/assets/james_smith.jpg";
@@ -27,6 +30,8 @@ import { TbDental } from "react-icons/tb";
 import { PiToothFill } from "react-icons/pi";
 import { TbEmergencyBed } from "react-icons/tb";
 import { MdChildCare } from "react-icons/md";
+import { BsEmojiLaughing } from "react-icons/bs";
+import { FaRegFaceGrimace } from "react-icons/fa6";
 import alexa_thomas from '~/assets/alexa-thomas.jpg';
 import stella_davidson from '~/assets/stella_davidson.jpg';
 import taylor_adams from '~/assets/taylor_adams.jpg';
@@ -35,6 +40,7 @@ import chung_lee from '~/assets/chung_lee.jpg';
 import type { IconType } from "react-icons/lib";
 import { generateRandomId } from "~/helper/generateRandomId";
 import { FaClipboardCheck } from "react-icons/fa6";
+import buildNavItems from "~/helper/buildNavItems";
 
 export const goodToKnowFacts = [
   "Pediatric Dentistry Specialist",
@@ -159,7 +165,7 @@ export const specialityArray : Speciality[] = [
 
 export const doctorArray : Doctor[] = [
   {
-    id: generateRandomId(),
+    id: 'alexa-thomas',
     imageUrl: alexa_thomas,
     name: 'alexa thomas',
     email: 'alexa.thomas@gmail.com',
@@ -174,7 +180,7 @@ export const doctorArray : Doctor[] = [
     type: "doctor"
   },
   {
-    id: generateRandomId(),
+    id: 'stella-davidson',
     imageUrl: stella_davidson,
     name: 'stella davidson',
     email: 'stella.davidson@gmail.com',
@@ -198,7 +204,7 @@ export const doctorArray : Doctor[] = [
     type: "doctor"
   },
   {
-    id: generateRandomId(),
+    id: 'taylor-adams',
     imageUrl: taylor_adams,
     name: 'taylor adams',
     email: 'taylor.adams@gmail.com',
@@ -213,7 +219,7 @@ export const doctorArray : Doctor[] = [
     type: "doctor"
   },
   {
-    id: generateRandomId(),
+    id: 'maria-jackson',
     imageUrl: maria_jackson,
     name: 'maria jackson',
     email: 'maria.jackson@gmail.com',
@@ -228,7 +234,7 @@ export const doctorArray : Doctor[] = [
     type: "doctor"
   },
   {
-    id: generateRandomId(),
+    id: 'chung-lee',
     imageUrl: chung_lee,
     name: 'chung lee',
     email: 'chung.lee@gmail.com',
@@ -279,7 +285,7 @@ export type ServiceNiche = {
   expectation?: Expectation;
   faq?: Faq[];
   highlights?: Highlights;
-}
+} & { readonly type: 'service'}
 
 export type Faq = {
   id: string;
@@ -294,7 +300,7 @@ export type Highlights = {
   item: {
     id: string;
     title: string;
-    summary: string[];
+    summary?: string[];
     imageUrl?: string;
   }[]
 }
@@ -316,7 +322,7 @@ export type Service = {
 
 export const servicesArray: Service[] = [
   { 
-    id: generateRandomId(),
+    id: 'preventive-dentist',
     imageUrl: smilingKidInOrangeShirt,
     icon: PiToothFill,
     title: 'Preventive Dentist',
@@ -365,8 +371,9 @@ export const servicesArray: Service[] = [
     ],
     serviceNiche: [
       {
-        id: generateRandomId(),
+        id: 'cleanings-&-checkups',
         imageUrl: girl_with_brush_pic_1,
+        type: 'service',
         title: "Cleanings & Checkups",
         subtitle: "Building strong, confident smiles from the start",
         summary: {
@@ -517,8 +524,9 @@ export const servicesArray: Service[] = [
         }
       },
       {
-        id: generateRandomId(),
+        id: 'fluoride-treatment',
         imageUrl: girl_with_brush_pic_2,
+        type: 'service',
         title: "Fluoride Treatment",
         subtitle: "Protecting smiles, strengthening teeth",
         summary: {
@@ -633,8 +641,9 @@ export const servicesArray: Service[] = [
         }
       },
       {
-        id: generateRandomId(),
+        id: 'dental-sealants',
         imageUrl: girl_with_brush_pic_3,
+        type: 'service',
         title: "Dental Sealants",
         subtitle: "Shielding smiles from cavities",
         summary: {
@@ -762,7 +771,7 @@ export const servicesArray: Service[] = [
     ]
   },
   { 
-    id: generateRandomId(),
+    id: 'restorative-dentist',
     imageUrl: smilingGirlWithJacket,
     icon: TbDental,
     title: "Restorative Dentist",
@@ -781,10 +790,428 @@ export const servicesArray: Service[] = [
         "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down."
       ]
     },
-    serviceNiche: [],
+    serviceNiche: [
+      {
+        id: 'dental-crowns',
+        imageUrl: girl_with_brush_pic_1,
+        type: 'service',
+        title: "Dental Crowns",
+        subtitle: "Restoring and protecting little smiles",
+        summary: {
+          title: "Restoring teeth, protecting confidence",
+          summary: [
+            "Sometimes, even with great brushing and regular checkups, kids’ teeth can develop cavities or get damaged. When that happens, a dental crown can help restore the tooth’s shape, strength, and function, keeping your child’s smile healthy and their confidence high.", 
+            "At Rabbit Foot Dentals, we make restorative care simple and stress-free. We use Smallville dental crowns to protect teeth that are too weak for a filling or have had more advanced treatment, like a baby root canal. The result? A strong, healthy tooth that looks and feels great!"
+          ]
+        },
+        showcase: {
+          title: "Why your child might need a crown",
+          imageUrl: mother_and_girl_with_brush,
+          summary: [
+            "Sometimes a filling isn’t enough to keep a tooth healthy. If a tooth is badly decayed, chipped, or weakened, a dental crown helps protect it and restore its strength.",
+            "We may recommend Rabbit Foot dental crowns when:",
+            [
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "A cavity is too large for a simple filling",
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "A tooth has been cracked or chipped in an accident or injury",
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "A tooth has had pulp therapy (a “baby root canal”)",
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "There’s significant enamel wear from grinding or developmental conditions",
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "You want to avoid an early tooth extraction that could affect spacing for adult teeth",
+              }
+            ],
+            "By covering and reinforcing the tooth, a crown helps your child chew comfortably, prevents further damage, and preserves space for their future adult teeth."
+          ]
+        },
+        faq: [
+          {
+            id: generateRandomId(),
+            question: "Do crowns hurt to get?",
+            answer: ["We make sure your child is fully comfortable with gentle numbing and calm, reassuring care. Many kids are surprised by how easy the process feels."]
+          },
+          {
+            id: generateRandomId(),
+            question: "How long will the crown last?",
+            answer: ["Crowns typically last until the baby tooth naturally falls out, usually several years. We check them at every visit to ensure they’re secure and healthy."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Can you place crowns on adult teeth too?",
+            answer: ["For older kids or teens with permanent teeth, we can place our Rabbit Foot dental crowns that are designed to last for many years and protect long-term oral health."]
+          },
+          {
+            id: generateRandomId(),
+            question: "What if my child is nervous?",
+            answer: ["We use a calm, positive approach and can offer light sedation if needed to make the visit easier for anxious or younger patients."]
+          }
+        ],
+        expectation: {
+          title: "What to expect during a crown’s visit",
+          imageUrl: girl_at_clinic,
+          description: {
+            summary: [
+              [
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Evaluation and explanation:",
+                  summary: "We’ll examine the tooth and explain whether a crown is the best option."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Gentle preparation:",
+                  summary: "The damaged area is cleaned and shaped for a perfect fit."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Crown placement:",
+                  summary: "The crown is carefully placed and adjusted for comfort and bite alignment."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "A strong, restored tooth:",
+                  summary: "Your child leaves with a healthy, functional smile that’s ready for everyday eating and play!"
+                },
+              ],
+              "With every crown, our goal is to protect your child’s smile with care that makes them feel proud of their dental visit."
+            ]
+          }
+        },
+        highlights: {
+          title: "What makes us special?",
+          imageUrl: what_makes_us_special,
+          item: [
+            {
+              id: generateRandomId(),
+              title: "Trusted Experts",
+              summary: ["As a Board Certified Pediatric Dentist, Dr. Mallard has received extensive training in pediatrics, allowing him to perform expert care and specialized treatments tailored to your child's needs."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Convenient Location",
+              summary: ["As your friendly Farragut pediatric dentist, we’re steps away from Farragut intermediate, middle, and high school – making visits easy, quick, and stress-free."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Community is at our heart",
+              summary: ["We love our community! That's why a part of what we earn goes to support local nonprofits and missions."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Same-Day Smiles!",
+              summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
+            },
+          ]
+        }
+      },
+      {
+        id: 'fillings',
+        imageUrl: girl_with_brush_pic_2,
+        type: 'service',
+        title: "Fillings",
+        subtitle: "Restoring little teeth with big care",
+        summary: {
+          title: "Is your child dealing with cavities? We can help!",
+          summary: [
+            "Even with great brushing and regular checkups, kids can still get cavities. At Rabbit Foot Dentals, we make fixing them simple, stress-free, and comfortable.", 
+            "Dr. Drew Mallard and our team use gentle, tooth-colored fillings to repair small areas of decay before they become bigger problems. Each filling restores the tooth’s shape and strength, helping your child chew, talk, and smile with confidence.",
+            "Our Rabbit Foot dental fillings can help with:",
+            [
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Treating small to medium cavities"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Preventing pain or sensitivity"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Stopping decay from spreading"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Protecting baby teeth until they’re ready to fall out naturally"
+              },
+            ]
+          ]
+        },
+        showcase: {
+          title: "What happens if tooth decay is left untreated",
+          imageUrl: girl_with_brush_pic_3,
+          summary: [
+            "Tooth decay may start small, but it can spread quickly. If a cavity isn’t treated right away, it can reach deeper layers of the tooth, causing pain, infection, and even damage to the surrounding teeth and gums. Cavities can cause:",
+            [
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Toothaches or sensitivity that make eating uncomfortable"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Infections or abscesses that may require more advanced treatment"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Difficulty chewing or speaking clearly"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Early tooth loss, which can affect how permanent teeth grow in"
+              },
+            ],
+            "Baby teeth are essential for guiding adult teeth into place. Tooth decay can disrupt natural development and create long-term problems for your child’s smile. Early care helps prevent discomfort and keeps your child’s mouth healthy as they grow."
+          ]
+        },
+        faq: [
+          {
+            id: generateRandomId(),
+            question: "Do fillings hurt?",
+            answer: ["Our Rabbit Foot fillings dentist uses gentle numbing and calming techniques to make sure your child feels comfortable. Most kids say they didn’t feel a thing."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Are fillings safe for kids?",
+            answer: ["Yes! We use modern, tooth-colored materials that are durable, biocompatible, and blend naturally with your child’s smile."]
+          },
+          {
+            id: generateRandomId(),
+            question: "How long does a filling last?",
+            answer: ["With good brushing, flossing, and regular checkups, a Rabbit Foot filling can last for years — often until the baby tooth naturally falls out."]
+          },
+          {
+            id: generateRandomId(),
+            question: "How can I help prevent future cavities?",
+            answer: ["Encourage brushing twice a day with fluoride toothpaste, flossing daily, limiting sugary snacks, and visiting us every 6 months for cleanings and exams."]
+          }
+        ],
+        expectation: {
+          title: "What to expect during a fillings treatment",
+          imageUrl: girl_at_clinic_1,
+          description: {
+            summary: [
+              [
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Quick diagnosis:",
+                  summary: "We’ll identify any decay using gentle digital x-rays and an exam."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Comfort first:",
+                  summary: "We explain each step to your child and ensure they’re relaxed and at ease."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Precise restoration:",
+                  summary: "The decay is removed, and the filling is placed and shaped for a perfect fit."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "A strong, healthy smile:",
+                  summary: "Your child leaves with a restored tooth and plenty of reasons to smile!"
+                }
+              ],
+              "At Rabbit Foot Dentals, our approach is simple: gentle treatment, long-lasting protection, and a positive experience every step of the way."
+            ]
+          }
+        },
+        highlights: {
+          title: "What makes us special?",
+          imageUrl: what_makes_us_special,
+          item: [
+            {
+              id: generateRandomId(),
+              title: "Trusted Experts",
+              summary: ["As a Board Certified Pediatric Dentist, Dr. Mallard has received extensive training in pediatrics, allowing him to perform expert care and specialized treatments tailored to your child's needs."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Convenient Location",
+              summary: ["As your friendly Farragut pediatric dentist, we’re steps away from Farragut intermediate, middle, and high school – making visits easy, quick, and stress-free."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Community is at our heart",
+              summary: ["We love our community! That's why a part of what we earn goes to support local nonprofits and missions."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Same-Day Smiles!",
+              summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
+            },
+          ]
+        }
+      },
+      {
+        id: 'tooth-extractions',
+        imageUrl: girl_with_brush_pic_3,
+        type: 'service',
+        title: "Tooth Extractions",
+        subtitle: "Gentle care when a tooth needs to go",
+        summary: {
+          title: "Compassionate care for every tooth",
+          summary: [
+            "At Rabbit Foot Dentals, we do everything possible to save and protect your child’s natural teeth. But sometimes, removing a tooth is the healthiest option. Whether it’s a stubborn baby tooth, a badly decayed tooth, or one causing crowding, Dr. Drew Mallard and our caring team make the process gentle, safe, and stress-free.", 
+            "Our goal is to keep your child comfortable from start to finish and ensure the experience feels calm, positive, and easy to understand.",
+            "Rabbit Foot tooth extractions may be recommended when:",
+            [
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "A tooth is too damaged to be repaired"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Severe decay or infection is present"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "A baby tooth is blocking an incoming permanent tooth"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "Overcrowding is affecting your child’s bite or orthodontic plan"
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                summary: "An injury has fractured a tooth beyond repair"
+              }
+            ]
+          ]
+        },
+        showcase: {
+          title: "Gentle techniques for tooth removal",
+          imageUrl: girl_at_clinic_2,
+          summary: [
+            "We understand that “tooth extraction” can sound intimidating, especially for kids. That’s why we take a calm, supportive approach and explain everything in simple, positive terms.",
+            "Our team uses modern techniques and local anesthesia to ensure a completely comfortable experience. For children who are anxious or need extra reassurance, we also offer sedation options to help them stay relaxed throughout the procedure.",
+            "Dr. Mallard, our Rabbit Foot tooth extraction dentist, is patient, compassionate, and experienced in helping kids of all ages feel safe and confident in the dental chair."
+          ]
+        },
+        faq: [
+          {
+            id: generateRandomId(),
+            question: "Does an extraction hurt?",
+            answer: ["Your child’s mouth will be numbed before the tooth is removed, so they won’t feel any pain. Afterward, we’ll provide easy-to-follow instructions to keep them comfortable as they heal."]
+          },
+          {
+            id: generateRandomId(),
+            question: "How long does it take to recover?",
+            answer: ["Most children recover within a few days. Minor tenderness or swelling is normal, and we’ll recommend soft foods and gentle care during healing."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Will my child need a space maintainer?",
+            answer: ["If the extracted tooth was a baby tooth that came out early, Dr. Mallard may recommend a small device to keep the space open until the permanent tooth is ready to come in. This helps prevent future crowding or misalignment."]
+          },
+          {
+            id: generateRandomId(),
+            question: "What can I do to prepare my child?",
+            answer: ["Talk about the visit positively! You can reassure your child that removing the tooth will help their smile stay healthy and strong, and we’ll take great care of them the entire time."]
+          }
+        ],
+        expectation: {
+          title: "What to expect during your child’s visit",
+          imageUrl: girl_at_clinic_1,
+          description: {
+            summary: [
+              [
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Careful evaluation:",
+                  summary: "We’ll examine your child’s tooth and explain why extraction is the best option."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Comfort first:",
+                  summary: "Local anesthesia or sedation ensures your child feels relaxed and pain-free."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Gentle removal:",
+                  summary: "The tooth is carefully extracted with precision and care."
+                },
+                {
+                  id: generateRandomId(),
+                  icon: FaClipboardCheck,
+                  title: "Simple aftercare:",
+                  summary: "We’ll give you clear, easy instructions for healing and help you schedule any necessary follow-ups."
+                },
+              ],
+              "At Rabbit Foot Dentals, every Smallville tooth extraction is done with compassion and attention to your child’s comfort."
+            ]
+          }
+        },
+        highlights: {
+          title: "What makes us special?",
+          imageUrl: what_makes_us_special,
+          item: [
+            {
+              id: generateRandomId(),
+              title: "Trusted Experts",
+              summary: ["As a Board Certified Pediatric Dentist, Dr. Mallard has received extensive training in pediatrics, allowing him to perform expert care and specialized treatments tailored to your child's needs."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Convenient Location",
+              summary: ["As your friendly Farragut pediatric dentist, we’re steps away from Farragut intermediate, middle, and high school – making visits easy, quick, and stress-free."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Community is at our heart",
+              summary: ["We love our community! That's why a part of what we earn goes to support local nonprofits and missions."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Same-Day Smiles!",
+              summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
+            },
+          ]
+        }
+      },
+    ]
   },
   { 
-    id: generateRandomId(),
+    id: 'frenectomy-services',
     imageUrl: smilingGirlWithDungree,
     icon: TbEmergencyBed,
     title: 'Frenectomy Services',
@@ -821,7 +1248,7 @@ export const servicesArray: Service[] = [
     type: "service",
     showcase: {
       title: "Personalized care for every kid’s needs",
-      imageUrl: smilingGirlWithJacket,
+      imageUrl: mother_and_girl_with_brush,
       summary: [
         "Every child is unique, and we love that! Whether your child has a tongue tie or lip tie, Dr. Mallard and our friendly team take the time to understand what makes them them and figure out how we can help! Our goal? To help your kids’ mouths move better, feel better, and smile bigger."
       ]
@@ -850,7 +1277,7 @@ export const servicesArray: Service[] = [
       },
     ],
     expectation: {
-      title: "sldkfjls",
+      title: "What to expect with a frenectomy",
       imageUrl: smilingGirlWithJacket,
       description: {
         summary: [
@@ -886,7 +1313,7 @@ export const servicesArray: Service[] = [
     }
   },
   { 
-    id: generateRandomId(),
+    id: 'pediatric-sedation',
     imageUrl: smilingSisters,
     icon: MdChildCare,
     title: 'Pediatric Sedation',
@@ -928,7 +1355,7 @@ export const servicesArray: Service[] = [
     type: "service",
     showcase: {
       title: "Relaxing care for every child",
-      imageUrl: smilingSisters,
+      imageUrl: dental_clinic,
       summary: [
         "Every child is unique, and we’re here to make sure they feel safe and calm. As your Rabbit Foot pediatric sedation dentist, Dr. Mallard and our team offer sedation options to help kids — including those with special needs — have smooth, stress-free visits. We offer both hospital and in-office sedation to ensure we can meet every child’s needs."
       ]
@@ -953,7 +1380,7 @@ export const servicesArray: Service[] = [
     ],
     expectation: {
       title: "What to expect with sedation dentistry",
-      imageUrl: smilingSisters,
+      imageUrl: dental_clinic_2,
       description: {
         summary: [
           "Here’s how we make your family’s visit easy and stress-free with sedation:",
@@ -983,5 +1410,481 @@ export const servicesArray: Service[] = [
         ]
       }
     }
+  },
+  { 
+    id: 'special-needs-dentistry',
+    imageUrl: smiling_boy_thumbs_up,
+    icon: BsEmojiLaughing,
+    title: 'Special Needs',
+    subtitle: 'Patient, compassionate, and always understanding',
+    overview: {
+      title: "Gentle, personalized care for every special smile",
+      summary: [
+        "As your Rabbit Foot special needs pediatric dentist, our team is trained to provide empathetic, patient, and compassionate care tailored to your child’s needs.",
+        "Our special needs dentistry helps:",
+        [
+          {
+            id: generateRandomId(),
+            icon: FaClipboardCheck,
+            summary: "Kids with sensory challenges."
+          },
+          {
+            id: generateRandomId(),
+            icon: FaClipboardCheck,
+            summary: "Children with developmental or physical disabilities."
+          },
+          {
+            id: generateRandomId(),
+            icon: FaClipboardCheck,
+            summary: "Little ones who feel anxious at the dentist."
+          },
+          {
+            id: generateRandomId(),
+            icon: FaClipboardCheck,
+            summary: "Anyone who needs extra time, care, and understanding."
+          }
+        ],
+        "We’re here to make every visit positive and stress-free."
+      ]
+    },
+    type: "service",
+    showcase: {
+      title: "Personalized care for every smile",
+      imageUrl: smilingSisters,
+      summary: [
+        "If your child needs a dress rehearsal for any visit, we’re happy to help. We know that earning trust and coming to a familiar place with familiar faces really helps them succeed. Let us know your child’s needs and preferences so we can create a positive, personalized experience for them."
+      ]
+    },
+    serviceNiche: [],
+    faq: [
+      {
+        id: generateRandomId(),
+        question: "Is special needs dentistry different?",
+        answer: ["Special needs dentistry is all about tailoring care to fit your child’s unique physical, emotional, and sensory needs."]
+      },
+      {
+        id: generateRandomId(),
+        question: "How do you help with sensory sensitivities?",
+        answer: ["We understand that each child is unique and may experience sensory sensitivities. Our team is trained to create a calming and supportive environment by adjusting lights, sounds, and using techniques tailored to ensure your child's comfort."]
+      },
+      {
+        id: generateRandomId(),
+        question: "Can parents stay with their child?",
+        answer: ["Of course. We love having you by your child’s side to help them feel safe and comfortable."]
+      },
+      {
+        id: generateRandomId(),
+        question: "How do you prepare kids for visits?",
+        answer: ["We offer fun pre-visit tours, easy-to-understand visuals, and simple explanations so your child knows what to expect for every visit."]
+      }
+    ],
+    expectation: {
+      title: "What to expect with special needs dentistry",
+      imageUrl: smilingSisters,
+      description: {
+        summary: [
+          "Here’s how we make your family’s visit easy and stress-free with sedation:",
+          [
+            {
+              id: generateRandomId(),
+              icon: FaClipboardCheck,
+              title: "Friendly chat:",
+              summary: "We’ll start by getting to know your child — their needs, likes, and feels comfortable."
+            },
+            {
+              id: generateRandomId(),
+              icon: FaClipboardCheck,
+              title: "Tailored just for them:",
+              summary: "Every child is unique, so we make sure their visit is designed to fit them perfectly."
+            },
+            {
+              id: generateRandomId(),
+              icon: FaClipboardCheck,
+              title: "Compassionate, patient care:",
+              summary: "Our team uses calming techniques, kind words, and lots of patience to make every visit feel easy and relaxed."
+            },
+            {
+              id: generateRandomId(),
+              icon: FaClipboardCheck,
+              title: "A safe, fun space:",
+              summary: "A comfortable and welcoming environment where patients feel at ease and cared for."
+            }
+          ],
+          "When it’s all done, you’ll wake up slowly, with your dental needs taken care of and no recollection of the procedure at all."
+        ]
+      }
+    },
+    highlights: {
+      title: "What makes us special?",
+      imageUrl: what_makes_us_special,
+      item: [
+        {
+          id: generateRandomId(),
+          title: "Trusted Experts",
+          summary: ["As a Board Certified Pediatric Dentist, Dr. Mallard has received extensive training in pediatrics, allowing him to perform expert care and specialized treatments tailored to your child's needs."]
+        },
+        {
+          id: generateRandomId(),
+          title: "Convenient Location",
+          summary: ["As your friendly Farragut pediatric dentist, we’re steps away from Farragut intermediate, middle, and high school – making visits easy, quick, and stress-free."]
+        },
+        {
+          id: generateRandomId(),
+          title: "Community is at our heart",
+          summary: ["We love our community! That's why a part of what we earn goes to support local nonprofits and missions."]
+        },
+        {
+          id: generateRandomId(),
+          title: "Same-Day Smiles!",
+          summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
+        },
+      ]
+    }
+  },
+  { 
+    id: 'orthodontics',
+    imageUrl: smiling_boy_thumbs_up_double,
+    icon: FaRegFaceGrimace,
+    title: "Orthodontics",
+    subtitle: "Confident smiles start young",
+    overview: {
+      title: "Unlock your child’s best smile",
+      summary: [
+        "As kids and teens grow, so do their smiles, and sometimes they need a little help. Crooked teeth can affect your child’s confidence and health, but the right care makes all the difference. At Rabbit Foot Dentals, we make orthodontics easy, effective, and fun. Led by Dr. Drew Mallard, our team offers trusted Rabbit Foot orthodontics for kids and teens in a space where they feel safe and parents feel confident.",
+        "Whether it’s early guidance or a teen-friendly plan, we’re here every step of the way. Book a visit today and get your child smiling bright."        
+      ]
+    },
+    type: "service",
+    showcase: {
+      title: "Convenient care for busy families",
+      imageUrl: busy_family,
+      summary: [
+        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down."
+      ]
+    },
+    serviceNiche: [
+      {
+        id: 'orthodontic-evaluation',
+        imageUrl: girl_at_clinic,
+        type: 'service',
+        title: "Orthodontic Evaluation",
+        subtitle: "Catch dental issues early",
+        summary: {
+          title: "Why early orthodontic evaluations matter",
+          summary: [
+            "Most people think of orthodontics as something that happens in middle school or high school. But the American Association of Orthodontists recommends an initial orthodontic evaluation by age , and for good reason.", 
+            "By the time a child turns seven, enough permanent teeth have come in, and our Rabbit Foot early orthodontic evaluation can identify developing alignment issues, jaw growth concerns, and bite problems that are far easier to correct while the jaw is still growing.",
+            "Catching these issues early doesn’t always mean starting treatment right away, but it does mean we can monitor, plan, and act at exactly the right time to get the best result with the least intervention."
+          ]
+        },
+        showcase: {
+          title: "Phase 1 vs. Phase 2 orthodontics",
+          imageUrl: mother_and_girl_with_brush,
+          summary: [
+            [
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                title: "Phase 1 (Early Intervention, Ages 6–10)",
+                summary: "If a developing issue requires it, we may recommend Phase 1 treatment — often involving an expander, space maintainer, or limited braces — to guide jaw growth and create space before all permanent teeth come in. Not every child needs Phase 1, but for those who do, it can simplify or even eliminate Phase 2 treatment entirely.",
+              },
+              {
+                id: generateRandomId(),
+                icon: FaClipboardCheck,
+                title: "Phase 2 (Comprehensive Treatment, Ages 11+)",
+                summary: "Once most or all permanent teeth have come in, comprehensive orthodontic treatment aligns all the teeth and finalizes the bite. Phase 2 is typically shorter and more predictable when early concerns were addressed in Phase 1.",
+              }
+            ]
+          ]
+        },
+        faq: [
+          {
+            id: generateRandomId(),
+            question: "When should my child have their first orthodontic evaluation in Rabbit Foot?",
+            answer: ["The American Association of Orthodontists recommends a first evaluation by age 7. At Rabbit Foot Dentals, we can perform this evaluation during your child's routine checkup; no separate orthodontist referral is needed."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Does an early evaluation mean my child will need braces right away?",
+            answer: ["Not necessarily. Many children who come in for an early evaluation are simply monitored over time. The goal is to identify any developing concerns, not to start treatment prematurely."]
+          },
+          {
+            id: generateRandomId(),
+            question: "What if my child needs early orthodontic treatment?",
+            answer: ["If treatment is recommended, we'll walk you through every option, explain the timeline, and make sure you and your child feel comfortable and informed before anything begins."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Is early orthodontic treatment expensive?",
+            answer: ["Phase 1 treatment, when needed, is often less involved than comprehensive orthodontics, and catching issues early can reduce the complexity and cost of future treatment. Our team will review your insurance benefits and discuss payment options at your visit."]
+          },
+          {
+            id: generateRandomId(),
+            question: "What orthodontic services does Rabbit Foot offer?",
+            answer: ["Rabbit Foot Dentals offers a range of orthodontic solutions for children and teens. Our team will recommend the best approach based on your child's specific needs during their evaluation."]
+          }
+        ],
+        highlights: {
+          title: "What we look for in an early orthodontic evaluation",
+          item: [
+            {
+              id: generateRandomId(),
+              title: "Bite alignment",
+              summary: ["We assess how the upper and lower teeth come together. Overbites, underbites, crossbites, and open bites are all easier to correct in younger children when the jaw is still developing."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Jaw development",
+              summary: ["We evaluate the size and symmetry of the upper and lower jaw to identify crowding, spacing, or skeletal concerns early."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Tooth eruption",
+              summary: ["We check that teeth are coming in properly — in the right order, at the right time, and with enough space to emerge correctly."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Habits affecting tooth development",
+              summary: ["Prolonged thumb sucking, pacifier use, or mouth breathing can affect how teeth and the jaw develop. We identify these early and provide guidance to address them."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Space management",
+              summary: ["If a baby tooth is lost early, nearby teeth can drift and block the space needed for permanent teeth. Early evaluation helps us plan space maintenance if needed."]
+            }
+          ]
+        }
+      },
+      {
+        id: 'early-orthodontics',
+        imageUrl: dental_clinic_3,
+        type: 'service',
+        title: "Early Orthodontics",
+        subtitle: "Starting early makes a lasting difference",
+        summary: {
+          title: "Why early orthodontics matters — and when to start",
+          summary: [
+            "The American Academy of Pediatric Dentistry and the American Association of Orthodontists recommend that children receive an orthodontic evaluation by age 7. That doesn’t mean treatment starts at 7 — but it does mean Dr. Mallard can identify bite problems while the jaw is still developing and address them at the moment when treatment is simplest, shortest, and most effective.", 
+            "Rabbit Foot Phase 1 early orthodontic treatment is interceptive care designed to work with your child’s growth rather than against it. By the time all adult teeth are in, many issues are already harder to correct."
+          ]
+        },
+        showcase: {
+          title: "What Phase 1 orthodontics looks like at Rabbit Foot",
+          imageUrl: mother_and_girl_with_brush,
+          summary: [
+            "Smallville early orthodontics at Rabbit Foot Dentals might include expanders, partial braces, or specialized appliances, depending on what your child needs. Every plan is designed around your child’s specific jaw, teeth, and development stage.",
+            "The goal of Phase 1 is not to finish orthodontic treatment. It’s to correct the problems that will make Phase 2 (if needed) faster, simpler, and more predictable — or to eliminate the need for Phase 2 entirely.",
+            "Dr. Mallard is a Board Certified Pediatric Dentist with advanced training in child growth and development. He’ll walk you through what he’s seeing, what he recommends, and what the timeline looks like — in terms you and your child can understand."
+          ]
+        },
+        faq: [
+          {
+            id: generateRandomId(),
+            question: "My child is 7 — do they need treatment already?",
+            answer: ["Not necessarily. The evaluation at age 7 is to assess development and catch any concerns early. Most children who come in at that age don't need treatment yet — but the information Dr. Mallard gathers at that visit helps us plan ahead."]
+          },
+          {
+            id: generateRandomId(),
+            question: "How long does Phase 1 treatment take?",
+            answer: ["Most Phase 1 cases are completed in 9–12 months. After active treatment, your child wears a retainer through the growth period until they're ready for Phase 2, if needed."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Will my child need braces again after Phase 1?",
+            answer: ["Sometimes yes. Phase 1 addresses specific structural problems — it doesn't replace comprehensive alignment work later. But if Phase 1 is done well, Phase 2 is typically shorter and more straightforward."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Does early orthodontics hurt?",
+            answer: ["There's usually some soreness after each adjustment, similar to what adults experience with orthodontic treatment. Dr. Mallard and the team prepare kids for what to expect and make the visits as comfortable as possible."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Is early orthodontics covered by insurance?",
+            answer: ["Many dental insurance plans with orthodontic benefits cover Phase 1 treatment, often as a portion of the lifetime orthodontic maximum. We'll verify your benefits before treatment begins so you know what to expect."]
+          }
+        ],
+        highlights: {
+          title: "What early orthodontic treatment addresses",
+          item: [
+            {
+              id: generateRandomId(),
+              title: "Crossbite",
+              summary: ["When upper teeth sit inside the lower teeth on one side, the jaw compensates by shifting. Left uncorrected during growth, a crossbite can cause permanent jaw asymmetry and uneven wear on teeth. Early treatment corrects the alignment before the jaw locks into a mismatched position."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Underbite",
+              summary: ["An underbite is much more manageable when caught early. While the jaw is still growing, we have tools to guide development into a better relationship between the upper and lower arches."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Severe Crowding",
+              summary: ["When there isn&#8217;t room for adult teeth to erupt properly, early expansion can create space — sometimes preventing the need for extractions later. Dr. Mallard monitors crowding carefully and recommends intervention when it will make the biggest difference."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Narrow Arch or Airway Concerns",
+              summary: ["A narrow upper arch can restrict breathing, contribute to mouth breathing habits, and affect speech development. Early expansion addresses the arch while growth is still on our side."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Habits Affecting Jaw Development",
+              summary: ["Prolonged thumb-sucking, tongue thrusting, or pacifier use after age 3–4 can affect how the jaw and teeth develop. Early orthodontic intervention can address the structural effects of these habits and help retrain oral posture."]
+            }
+          ]
+        }
+      },
+      {
+        id: 'invisalign',
+        imageUrl: smiling_boy,
+        type: 'service',
+        title: "Invisalign",
+        subtitle: "Straight teeth, no metal mouth",
+        summary: {
+          title: "Why families choose Invisalign for kids and teens",
+          summary: [
+            "If your child needs orthodontic treatment but metal braces just don’t feel like the right fit, you’re not alone. We offer Invisalign First in Smallville, designed for kids whose adult teeth are still coming in, as a comfortable, virtually invisible way to align growing smiles.", 
+            "For kids and teens, the upside is huge: no food restrictions, easier brushing, no broken brackets, no embarrassing photos. For parents, treatment is more predictable, with fewer emergency visits and better hygiene throughout."
+          ]
+        },
+        showcase: {
+          title: "What Invisalign can and can’t do",
+          imageUrl: mother_and_girl_with_brush,
+          summary: [
+            "Invisalign handles most common alignment issues well: crowding, spacing, and mild to moderate bite problems. For severe cases, traditional braces or a referral to an orthodontist might be the better option. We’ll tell you honestly which makes sense for your child after an exam."
+          ]
+        },
+        faq: [
+          {
+            id: generateRandomId(),
+            question: "How young can my child start Invisalign?",
+            answer: ["Invisalign First is designed for kids as young as 6 or 7, once they have a mix of baby and adult teeth and can be relied on to keep the aligners in."]
+          },
+          {
+            id: generateRandomId(),
+            question: "How long does treatment take?",
+            answer: ["Most kids and teens finish in 12–18 months, though shorter and longer cases happen. We'll give you a realistic timeline at the consultation."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Will my child remember to wear them?",
+            answer: ["Most do: Invisalign First and Teen aligners have wear indicators that help parents see at a glance. We also check progress at every appointment."]
+          },
+          {
+            id: generateRandomId(),
+            question: "Does insurance cover Invisalign?",
+            answer: ["Many dental insurance plans with orthodontic coverage include Invisalign. We'll verify your benefits and explain any out-of-pocket costs before treatment starts."]
+          },
+          {
+            id: generateRandomId(),
+            question: "What if my child needs traditional braces instead?",
+            answer: ["We'll let you know after the exam. If braces are the better fit, we'll refer you to a trusted Rabbit Foot orthodontist and stay involved in your child's overall care."]
+          }
+        ],
+        highlights: {
+          title: "When Invisalign First makes sense",
+          summary: "The American Association of Orthodontists recommends a first orthodontic evaluation by age 7, and for many kids, early intervention can correct bite issues before they become bigger problems. Invisalign First in Smallville was developed specifically for children who still have a mix of baby and adult teeth. It works particularly well for:",
+          item: [
+            {
+              id: generateRandomId(),
+              title: "Crowding and Spacing",
+              summary: ["When new teeth don&#8217;t have room to come in correctly, Invisalign First can create space and guide eruption."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Bite Issues",
+              summary: ["Crossbites, overbites, and underbites are far easier to correct while the jaw is still developing."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Arch Width Concerns",
+              summary: ["A narrow upper arch can affect breathing, speech, and tooth alignment. Invisalign First can expand the arch as your child grows."]
+            },
+            {
+              id: generateRandomId(),
+              title: "Habit Correction",
+              summary: ["For kids who&#8217;ve had thumb-sucking or tongue-thrust habits, Invisalign can help retrain oral posture as it aligns teeth."]
+            },
+            {
+              id: generateRandomId(),
+              title: "How Invisalign works at Rabbit Foot",
+              summary: ["We start with a digital scan, no goopy impressions, which kids appreciate. Dr. Mallard reviews the scan and designs a custom treatment plan. Your child gets a series of clear aligners, each one slightly different from the last, and switches to the next set every 1–2 weeks."]
+            }
+          ]
+        }
+      },
+    ],
+    faq: [
+      {
+        id: generateRandomId(),
+        question: "At what age should children receive orthodontic treatment?",
+        answer: ["According to the American Association of Orthodontists, children should have their first orthodontic evaluation by the age of 7. This allows us to detect and treat any potential issues before they become more serious."]
+      },
+      {
+        id: generateRandomId(),
+        question: "Can my child play sports while wearing braces or Invisalign?",
+        answer: ["Yes! However, they may need to wear a mouthguard to protect their teeth and braces or aligners."]
+      },
+      {
+        id: generateRandomId(),
+        question: "What dental issues can braces help with?",
+        answer: ["Braces can be used to correct a range of dental issues, including crooked or crowded teeth, overbites, underbites, crossbites, and gaps between teeth."]
+      },
+      {
+        id: generateRandomId(),
+        question: "Will orthodontic treatment affect my child's speech or eating habits?",
+        answer: ["It’s common for children to experience some temporary changes to their speech and eating habits during orthodontic treatment. However, these usually resolve within a few days or weeks."]
+      },
+      {
+        id: generateRandomId(),
+        question: "How long does orthodontic treatment usually take?",
+        answer: ["The duration of orthodontic treatment varies according to the severity of the problem and the type of treatment. On average, orthodontic treatment takes between 12 and 36 months."]
+      }
+    ],
+    highlights: {
+      title: "How can we help your child?",
+      item: [
+        {
+          id: generateRandomId(),
+          title: "Keep their smile healthy and bright"
+        },
+        {
+          id: generateRandomId(),
+          title: "Bring back their smile!"
+        },
+        {
+          id: generateRandomId(),
+          title: "Make eating and speaking easy"
+        },
+        {
+          id: generateRandomId(),
+          title: "Inclusive, special needs care"
+        },
+      ]
+    }
   }
 ]
+
+
+export type NavItem = {
+  to: string;
+  content: string;
+  children?: {
+    to: string;
+    content: string;
+  }[]
+}
+
+export type NavMenu = {
+  to: string;
+  content: string;
+  children?: NavItem[]
+}
+
+export const navMenuArr: NavMenu[] = [
+  { to: "about-us", content: "About Us" },
+  { to: "our-doctors", content: "Our Doctors" },
+  { to: "services", content: "Services", children: buildNavItems(servicesArray) },
+  { to: "office-locations", content: "Office Locations" },
+];

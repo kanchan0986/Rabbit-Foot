@@ -10,10 +10,17 @@ import TopNavigation from "~/components/custom-components/navigation/header/TopN
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import Wrapper from "~/components/custom-components/Wrapper";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
+import type { Route } from "./+types/root-layout";
+import { navMenuArr } from "~/data/static-data";
 
-type Props = {};
+export const clientLoader = ({}:Route.ClientLoaderArgs) => { 
+  // fetch data from api
+  const navMenuData = navMenuArr
+  return { navMenuData }
+ }
 
-export default function RootLayout({}: Props) {
+export default function RootLayout({loaderData}: Route.ComponentProps) {
+  const { navMenuData } = loaderData
   const isTablet = useMediaQuery("(min-width: 640px)");
   const isLaptop = useMediaQuery("(min-width: 992px)");
 
@@ -25,7 +32,7 @@ export default function RootLayout({}: Props) {
   // Default navigation menu (mobile)
   let navigationMenu = (
     <Wrapper as={"header"} className="bg-rf-primary-300 sticky inset-0 w-full z-10">
-      <MobileNavigation />
+      <MobileNavigation navMenu={navMenuData} />
     </Wrapper>
   );
 
@@ -36,7 +43,7 @@ export default function RootLayout({}: Props) {
         as={"header"}
         className="bg-rf-primary-300 sticky inset-0 w-full z-10"
       >
-        <TabletNavigation />
+        <TabletNavigation navMenu={navMenuData} />
       </Wrapper>
     );
 
@@ -47,7 +54,7 @@ export default function RootLayout({}: Props) {
         as={"header"}
         className="bg-rf-primary-300 sticky inset-0 w-full z-10"
       >
-        <RootNavigation />
+        <RootNavigation navMenu={navMenuData} />
       </Wrapper>
     );
 
@@ -57,7 +64,7 @@ export default function RootLayout({}: Props) {
       as={"footer"}
       className="bg-rf-primary-300 w-full p-0 [&>div]:w-full"
     >
-      <MobileFooterNavigation />
+      <MobileFooterNavigation navMenu={navMenuData} />
       {/* Copyright information always visible */}
       <CopyrightInformation />
     </Wrapper>
@@ -70,7 +77,7 @@ export default function RootLayout({}: Props) {
         as={"footer"}
         className="bg-rf-primary-300 w-full p-0 [&>div]:w-full"
       >
-        <TabletFooterNavigation />
+        <TabletFooterNavigation navMenu={navMenuData} />
         {/* Copyright information always visible */}
         <CopyrightInformation />
       </Wrapper>
@@ -83,7 +90,7 @@ export default function RootLayout({}: Props) {
         as={"footer"}
         className="bg-rf-primary-300 w-full p-0 [&>div]:w-full"
       >
-        <RootFooterNavigation />
+        <RootFooterNavigation navMenu={navMenuData} />
         {/* Copyright information always visible */}
         <CopyrightInformation />
       </Wrapper>

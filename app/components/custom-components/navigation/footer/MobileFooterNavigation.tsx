@@ -1,7 +1,6 @@
 import Wrapper from "../../Wrapper";
 import Logo from "../../vectors/Logo";
 import { Form, Link, NavLink } from "react-router";
-import { navMenuArr } from "../header/MobileNavigation";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoCall } from "react-icons/io5";
 import { IoIosMail } from "react-icons/io";
@@ -10,11 +9,14 @@ import { TfiEmail } from "react-icons/tfi";
 import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 import { Button } from "~/components/ui/button";
+import type { NavMenu } from "~/data/static-data";
 
-type Props = {};
+type MobileFooterNavigationProps = {
+  navMenu: NavMenu[]
+};
 
-export default function MobileFooterNavigation({}: Props) {
-  const updatedNavMenuArr = [{ to: ".", content: "Home" }, ...navMenuArr];
+export default function MobileFooterNavigation({navMenu}: MobileFooterNavigationProps) {
+  const updatedNavMenuArr = [{ to: ".", content: "Home" }, ...navMenu];
   return (
     <Wrapper className="py-8 [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-4">
       <div className="w-full flex flex-col gap-y-4">

@@ -1,10 +1,14 @@
 import { NavLink } from "react-router";
 import Logo from "../../vectors/Logo";
-import { navMenuArr } from "./MobileNavigation";
+import { type NavMenu as NavMenuData } from "~/data/static-data";
+import { NavMenu } from "../../NavMenu";
+import { NavigationMenu, NavigationMenuList } from "~/components/ui/navigation-menu";
 
-type TabletNavigationProps = {};
+type TabletNavigationProps = {
+  navMenu: NavMenuData[]
+};
 
-export default function TabletNavigation({}: TabletNavigationProps) {
+export default function TabletNavigation({navMenu}: TabletNavigationProps) {
   return (
     <nav className="flex flex-col items-center gap-y-2">
       {/* Logo + brand link */}
@@ -33,23 +37,17 @@ export default function TabletNavigation({}: TabletNavigationProps) {
       </NavLink>
 
       {/* Center navigation menu + actions */}
-      <div className="flex justify-between w-full gap-x-1">
-        {navMenuArr.map((menuItem) => (
-          <NavLink
-            to={menuItem.to}
-            key={menuItem.to}
-            className={({ isActive }) =>
-              isActive
-                ? "text-rf-primary-100"
-                : "hover:text-rf-primary-100 active:text-rf-primary-100"
-            }
-          >
-            {menuItem.content}
-          </NavLink>
-        ))}
+      <div className="flex justify-center w-full items-center text-[15px] [&_svg]:size-4 min-[676px]:text-[1rem]">
+        <NavigationMenu>
+          <NavigationMenuList>
+            {navMenu.map((menuItem, idx) => (
+                <NavMenu key={idx} menuItem={menuItem}/>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
 
         {/* Call link */}
-        <a href="tel:+18001234567" className="active:text-rf-primary-100">
+        <a href="tel:+18001234567" className="active:text-rf-primary-100 p-2">
           Call Us Now
         </a>
 
@@ -59,7 +57,7 @@ export default function TabletNavigation({}: TabletNavigationProps) {
           className={({ isActive }) =>
             isActive
               ? "text-rf-primary-100"
-              : "hover:text-rf-primary-100 active:text-rf-primary-100"
+              : "hover:text-rf-primary-100 active:text-rf-primary-100 p-2"
           }
         >
           Login

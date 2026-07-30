@@ -12,17 +12,14 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import Logo from "../../vectors/Logo";
+import type { NavMenu as NavMenuData } from "~/data/static-data";
+import { CollapsibleMenu } from "../../CollapsibleMenu";
 
-type MobileNavigationProps = {};
+type MobileNavigationProps = {
+  navMenu: NavMenuData[]
+};
 
-export const navMenuArr = [
-  { to: "about-us", content: "About Us" },
-  { to: "our-doctors", content: "Our Doctors" },
-  { to: "services", content: "Services" },
-  { to: "office-locations", content: "Office Locations" },
-];
-
-export default function MobileNavigation({}: MobileNavigationProps) {
+export default function MobileNavigation({navMenu}: MobileNavigationProps) {
   return (
     <nav className="flex items-center gap-x-2">
       {/* Main navigation link with active state styling */}
@@ -105,23 +102,10 @@ export default function MobileNavigation({}: MobileNavigationProps) {
               </DrawerDescription>
             </DrawerHeader>
 
-            {/* Drawer navigation menu items */}
-            <div className="flex flex-col gap-y-2 px-4">
-              {navMenuArr.map((menuItem) => (
-                <NavLink
-                  to={menuItem.to}
-                  key={menuItem.to}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-rf-primary-100"
-                      : "active:text-rf-primary-100"
-                  }
-                >
-                  {/* Drawer closing button along with the menu content */}
-                  <DrawerClose className="cursor-pointer">
-                    {menuItem.content}
-                  </DrawerClose>
-                </NavLink>
+            {/* Drawer navigation menu items rendered through collapsible component for the mobile view*/}
+            <div className="flex flex-col gap-y-2 px-4 text-[0.685rem] min-[271px]:text-sm">
+              {navMenu.map((menuItem, idx) => (
+                  <CollapsibleMenu key={idx} menuItem={menuItem} isMobile/>
               ))}
               {/* Telephone call link */}
               <a href="tel:+18001234567" className="active:text-rf-primary-100">

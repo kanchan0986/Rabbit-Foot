@@ -1,8 +1,8 @@
 import type { Location } from "react-router";
-import type { Doctor } from "~/data/static-data";
+import type { Doctor, Service } from "~/data/static-data";
 
 type TabLabelProps = {
-  data: Location & {readonly type: "location"} | Doctor
+  data: Location & {readonly type: "location"} | Doctor | Service
 }
 
 // Converts the current URL path segment or the data.name into a capitalized tab label to be used in "meta" function
@@ -30,6 +30,12 @@ export const tabLabel = ({data}:TabLabelProps) => {
   if(data.type === 'doctor'){
     // regex to find the first letter of each word and turn it to uppercase
     capitalizedTabLabel = data.name.replace(/\b\w/g, char => char.toUpperCase())
+  }
+
+  // If data type is service
+  if(data.type === 'service'){
+    // regex to find the first letter of each word and turn it to uppercase
+    capitalizedTabLabel = data.title.replace(/\b\w/g, char => char.toUpperCase())
   }
 
   return capitalizedTabLabel

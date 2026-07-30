@@ -1,12 +1,16 @@
 import { NavLink } from "react-router";
 import { IoLogInOutline } from "react-icons/io5";
 import { PiPhoneCallLight } from "react-icons/pi";
-import { navMenuArr } from "./MobileNavigation";
 import Logo from "../../vectors/Logo";
+import { NavMenu } from "../../NavMenu";
+import { NavigationMenu, NavigationMenuList } from "~/components/ui/navigation-menu";
+import type { NavMenu as NavMenuData } from "~/data/static-data";
 
-type RootNavigationProps = {};
+type RootNavigationProps = {
+  navMenu: NavMenuData[]
+};
 
-export default function RootNavigation({}: RootNavigationProps) {
+export default function RootNavigation({navMenu}: RootNavigationProps) {
   return (
     <nav className="flex items-center gap-x-2">
       {/* Logo + brand link */}
@@ -33,19 +37,13 @@ export default function RootNavigation({}: RootNavigationProps) {
       </NavLink>
 
       {/* Center navigation menu */}
-      <div className="w-[50%] flex justify-center gap-x-4 mx-auto">
-        {navMenuArr.map((menuItem) => (
-          <NavLink
-            to={menuItem.to}
-            key={menuItem.to}
-            className={({ isActive }) =>
-              isActive ? "text-rf-primary-100" : "hover:text-rf-primary-100"
-            }
-          >
-            {menuItem.content}
-          </NavLink>
-        ))}
-      </div>
+      <NavigationMenu className="w-[50%] flex justify-center gap-x-4 mx-auto [&_svg]:size-4">
+        <NavigationMenuList>
+          {navMenu.map((menuItem, idx) => (
+            <NavMenu key={idx} menuItem={menuItem}/>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
 
       {/* Right-side actions: phone + login */}
       <div className="ms-auto flex gap-x-4">
