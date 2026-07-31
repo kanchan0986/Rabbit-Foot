@@ -70,17 +70,22 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formId, formT
             </div>
           </div>
           {/* Action buttons */}
-        <SlideInUp delay={0.1} className={twMerge(`grid grid-cols-1 sm:grid-cols-2 2xmd:grid-cols-4 gap-y-4 gap-x-4 ${isSplitForm && '2xmd:grid-cols-1 xl:grid-cols-2'}`)}>
-          {/* Submit button */}
-          <button type='submit' className={twMerge(`w-full flex gap-x-2 items-center justify-center outline outline-rf-white-100 bg-rf-white-100 text-rf-primary rounded-full hover:bg-rf-white-100/90 active:bg-rf-white-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2 2xmd:hover:shadow-rf-direct-100 ${buttonStyles} ${isSplitForm && '2xmd:col-start-auto'}`)}>
-            <FaCalendarCheck/>
-            <span className="xl-text-2xl">Book an Appointment</span></button>
-          {/* Call us link */}
-          <a href="tel:+18001234567" className={twMerge(`w-full flex gap-x-2 items-center justify-center outline outline-rf-white-100 bg-rf-white-100 text-rf-primary hover:bg-rf-white-100/90 active:bg-rf-white-100/90 rounded-full py-1 px-3 sm:py-1.5 2xmd:py-2 2xmd:hover:shadow-rf-direct-100 ${buttonStyles}`)}>
-            <BiSolidPhoneCall/>
-            <span className="xl-text-2xl">Call us Now</span>
-          </a>
-        </SlideInUp>
+        <div className={twMerge(`grid grid-cols-1 sm:grid-cols-2 2xmd:grid-cols-4 gap-y-4 gap-x-4 ${isSplitForm && '2xmd:grid-cols-1 xl:grid-cols-2'}`)}>
+          <SlideInUp delay={0.1} className={twMerge(`rounded-full 2xmd:hover:shadow-rf-direct-100 ${!isSplitForm && '2xmd:col-start-2'}`)}>
+            {/* Submit button */}
+            <button type='submit' className={twMerge(`w-full flex gap-x-2 items-center justify-center outline outline-rf-white-100 bg-rf-white-100 text-rf-primary rounded-full hover:bg-rf-white-100/90 active:bg-rf-white-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2 ${buttonStyles} ${isSplitForm && '2xmd:col-start-auto'}`)}>
+              <FaCalendarCheck/>
+              <span className="xl-text-2xl">Book an Appointment</span>
+            </button>
+          </SlideInUp>
+          <SlideInUp delay={0.1} className={twMerge(`rounded-full 2xmd:hover:shadow-rf-direct-100`)}>
+            {/* Call us link */}
+            <a href="tel:+18001234567" className={twMerge(`w-full flex gap-x-2 items-center justify-center outline outline-rf-white-100 bg-rf-white-100 text-rf-primary hover:bg-rf-white-100/90 active:bg-rf-white-100/90 rounded-full py-1 px-3 sm:py-1.5 2xmd:py-2 ${buttonStyles}`)}>
+              <BiSolidPhoneCall/>
+              <span className="xl-text-2xl">Call us Now</span>
+            </a>
+          </SlideInUp>
+        </div>
       </Form>
   )
 }

@@ -86,12 +86,12 @@ export default function Services({ loaderData }: Route.ComponentProps) {
           {/* cta section */}
           <div className="flex flex-col items-center gap-y-4 mt-8 xs:mt-8 xs:gap-y-8">
             {/* read more button */}
-            <SlideInUp delay={0.5}>
+            <SlideInUp delay={0.5} className='rounded-full 2xmd:hover:shadow-xl'>
               <Link to="./#service-default">
                 <Button
                   variant={"default"}
                   size={"lg"}
-                  className="bg-rf-secondary uppercase min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                  className="bg-rf-secondary uppercase min-w-55 rounded-full 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
                 >
                   Explore
                 </Button>
@@ -148,12 +148,12 @@ export default function Services({ loaderData }: Route.ComponentProps) {
                       {/* summary text */}
                       <Summary summary={service.overview?.summary}/>
                       {/* cta button */}
-                        <SlideInUp delay={0.5} className="flex justify-center mt-8 min-h-20 xs:min-h-18 xs:gap-y-8">
+                        <SlideInUp delay={0.5} className="self-center flex justify-center mt-8 xs:gap-y-8 rounded-full 2xmd:hover:shadow-xl">
                           <Link to={service.id}>
                             <Button
                               variant={"default"}
                               size={"lg"}
-                              className="bg-rf-secondary min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                              className="bg-rf-secondary min-w-55 rounded-full 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
                             >
                               Know in details
                             </Button>
@@ -191,12 +191,12 @@ export default function Services({ loaderData }: Route.ComponentProps) {
                       {/* summary text */}
                       <Summary summary={service.overview?.summary}/>
                       {/* cta button */}
-                      <SlideInUp delay={0.5} className="flex justify-center mt-8 min-h-20 xs:min-h-18 xs:gap-y-8">
+                      <SlideInUp delay={0.5} className="self-center flex justify-center mt-8 xs:gap-y-8 rounded-full 2xmd:hover:shadow-xl">
                         <Link to={service.id}>
                           <Button
                             variant={"default"}
                             size={"lg"}
-                            className="bg-rf-secondary min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                            className="bg-rf-secondary min-w-55 rounded-full 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
                           >
                             Know in details
                           </Button>

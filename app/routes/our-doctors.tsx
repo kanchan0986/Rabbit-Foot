@@ -102,7 +102,7 @@ export default function OurDoctors({ loaderData }: Route.ComponentProps) {
             <ul className="grid grid-cols-1 gap-4 mt-17 xs:grid-cols-2 xs:mt-0 xs:py-4 md:mt-0 md:py-0 md:w-full md:h-fit md:ms-auto 2xmd:grid-cols-3 min-[1200px]:grid-cols-4! 3xl:grid-cols-5!">
               {filteredDoctorData.map(doctor => (
                 // render the list of filtered doctors at the bottom on mobile and right on large screens
-                <SlideInUp key={doctor.id} inView={false}>
+                <SlideInUp key={doctor.id} inView={false} className='shadow-rf-direct-100 rounded-md hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in'>
                   <Link to={`./${doctor.id}`}>
                     <DoctorCard doctorData={doctor} />
                   </Link>

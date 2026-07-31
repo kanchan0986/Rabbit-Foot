@@ -86,12 +86,12 @@ export default function Home({loaderData} : Route.ComponentProps) {
               </p>
 
               {/* Call-to-action button */}
-              <SlideInUp delay={0.5}>
+              <SlideInUp delay={0.5} className="mt-4 rounded-full 2xmd:hover:shadow-xl">
                 <Link to="/">
                   <Button
                     variant={"outline"}
                     size={"lg"}
-                    className="mt-4 rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize  2xmd:hover:shadow-xl 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
+                    className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
                   >
                     Book an appointment today!
                   </Button>
@@ -178,12 +178,12 @@ export default function Home({loaderData} : Route.ComponentProps) {
           {/* cta section */}
           <div className="flex flex-col items-center gap-y-4 mt-2 xs:mt-8 xs:gap-y-8">
             {/* read more button */}
-            <SlideInUp delay={0.5}>
+            <SlideInUp delay={0.5} className="rounded-full 2xmd:hover:shadow-xl">
               <Link to="about-us">
                 <Button
                   variant={"default"}
                   size={"lg"}
-                  className="bg-rf-secondary uppercase min-w-55 rounded-full 2xmd:cursor-pointer 2xmd:hover:shadow-xl lg:text-xl xl:w-130 xl:py-6"
+                  className="bg-rf-secondary uppercase min-w-55 rounded-full 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
                 >
                   read more
                 </Button>
@@ -362,8 +362,8 @@ export default function Home({loaderData} : Route.ComponentProps) {
           </SlideInRight>
          </div>
          {/* CTA box */}
-        <SlideInUp delay={0.1} className="mt-6 flex justify-center">
-          <Link to="/" className="bg-rf-primary capitalize flex items-center gap-x-2 rounded-l-full rounded-tr-full py-2 px-2 hover:bg-rf-secondary active:bg-rf-secondary hover:shadow-rf-direct-100 group xl:px-4 xl:py-3">
+        <SlideInUp delay={0.1} className="self-center mt-6 flex justify-center hover:shadow-rf-direct-100 rounded-l-full rounded-tr-full">
+          <Link to="/" className="bg-rf-primary capitalize flex items-center gap-x-2 rounded-l-full rounded-tr-full py-2 px-2 hover:bg-rf-secondary active:bg-rf-secondary group xl:px-4 xl:py-3">
             <div className="bg-rf-white-100 p-2 rounded-full">
               <FaCalendarAlt className="size-6 fill-rf-primary group-hover:fill-rf-secondary group-active:fill-rf-secondary" />
             </div>

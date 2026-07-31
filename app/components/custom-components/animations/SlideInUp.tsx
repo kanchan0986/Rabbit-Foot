@@ -15,9 +15,9 @@ export default function SlideInUp({className, children, delay, inView}: SlideInU
     <motion.div
         initial="initial"
         animate="animate"
-        className={twMerge(className)}
+        className={twMerge(className, 'overflow-y-hidden')}
         variants={{
-            initial: {opacity: 0, y: 100},
+            initial: {opacity: 0, y: 20},
             animate: {opacity: 1, y: 0}
         }}
         transition={{ duration: 0.6, ease: 'easeOut', delay: delay || 0 }}
@@ -29,9 +29,9 @@ export default function SlideInUp({className, children, delay, inView}: SlideInU
     <motion.div
         initial="initial"
         whileInView="animate"
-        className={twMerge(className)}
+        className={twMerge(className, 'overflow-y-hidden')}
         variants={{
-            initial: {opacity: 0, y: 100},
+            initial: {opacity: 0, y: 20},
             animate: {opacity: 1, y: 0}
         }}
         transition={{ duration: 0.6, ease: 'easeOut', delay: delay || 0 }}

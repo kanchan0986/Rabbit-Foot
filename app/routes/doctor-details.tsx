@@ -185,7 +185,7 @@ export default function DoctorDetails({loaderData, actionData}: Route.ComponentP
                 // otherwise default to normal column wise look for the related doctors
                 <ul className="grid grid-cols-1 py-10 gap-4 xs:grid-cols-2 xs:py-12 md:w-full md:h-fit md:ms-auto 2xmd:flex justify-center 2xmd:[&>div]:w-[20%]">
                   {relatedDoctorArray.map(doctor => (
-                    <SlideInUp key={doctor.id} inView={false}>
+                    <SlideInUp key={doctor.id} inView={false} className="shadow-rf-direct-100 rounded-md hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in">
                       <Link to={`../${doctor.id}`} relative="path">
                         <DoctorCard doctorData={doctor} />
                       </Link>

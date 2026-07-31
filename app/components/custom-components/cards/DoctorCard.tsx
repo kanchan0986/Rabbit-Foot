@@ -9,7 +9,7 @@ type DoctorCardProps = {
 
 export default function DoctorCard({doctorData, as: Component = "li" }: DoctorCardProps) {
   return (
-    <Component className="flex flex-col shadow-rf-direct-100 rounded-md overflow-hidden h-full hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in">  
+    <Component className="flex flex-col rounded-md overflow-hidden h-full">  
         {/* card image at the top */}
         <div className="w-full h-70 bg-cover bg-no-repeat bg-center 2xs:bg-top 2xs:h-90 xs:h-70 sm:h-90 md:h-60" style={{backgroundImage: `url(${doctorData.imageUrl})`}}/>
 

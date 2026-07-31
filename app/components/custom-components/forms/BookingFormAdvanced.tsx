@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge"
 import type { FormError } from "~/routes/doctor-details"
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import FadeIn from "../animations/FadeIn"
+import SlideInUp from "../animations/SlideInUp"
 
 type BookingFormAdvancedProps = {
     doctorData: Doctor;
@@ -215,13 +216,15 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
                 }
             </div>
             {/* submit button */}
-            <Button
-                variant={"outline"}
-                size={"lg"}
-                className="self-center px-4 rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize min-[500px]:py-5 2xmd:hover:shadow-xl 2xmd:cursor-pointer lg:text-sm"
-            >
-            Book an appointment
-            </Button>
+            <SlideInUp delay={0.3} className="self-center rounded-full 2xmd:hover:shadow-xl">
+                <Button
+                    variant={"outline"}
+                    size={"lg"}
+                    className="px-4 rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize min-[500px]:py-5 2xmd:cursor-pointer lg:text-sm"
+                >
+                Book an appointment
+                </Button>
+            </SlideInUp>
         </div>
     </Form>
   )

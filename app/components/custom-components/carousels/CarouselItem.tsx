@@ -60,7 +60,7 @@ export default function CarouselItem({carouselItem}: CarouselItemProps) {
         </div>
     }
     {(carouselItem.type === 'doctor') && 
-        <Link to={`../${carouselItem.id}`} relative='path'>
+        <Link to={`../${carouselItem.id}`} relative='path' className='shadow-rf-direct-100 rounded-md hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in'>
           <DoctorCard doctorData={carouselItem} as={"div"}/>
         </Link>
     }

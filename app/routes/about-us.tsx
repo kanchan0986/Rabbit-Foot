@@ -59,12 +59,12 @@ export default function AboutUs({}: Route.ComponentProps) {
               </p>
 
               {/* Call-to-action button */}
-              <SlideInUp delay={0.5}>
+              <SlideInUp delay={0.5} className='mt-4 rounded-full 2xmd:hover:shadow-xl'>
                 <Link to="/">
                   <Button
                     variant={"outline"}
                     size={"lg"}
-                    className="mt-4 rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize  2xmd:hover:shadow-xl 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
+                    className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
                   >
                     Book an appointment today!
                   </Button>
