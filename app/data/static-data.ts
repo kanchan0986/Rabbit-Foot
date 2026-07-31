@@ -285,7 +285,7 @@ export type ServiceNiche = {
   expectation?: Expectation;
   faq?: Faq[];
   highlights?: Highlights;
-} & { readonly type: 'service'}
+} & { readonly type: 'service-niche'}
 
 export type Faq = {
   id: string;
@@ -311,7 +311,7 @@ export type Service = {
   icon?: IconType;
   title: string;
   subtitle?: string;
-  overview?: Description;
+  overview: Description;
   showcase?: Showcase;
   serviceNiche?: ServiceNiche[];
   expectation?: Expectation;
@@ -339,7 +339,8 @@ export const servicesArray: Service[] = [
       title: "Convenient care for busy families",
       imageUrl: busy_family,
       summary: [
-        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down."
+        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down.",
+        "In consequat proident ipsum consequat ullamco sint. Cillum et commodo Lorem ex. In esse enim irure dolore sunt aute nulla Lorem duis reprehenderit non magna et incididunt. Duis cupidatat do laboris mollit cupidatat id ex consequat. Fugiat consectetur duis officia aute nulla. Excepteur commodo nulla amet ullamco."
       ]
     },
     faq: [
@@ -373,7 +374,7 @@ export const servicesArray: Service[] = [
       {
         id: 'cleanings-&-checkups',
         imageUrl: girl_with_brush_pic_1,
-        type: 'service',
+        type: 'service-niche',
         title: "Cleanings & Checkups",
         subtitle: "Building strong, confident smiles from the start",
         summary: {
@@ -526,7 +527,7 @@ export const servicesArray: Service[] = [
       {
         id: 'fluoride-treatment',
         imageUrl: girl_with_brush_pic_2,
-        type: 'service',
+        type: 'service-niche',
         title: "Fluoride Treatment",
         subtitle: "Protecting smiles, strengthening teeth",
         summary: {
@@ -643,7 +644,7 @@ export const servicesArray: Service[] = [
       {
         id: 'dental-sealants',
         imageUrl: girl_with_brush_pic_3,
-        type: 'service',
+        type: 'service-niche',
         title: "Dental Sealants",
         subtitle: "Shielding smiles from cavities",
         summary: {
@@ -787,14 +788,15 @@ export const servicesArray: Service[] = [
       title: "Convenient care for busy families",
       imageUrl: smilingGirlWithJacket,
       summary: [
-        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down."
+        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down.",
+        "Amet non dolor incididunt nostrud non cillum ipsum ipsum. Proident incididunt irure aute aliqua enim aute anim non sit. Officia amet cillum laborum voluptate incididunt et cillum ut enim voluptate. Incididunt fugiat veniam quis ullamco culpa laboris ea qui ipsum esse cupidatat proident sint. Esse proident fugiat elit esse ad deserunt eu tempor ut laboris laborum nulla. Consequat ut Lorem elit tempor proident velit dolore sint ullamco labore occaecat."
       ]
     },
     serviceNiche: [
       {
         id: 'dental-crowns',
         imageUrl: girl_with_brush_pic_1,
-        type: 'service',
+        type: 'service-niche',
         title: "Dental Crowns",
         subtitle: "Restoring and protecting little smiles",
         summary: {
@@ -927,7 +929,7 @@ export const servicesArray: Service[] = [
       {
         id: 'fillings',
         imageUrl: girl_with_brush_pic_2,
-        type: 'service',
+        type: 'service-niche',
         title: "Fillings",
         subtitle: "Restoring little teeth with big care",
         summary: {
@@ -1077,7 +1079,7 @@ export const servicesArray: Service[] = [
       {
         id: 'tooth-extractions',
         imageUrl: girl_with_brush_pic_3,
-        type: 'service',
+        type: 'service-niche',
         title: "Tooth Extractions",
         subtitle: "Gentle care when a tooth needs to go",
         summary: {
@@ -1250,7 +1252,8 @@ export const servicesArray: Service[] = [
       title: "Personalized care for every kid’s needs",
       imageUrl: mother_and_girl_with_brush,
       summary: [
-        "Every child is unique, and we love that! Whether your child has a tongue tie or lip tie, Dr. Mallard and our friendly team take the time to understand what makes them them and figure out how we can help! Our goal? To help your kids’ mouths move better, feel better, and smile bigger."
+        "Every child is unique, and we love that! Whether your child has a tongue tie or lip tie, Dr. Mallard and our friendly team take the time to understand what makes them them and figure out how we can help! Our goal? To help your kids’ mouths move better, feel better, and smile bigger.",
+        "Cillum veniam cupidatat ad qui culpa in id duis reprehenderit sint esse. Officia esse ipsum laborum anim sint eu reprehenderit id eiusmod nulla fugiat et ea. Et ullamco aliquip magna ex."
       ]
     },
     serviceNiche: [],
@@ -1357,7 +1360,8 @@ export const servicesArray: Service[] = [
       title: "Relaxing care for every child",
       imageUrl: dental_clinic,
       summary: [
-        "Every child is unique, and we’re here to make sure they feel safe and calm. As your Rabbit Foot pediatric sedation dentist, Dr. Mallard and our team offer sedation options to help kids — including those with special needs — have smooth, stress-free visits. We offer both hospital and in-office sedation to ensure we can meet every child’s needs."
+        "Every child is unique, and we’re here to make sure they feel safe and calm. As your Rabbit Foot pediatric sedation dentist, Dr. Mallard and our team offer sedation options to help kids — including those with special needs — have smooth, stress-free visits. We offer both hospital and in-office sedation to ensure we can meet every child’s needs.",
+        "Voluptate occaecat incididunt esse sunt proident tempor veniam ea enim ad eiusmod. Laborum deserunt nulla duis esse. Lorem cupidatat officia adipisicing ad irure nisi nulla in fugiat voluptate. Elit adipisicing sunt consectetur elit fugiat adipisicing irure sint qui fugiat ex veniam. Cupidatat aliquip consequat amet cupidatat eiusmod et pariatur nisi pariatur quis. Non quis enim culpa reprehenderit."
       ]
     },
     serviceNiche: [],
@@ -1452,7 +1456,8 @@ export const servicesArray: Service[] = [
       title: "Personalized care for every smile",
       imageUrl: smilingSisters,
       summary: [
-        "If your child needs a dress rehearsal for any visit, we’re happy to help. We know that earning trust and coming to a familiar place with familiar faces really helps them succeed. Let us know your child’s needs and preferences so we can create a positive, personalized experience for them."
+        "If your child needs a dress rehearsal for any visit, we’re happy to help. We know that earning trust and coming to a familiar place with familiar faces really helps them succeed. Let us know your child’s needs and preferences so we can create a positive, personalized experience for them.",
+        "Anim voluptate aliqua enim ut velit enim sit consectetur consequat excepteur aute. Ea aliquip dolore laborum culpa magna incididunt elit est nostrud exercitation. Aliquip cupidatat ex reprehenderit dolor eiusmod aliqua culpa anim dolore reprehenderit. Eu ea eiusmod et culpa consequat ea dolor tempor duis minim aute."
       ]
     },
     serviceNiche: [],
@@ -1559,14 +1564,15 @@ export const servicesArray: Service[] = [
       title: "Convenient care for busy families",
       imageUrl: busy_family,
       summary: [
-        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down."
+        "Between juggling after-school pickups, homework, and soccer practice, the last thing you need is one more chore. Our office sits just steps away from Farragut Intermediate, Middle, and High School—so your child can pop in for a quick check-up or same-day appointment without turning your day upside down.",
+        "Sit ex est aute velit anim culpa aliquip esse mollit qui ut consequat. Excepteur eu irure adipisicing exercitation aliquip. Ex enim do deserunt mollit in id non irure reprehenderit. Ut esse consequat minim veniam. Tempor deserunt irure dolore excepteur consectetur sit amet quis non duis elit adipisicing Lorem."
       ]
     },
     serviceNiche: [
       {
         id: 'orthodontic-evaluation',
         imageUrl: girl_at_clinic,
-        type: 'service',
+        type: 'service-niche',
         title: "Orthodontic Evaluation",
         subtitle: "Catch dental issues early",
         summary: {
@@ -1658,7 +1664,7 @@ export const servicesArray: Service[] = [
       {
         id: 'early-orthodontics',
         imageUrl: dental_clinic_3,
-        type: 'service',
+        type: 'service-niche',
         title: "Early Orthodontics",
         subtitle: "Starting early makes a lasting difference",
         summary: {
@@ -1738,7 +1744,7 @@ export const servicesArray: Service[] = [
       {
         id: 'invisalign',
         imageUrl: smiling_boy,
-        type: 'service',
+        type: 'service-niche',
         title: "Invisalign",
         subtitle: "Straight teeth, no metal mouth",
         summary: {
