@@ -11,6 +11,8 @@ import { ServiceDetailsSummary } from "~/components/custom-components/ServiceDet
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import heart from "~/assets/Heart.png";
 import ServiceHighlightsCard from "~/components/custom-components/cards/ServiceHighlightsCard";
+import { AccordionFaq } from "~/components/custom-components/AccordionFaq";
+import Sky from "~/components/custom-components/vectors/Sky";
 
 export function meta({loaderData, location}: Route.MetaArgs) {
     const { servicesData } = loaderData ?? {}
@@ -200,6 +202,28 @@ export default function ServiceDetails({loaderData}: Route.ComponentProps) {
                 <ServiceHighlightsCard serviceHighlights={servicesData.highlights}/>
             </div>        
         </div>
+      </Wrapper>}
+
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      {(servicesData?.showcase && !servicesData?.expectation && !servicesData?.highlights && servicesData.faq) &&
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVector className="[&>path:nth-child(2)]:fill-white [&>path:nth-child(1)]:fill-rf-primary-200/50"/>
+      </Wrapper>}
+
+      {/********************************************* FAQ section *********************************************/}
+
+      {servicesData?.faq &&
+      <Wrapper as={'section'} className="relative py-6 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-6 xs:py-10 xs:[&>div]:gap-y-10 xmd:[&>div]:gap-20 xl:py-20">
+        {/* Animating sky background */}
+        <Sky className="fill-rf-primary-200/40"/>
+        {servicesData.faq.length > 0 && 
+        <div className="relative flex flex-col items-center gap-4 xs:gap-10 xmd:gap-15">
+          <h2 className="font-flavours capitalize text-rf-primary text-3xl lg:text-4xl text-shadow-lg tracking-wide text-center">Frequently Asked Questions</h2>
+          <AccordionFaq items={servicesData.faq}/>
+        </div>}
       </Wrapper>}
 
     </main>
