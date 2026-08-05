@@ -8,6 +8,8 @@ import SlideInRight from "~/components/custom-components/animations/SlideInRight
 import Logo from "~/components/custom-components/vectors/Logo";
 import ServiceNicheCard from "~/components/custom-components/cards/ServiceNicheCard";
 import { ServiceDetailsSummary } from "~/components/custom-components/ServiceDetailsSummary";
+import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
+import heart from "~/assets/Heart.png";
 
 export function meta({loaderData, location}: Route.MetaArgs) {
     const { servicesData } = loaderData ?? {}
@@ -50,9 +52,9 @@ export default function ServiceDetails({loaderData}: Route.ComponentProps) {
             </div>
         </SlideInLeft>
 
-        {/* right section description box */}
+        {/* right section summary box */}
         <div className="flex flex-col gap-y-8 xs:gap-y-16 xmd:gap-y-8 ">
-          {/***************************************** Service details *****************************************/}
+          {/***************************************** Service description box *****************************************/}
           <SlideInRight className="flex flex-col gap-y-4 2xmd:gap-y-7">
             <Wrapper className="border border-rf-grey-100/40 rounded-md [&>div]:flex [&>div]:flex-col [&>div]:gap-y-6">
               {/* title box */}
@@ -91,6 +93,51 @@ export default function ServiceDetails({loaderData}: Route.ComponentProps) {
         </div>
       </Wrapper>
 
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      {servicesData?.showcase && 
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVector className="[&>path:nth-child(2)]:fill-rf-primary-200/50 [&>path:nth-child(1)]:fill-rf-white-100"/>
+      </Wrapper>}
+
+      {/***************************************** Showcase section *****************************************/}
+      {servicesData?.showcase && 
+      <Wrapper
+        as={"section"}
+        className="bg-rf-primary-200/50 py-10 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:py-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:py-40 xl:[&>div]:gap-y-20"
+      >
+       <div className="w-full flex flex-col gap-y-10 xs:gap-y-16 xl:gap-y-20">
+        {/* team content box */}
+        <div className="flex flex-col-reverse items-center gap-y-4 xmd:flex-row">
+          {/* left section */}
+          <SlideInLeft className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7">
+            {/* title text */}
+            <h2 className="font-flavours text-rf-secondary text-center text-3xl xmd:text-start lg:text-4xl">{servicesData.showcase.title}</h2>
+            {/* description text */}
+            <ServiceDetailsSummary summary={servicesData.showcase.summary} className="xmd:max-w-[85%]" />
+          </SlideInLeft>
+          {/* right section */}
+          <div className="flex flex-col w-full ">
+            <SlideInRight className="flex flex-col relative">
+              {/* image of the group of team members with pseudo image of leaves on the top right */}
+              <div
+                style={{backgroundImage: `url('${servicesData.showcase.imageUrl}')`}}
+                className="w-11/12 h-60 bg-cover bg-center rounded-tr-2xl rounded-bl-2xl relative
+                 after:absolute after:bg-[url('~/assets/leaves-right.png')] after:-scale-y-100 after:-right-10 after:-top-10 after:size-12 after:bg-contain after:bg-no-repeat xs:h-90 xs:after:size-18 xs:after:-right-14 xs:after:-top-15 lg:h-110"
+              />
+              {/* heart image at the bottom left of the team member image */}
+              <img
+                src={heart}
+                alt="heart"
+                className="w-1/5 -mt-6 ms-4 z-1 2xs:size-12 xs:size-14 xs:-mt-8 sm:size-16 2xmd:size-18 2xmd:-mt-10 "
+              />
+            </SlideInRight>
+          </div>
+        </div>               
+       </div>
+      </Wrapper>}
 
     </main>
   )

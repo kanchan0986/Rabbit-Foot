@@ -19,15 +19,15 @@ export default function ServiceNicheCard({serviceNicheData, as: Component = "li"
         {/* card details at the bottom */}
         <div className="grow flex flex-col gap-y-2 bg-rf-white-100 p-2 pb-4 min-h-35">
             {/* title */}
-            <h4 className="capitalize text-lg font-semibold text-rf-primary text-center">{serviceNicheData.title}</h4>
-            <h5 className="capitalize text-center">{serviceNicheData.subtitle}</h5>
+            <h4 className="capitalize font-semibold text-rf-primary text-center text-base lg:text-lg">{serviceNicheData.title}</h4>
+            <h5 className="capitalize text-center text-xbase lg:text-md">{serviceNicheData.subtitle}</h5>
             {/* cta button */}
-            <SlideInUp delay={0.3} className="self-center rounded-full 2xmd:hover:shadow-rf-direct-100">
+            <SlideInUp delay={0.3} className="self-center rounded-full 2xmd:hover:shadow-rf-direct-100 mt-auto">
               <Link to={serviceNicheData.id}>
                 <Button
                   variant={"outline"}
                   size={"lg"}
-                  className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize transition-colors ease-in duration-200 2xmd:cursor-pointer px-4"
+                  className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white capitalize transition-colors ease-in duration-200 2xmd:cursor-pointer px-4 text-xs lg:text-md"
                 >
                   Know in details
                 </Button>
