@@ -10,6 +10,7 @@ import ServiceNicheCard from "~/components/custom-components/cards/ServiceNicheC
 import { ServiceDetailsSummary } from "~/components/custom-components/ServiceDetailsSummary";
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import heart from "~/assets/Heart.png";
+import ServiceHighlightsCard from "~/components/custom-components/cards/ServiceHighlightsCard";
 
 export function meta({loaderData, location}: Route.MetaArgs) {
     const { servicesData } = loaderData ?? {}
@@ -180,6 +181,25 @@ export default function ServiceDetails({loaderData}: Route.ComponentProps) {
             {servicesData.expectation.description.summary && <ServiceDetailsSummary summary={servicesData.expectation.description.summary}/>}
           </div>
         </SlideInRight>
+      </Wrapper>}
+
+      {/***************************************** Highlights section *****************************************/}
+
+      {servicesData?.highlights && 
+      <Wrapper as={'section'} className="p-0 [&>div]:w-full [&>div]:flex [&>div]:flex-col [&>div]:items-center gap-y-8 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xmd:[&>div]:items-stretch">
+        {/* sets background image if available */}
+        <div className={`w-full flex flex-col overflow-hidden active:translate-y-0.5 bg-fixed bg-cover bg-no-repeat bg-center`} style={{backgroundImage: `url(${servicesData.highlights.imageUrl})`}}>
+            {/* highlights container */}
+            <div className={`flex flex-col justify-center gap-y-7 py-6 sm:py-10 xl:min-h-[85vh]`}>
+                {/* Heading box */}
+                <div className="px-1 flex flex-col">
+                  <h2 className="font-flavours capitalize text-rf-primary text-3xl lg:text-4xl text-shadow-lg tracking-wide text-center">{servicesData.highlights.title}</h2>
+                  <h3 className="capitalize text-center">{servicesData.highlights.summary}</h3>
+                </div>
+                {/* highlights card items */}
+                <ServiceHighlightsCard serviceHighlights={servicesData.highlights}/>
+            </div>        
+        </div>
       </Wrapper>}
 
     </main>
