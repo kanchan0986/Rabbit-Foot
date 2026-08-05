@@ -139,6 +139,49 @@ export default function ServiceDetails({loaderData}: Route.ComponentProps) {
        </div>
       </Wrapper>}
 
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      {(servicesData?.expectation) &&
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVector className={servicesData?.showcase ? '[&>path:nth-child(2)]:fill-white [&>path:nth-child(1)]:fill-rf-primary-200/50' : '[&>path:nth-child(2)]:fill-rf-primary-200/50 [&>path:nth-child(1)]:fill-rf-white-100'}/>
+      </Wrapper>}
+
+      {/***************************************** Expectations section *****************************************/}
+
+      {servicesData?.expectation && 
+      <Wrapper as={"section"} className={`${servicesData?.showcase ? 'bg-white' : 'bg-rf-primary-200/50'} py-10 [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-8 xs:py-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xmd:[&>div]:items-stretch xl:py-30`}>
+        {/* left section */}
+        <SlideInLeft delay={0.6} className="flex w-full flex-col items-center justify-center xmd:h-auto xl:max-w-137.5 2xl:max-w-[35%]">
+            {/* styled border around the image */}
+            <div className="relative h-[50vh] w-full before:absolute before:-inset-1 before:size-20 before:bg-rf-primary after:absolute after:-right-1 after:-bottom-1 after:size-20 after:bg-rf-primary after:z-0 sm:h-[90vh] md:h-screen xmd:h-full">
+              {/* responsive image of the doctor */}
+              <div style={{backgroundImage: `url(${servicesData.expectation.imageUrl})`}} className="relative size-full bg-cover bg-no-repeat bg-center rounded-tr-2xl rounded-bl-2xl shadow-rf-direct-100 z-1"/>
+            </div>
+        </SlideInLeft>
+        {/* right section */}
+        <SlideInRight className="flex flex-col gap-y-4 xmd:w-full xmd:h-full xmd:py-4 2xmd:gap-y-7 2xmd:py-8">
+            {/* Heading box */}
+            <div className="flex justify-center sm:justify-between">
+              <div className="self-center flex flex-col gap-y-2 text-center sm:text-start">
+                {/* title text */}
+                <h2 className='font-flavours capitalize text-rf-primary text-3xl lg:text-4xl'>{servicesData.expectation.title}</h2>
+                {/* sub-title text */}
+                <h3 className='text-rf-secondary text-xl lg:text-2xl'>{servicesData.expectation.subtitle}</h3>
+              </div>
+              {/* logo at the top right corner */}
+              <Logo className="hidden sm:block sm:size-20 fill-rf-secondary/30 -rotate-15 self-center xl:size-30" />
+            </div>
+          {/* description text */}
+          <div className="flex flex-col gap-y-4">
+            {/* title text */}
+            <h2 className="font-flavours text-rf-secondary text-center text-3xl xmd:text-start lg:text-4xl">{servicesData.expectation.description.title}</h2>
+            {servicesData.expectation.description.summary && <ServiceDetailsSummary summary={servicesData.expectation.description.summary}/>}
+          </div>
+        </SlideInRight>
+      </Wrapper>}
+
     </main>
   )
 }
