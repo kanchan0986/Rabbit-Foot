@@ -285,6 +285,7 @@ export type ServiceNiche = {
   expectation?: Expectation;
   faq?: Faq[];
   highlights?: Highlights;
+  speciality: Speciality[];
 } & { readonly type: 'service-niche'}
 
 export type Faq = {
@@ -317,6 +318,7 @@ export type Service = {
   expectation?: Expectation;
   faq?: Faq[];
   highlights?: Highlights;
+  speciality: Speciality[];
 } & { readonly type: 'service'}
 
 
@@ -370,6 +372,7 @@ export const servicesArray: Service[] = [
         answer: ["Great news! Most insurance plans cover 100% of preventive care. Since plans can vary, give us a call and we’ll help you figure out the details of your coverage."]
       },
     ],
+    speciality: ["preventive-care", "restorations", "sealants", "whitening"],
     serviceNiche: [
       {
         id: 'cleanings-&-checkups',
@@ -522,7 +525,8 @@ export const servicesArray: Service[] = [
               summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
             },
           ]
-        }
+        },
+        speciality: ["whitening"]
       },
       {
         id: 'fluoride-treatment',
@@ -639,7 +643,8 @@ export const servicesArray: Service[] = [
               summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
             },
           ]
-        }
+        },
+        speciality: ["fluoride-treatments"]
       },
       {
         id: 'dental-sealants',
@@ -767,7 +772,8 @@ export const servicesArray: Service[] = [
               summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
             },
           ]
-        }
+        },
+        speciality: ['sealants']
       },
     ]
   },
@@ -792,6 +798,7 @@ export const servicesArray: Service[] = [
         "Amet non dolor incididunt nostrud non cillum ipsum ipsum. Proident incididunt irure aute aliqua enim aute anim non sit. Officia amet cillum laborum voluptate incididunt et cillum ut enim voluptate. Incididunt fugiat veniam quis ullamco culpa laboris ea qui ipsum esse cupidatat proident sint. Esse proident fugiat elit esse ad deserunt eu tempor ut laboris laborum nulla. Consequat ut Lorem elit tempor proident velit dolore sint ullamco labore occaecat."
       ]
     },
+    speciality: ["restorations", "extractions", "mouthguards", "nerve-treatments", "crowns"],
     serviceNiche: [
       {
         id: 'dental-crowns',
@@ -924,7 +931,8 @@ export const servicesArray: Service[] = [
               summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
             },
           ]
-        }
+        },
+        speciality: ["crowns"]
       },
       {
         id: 'fillings',
@@ -1074,7 +1082,8 @@ export const servicesArray: Service[] = [
               summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
             },
           ]
-        }
+        },
+        speciality: ["restorations"]
       },
       {
         id: 'tooth-extractions',
@@ -1208,7 +1217,8 @@ export const servicesArray: Service[] = [
               summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
             },
           ]
-        }
+        },
+        speciality: ["extractions"]
       },
     ]
   },
@@ -1313,7 +1323,8 @@ export const servicesArray: Service[] = [
           "Most children (and Moms) notice a difference right away, with improvements in feeding, talking, and comfort."
         ]
       }
-    }
+    },
+    speciality: ["mouthguards", "hospital-dentistry", "nitrous-oxide-analgesia"]
   },
   { 
     id: 'pediatric-sedation',
@@ -1413,7 +1424,8 @@ export const servicesArray: Service[] = [
           "When it’s all done, you’ll wake up slowly, with your dental needs taken care of and no recollection of the procedure at all."
         ]
       }
-    }
+    },
+    speciality: ["in-Office-sedation", "nitrous-oxide-analgesia"]
   },
   { 
     id: 'special-needs-dentistry',
@@ -1544,7 +1556,8 @@ export const servicesArray: Service[] = [
           summary: ["Need a quick visit? We’ve got you covered with same-day appointments to keep your child’s smile on track!"]
         },
       ]
-    }
+    },
+    speciality: ["nerve-treatments", "space-maintainers", "whitening"]
   },
   { 
     id: 'orthodontics',
@@ -1659,7 +1672,8 @@ export const servicesArray: Service[] = [
               summary: ["If a baby tooth is lost early, nearby teeth can drift and block the space needed for permanent teeth. Early evaluation helps us plan space maintenance if needed."]
             }
           ]
-        }
+        },
+        speciality: ["extractions"]
       },
       {
         id: 'early-orthodontics',
@@ -1739,7 +1753,8 @@ export const servicesArray: Service[] = [
               summary: ["Prolonged thumb-sucking, tongue thrusting, or pacifier use after age 3–4 can affect how the jaw and teeth develop. Early orthodontic intervention can address the structural effects of these habits and help retrain oral posture."]
             }
           ]
-        }
+        },
+        speciality: ["fluoride-treatments"]
       },
       {
         id: 'invisalign',
@@ -1818,7 +1833,8 @@ export const servicesArray: Service[] = [
               summary: ["We start with a digital scan, no goopy impressions, which kids appreciate. Dr. Mallard reviews the scan and designs a custom treatment plan. Your child gets a series of clear aligners, each one slightly different from the last, and switches to the next set every 1–2 weeks."]
             }
           ]
-        }
+        },
+        speciality: ["in-Office-sedation"]
       },
     ],
     faq: [
@@ -1850,6 +1866,7 @@ export const servicesArray: Service[] = [
     ],
     highlights: {
       title: "How can we help your child?",
+      imageUrl: what_makes_us_special,
       item: [
         {
           id: generateRandomId(),
@@ -1868,7 +1885,8 @@ export const servicesArray: Service[] = [
           title: "Inclusive, special needs care"
         },
       ]
-    }
+    },
+    speciality: ["extractions", "fluoride-treatments", "in-Office-sedation", "restorations"]
   }
 ]
 

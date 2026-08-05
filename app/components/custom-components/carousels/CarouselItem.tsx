@@ -1,5 +1,5 @@
 import { Button } from '~/components/ui/button';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { FcGoogle } from "react-icons/fc";
 import { ImQuotesLeft } from "react-icons/im";
 import Ratings from '../Ratings';
@@ -24,6 +24,7 @@ type CarouselItemProps = {
 }
 
 export default function CarouselItem({carouselItem}: CarouselItemProps) {
+  const isRenderedOnServices = useLocation().pathname.includes('services') // if the component is rendered on services or on it's children path
   return (
     <>
     {(carouselItem.type === 'service') && 
@@ -60,7 +61,8 @@ export default function CarouselItem({carouselItem}: CarouselItemProps) {
         </div>
     }
     {(carouselItem.type === 'doctor') && 
-        <Link to={`../${carouselItem.id}`} relative='path' className='shadow-rf-direct-100 rounded-md hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in'>
+    // if it is rendered on services or on its children then go to 'our-doctors' and then to the carouselItem.id else go back one step to carouselItem.id
+        <Link to={isRenderedOnServices ? `/our-doctors/${carouselItem.id}` : `../${carouselItem.id}`} relative='path' className='shadow-rf-direct-100 rounded-md hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in'>
           <DoctorCard doctorData={carouselItem} as={"div"}/>
         </Link>
     }

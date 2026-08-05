@@ -1,6 +1,6 @@
 import { tabLabel } from "~/helper/tabLabel";
 import type { Route } from "./+types/service-details";
-import { servicesArray } from "~/data/static-data";
+import { doctorArray, servicesArray } from "~/data/static-data";
 import Wrapper from "~/components/custom-components/Wrapper";
 import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
 import { twMerge } from "tailwind-merge";
@@ -13,6 +13,11 @@ import heart from "~/assets/Heart.png";
 import ServiceHighlightsCard from "~/components/custom-components/cards/ServiceHighlightsCard";
 import { AccordionFaq } from "~/components/custom-components/AccordionFaq";
 import Sky from "~/components/custom-components/vectors/Sky";
+import { Link } from "react-router";
+import { FaStethoscope } from "react-icons/fa";
+import Carousel from "~/components/custom-components/carousels/Carousel";
+import SlideInUp from "~/components/custom-components/animations/SlideInUp";
+import DoctorCard from "~/components/custom-components/cards/DoctorCard";
 
 export function meta({loaderData, location}: Route.MetaArgs) {
     const { servicesData } = loaderData ?? {}
@@ -26,13 +31,14 @@ export const clientLoader = ({params} : Route.ClientLoaderArgs) => {
     const serviceId = params["service-id"]
   // make api call
   const servicesData = servicesArray.find(service => service.id === serviceId)
-  return { servicesData };
+  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality.some(speciality => servicesData?.speciality.includes(speciality) ))
+  return { servicesData, relatedDoctorsData };
  }
 
 export default function ServiceDetails({loaderData}: Route.ComponentProps) {
-    const { servicesData } = loaderData
+    const { servicesData, relatedDoctorsData } = loaderData
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-hidden relative">
       {/*********************************************** Overview section ***********************************************/}
       <Wrapper
         as={"section"}
@@ -225,6 +231,67 @@ export default function ServiceDetails({loaderData}: Route.ComponentProps) {
           <AccordionFaq items={servicesData.faq}/>
         </div>}
       </Wrapper>}
+
+      {/******************************** Spacer section with decorative vector image ********************************/}
+      {(servicesData?.showcase && !servicesData?.expectation && !servicesData?.highlights && !servicesData?.faq) &&
+      <Wrapper
+        as={"div"}
+        className="py-0 [&>div]:w-full"
+      >
+        <SpacerVector className="[&>path:nth-child(2)]:fill-white [&>path:nth-child(1)]:fill-rf-primary-200/50"/>
+      </Wrapper>}
+
+      {/****************************************** Related Doctors section ***********************************************/}
+      {/* only show this section when there is atleast one related doctor present with same speciality other than the current doctor */}
+      {relatedDoctorsData.length > 0 &&
+        <Wrapper
+          as={"section"}
+          className="relative py-6 [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:py-8 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:gap-x-8 xl:py-15 xl:[&>div]:gap-y-15"
+          id="related-doctors"
+        >
+          {/* Animating sky background */}
+          <Sky className="fill-rf-primary-200/40"/>
+          <div className="relative w-full flex flex-col gap-y-4">
+            <div className="flex flex-col">
+              {/* title text */}
+              <h3 className="font-flavours text-3xl lg:text-4xl text-center capitalize text-rf-primary-200">Related
+                <div className="inline">
+                  <span className="text-rf-primary"> d</span><span className="text-rf-secondary">o</span><span className="text-rf-primary-200">c</span><span className="text-rf-secondary">t</span><span className="text-rf-primary-200">o</span><span className="text-rf-primary">r</span><span className="text-rf-secondary">s</span>
+                </div>
+              </h3>
+              {/* subtitle text with icons */}
+              <div className="w-full flex items-center justify-center gap-x-8">
+                <span className="hidden min-[360px]:block text-rf-primary rotate-90 text-6xl">&#119171;</span>
+                <h2 className="text-rf-secondary text-center italic text-sm lg:text-xl">Extensive list of trusted doctors.</h2>
+                <span className="hidden min-[360px]:block text-rf-primary rotate-90 text-6xl">&#119171;</span>
+              </div>
+            </div>
+            {relatedDoctorsData.length > 3 ?
+                // Show Doctor carousel when related doctors are more than 3
+                <Carousel carousel={relatedDoctorsData}/> :
+                // otherwise default to normal column wise look for the related doctors
+                <ul className="grid grid-cols-1 py-10 gap-4 xs:grid-cols-2 xs:py-12 md:w-full md:h-fit md:ms-auto 2xmd:flex justify-center 2xmd:[&>div]:w-[20%]">
+                  {relatedDoctorsData.map(doctor => (
+                    <SlideInUp key={doctor.id} inView={false} className="shadow-rf-direct-100 rounded-md hover:shadow-rf-direct-200 active:translate-y-0.5 transition-[shadow_transform] duration-200 ease-in">
+                      <Link to={`/our-doctors/${doctor.id}`} relative="path">
+                        <DoctorCard doctorData={doctor} />
+                      </Link>
+                    </SlideInUp>
+                  ))}
+                </ul>
+              }          
+          </div>
+        </Wrapper>
+      }
+
+      {/*********************************** Scroll to Related doctors button ***********************************/}
+
+      <Link to='./#related-doctors'  className="py-2 px-4 bg-rf-primary shadow-rf-direct-100 fixed h-auto w-fit -right-35 bottom-10 z-1 flex items-center justify-center rounded-l-full hover:-translate-x-35 transition-transform ease-in-out duration-300">
+        <div className="flex items-center justify-center gap-x-3 text-white">
+          <FaStethoscope className="fill-white size-5" />
+          <span>Related Doctors</span>
+        </div>
+      </Link>
 
     </main>
   )
