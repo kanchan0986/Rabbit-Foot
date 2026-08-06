@@ -302,7 +302,6 @@ export type Highlights = {
     id: string;
     title: string;
     summary?: string[];
-    imageUrl?: string;
   }[]
 }
 
@@ -1645,6 +1644,7 @@ export const servicesArray: Service[] = [
         ],
         highlights: {
           title: "What we look for in an early orthodontic evaluation",
+          imageUrl: what_makes_us_special,
           item: [
             {
               id: generateRandomId(),
@@ -1726,6 +1726,7 @@ export const servicesArray: Service[] = [
         ],
         highlights: {
           title: "What early orthodontic treatment addresses",
+          imageUrl: what_makes_us_special,
           item: [
             {
               id: generateRandomId(),
@@ -1740,7 +1741,7 @@ export const servicesArray: Service[] = [
             {
               id: generateRandomId(),
               title: "Severe Crowding",
-              summary: ["When there isn&#8217;t room for adult teeth to erupt properly, early expansion can create space — sometimes preventing the need for extractions later. Dr. Mallard monitors crowding carefully and recommends intervention when it will make the biggest difference."]
+              summary: ["When there isn't room for adult teeth to erupt properly, early expansion can create space — sometimes preventing the need for extractions later. Dr. Mallard monitors crowding carefully and recommends intervention when it will make the biggest difference."]
             },
             {
               id: generateRandomId(),
@@ -1805,12 +1806,13 @@ export const servicesArray: Service[] = [
         ],
         highlights: {
           title: "When Invisalign First makes sense",
+          imageUrl: what_makes_us_special,
           summary: "The American Association of Orthodontists recommends a first orthodontic evaluation by age 7, and for many kids, early intervention can correct bite issues before they become bigger problems. Invisalign First in Smallville was developed specifically for children who still have a mix of baby and adult teeth. It works particularly well for:",
           item: [
             {
               id: generateRandomId(),
               title: "Crowding and Spacing",
-              summary: ["When new teeth don&#8217;t have room to come in correctly, Invisalign First can create space and guide eruption."]
+              summary: ["When new teeth don't have room to come in correctly, Invisalign First can create space and guide eruption."]
             },
             {
               id: generateRandomId(),
@@ -1825,7 +1827,7 @@ export const servicesArray: Service[] = [
             {
               id: generateRandomId(),
               title: "Habit Correction",
-              summary: ["For kids who&#8217;ve had thumb-sucking or tongue-thrust habits, Invisalign can help retrain oral posture as it aligns teeth."]
+              summary: ["For kids who've had thumb-sucking or tongue-thrust habits, Invisalign can help retrain oral posture as it aligns teeth."]
             },
             {
               id: generateRandomId(),
@@ -1834,7 +1836,7 @@ export const servicesArray: Service[] = [
             }
           ]
         },
-        speciality: ["in-Office-sedation"]
+        speciality: ["in-Office-sedation", "sealants"]
       },
     ],
     faq: [
@@ -1889,7 +1891,6 @@ export const servicesArray: Service[] = [
     speciality: ["extractions", "fluoride-treatments", "in-Office-sedation", "restorations"]
   }
 ]
-
 
 export type NavItem = {
   to: string;

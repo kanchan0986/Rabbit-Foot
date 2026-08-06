@@ -12,6 +12,7 @@ export default [
             index("routes/services.tsx"),
             ...prefix(":service-id/", [
                 index("routes/service-details.tsx"),
+                route(":sub-service-id", "routes/sub-service-details.tsx")
             ]),
         ]),
         route("office-locations", "routes/office-locations.tsx"),
