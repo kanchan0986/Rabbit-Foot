@@ -6,7 +6,7 @@ import leavesLeft from "~/assets/leaves-left.png";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import heart from "~/assets/Heart.png";
 import Logo from "~/components/custom-components/vectors/Logo";
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import { FaCalendarAlt, FaRegCircle } from "react-icons/fa";
 import { PiTooth } from "react-icons/pi";
@@ -25,8 +25,9 @@ import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
 import SlideInRight from "~/components/custom-components/animations/SlideInRight";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import FadeIn from "~/components/custom-components/animations/FadeIn";
-import { servicesArray, galleryArray, testimonialArray } from "~/data/static-data";
+import { servicesArray, galleryArray, testimonialArray, customerArr, doctorArray, specialityArray, type BookingDataType } from "~/data/static-data";
 import { tabLabel } from "~/helper/tabLabel";
+import validateBookingForm from "~/helper/validateBookingForm";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -41,17 +42,37 @@ export function meta({location}: Route.MetaArgs) {
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
   // fetch data from api
   const servicesData = servicesArray
-  return {servicesData};
+  const customerData = customerArr[0]
+  const doctorData = doctorArray
+  const specialityData = specialityArray;
+  return {servicesData, customerData, doctorData, specialityData};
  }
 
-export const clientAction = async ({ request }: Route.ClientActionArgs) => { 
+export const clientAction = async ({ request, url }: Route.ClientActionArgs) => { 
   const formData = await request.formData();
   const data = Object.fromEntries(formData)
-  console.log(data)
+  const { errors } = validateBookingForm(data as BookingDataType);
+  const customerDataError = errors.customerName || errors.customerEmail || errors.customerPhone
+  const bookingError = errors.doctorSpeciality || errors.doctorName || errors.appointmentDate
+  const {pathname} = url
+
+  if(customerDataError && !bookingError){
+    sessionStorage.setItem("bookingData", JSON.stringify(data))
+    return redirect('/login')
+  }
+  
+  if(bookingError) {
+    return { errors }
+  }
+  
+  sessionStorage.setItem("bookingData", JSON.stringify(data))
+  sessionStorage.setItem("redirectPath", pathname)
+  return redirect('/thank-you')
  }
 
 export default function Home({loaderData} : Route.ComponentProps) {
-  const { servicesData } = loaderData
+  const { servicesData, customerData, doctorData, specialityData } = loaderData
+  
   return (
     <main className="overflow-x-hidden">
       {/*********************************************** Hero section ***********************************************/}
@@ -87,7 +108,7 @@ export default function Home({loaderData} : Route.ComponentProps) {
 
               {/* Call-to-action button */}
               <SlideInUp delay={0.5} className="mt-4 rounded-full 2xmd:hover:shadow-xl">
-                <Link to="/">
+                <Link to="./#book-appointment">
                   <Button
                     variant={"outline"}
                     size={"lg"}
@@ -250,6 +271,7 @@ export default function Home({loaderData} : Route.ComponentProps) {
       <Wrapper
         as={"section"}
         className="bg-rf-primary py-10 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-5 xs:py-16 xs:[&>div]:gap-y-8 xl:py-40 xl:[&>div]:gap-y-10"
+        id="book-appointment"
       >
         {/* Animating sky background */}
         <Sky/>
@@ -263,7 +285,7 @@ export default function Home({loaderData} : Route.ComponentProps) {
         </div>
         <FadeIn className="relative" delay={0.3}>
           {/* Booking form */}
-          <BookingForm formId="form-1"/>
+          <BookingForm userData={customerData} doctorData={doctorData} specialityData={specialityData} />
         </FadeIn>
       </Wrapper>
 
@@ -363,7 +385,7 @@ export default function Home({loaderData} : Route.ComponentProps) {
          </div>
          {/* CTA box */}
         <SlideInUp delay={0.1} className="self-center mt-6 flex justify-center hover:shadow-rf-direct-100 rounded-l-full rounded-tr-full">
-          <Link to="/" className="bg-rf-primary capitalize flex items-center gap-x-2 rounded-l-full rounded-tr-full py-2 px-2 hover:bg-rf-secondary active:bg-rf-secondary group xl:px-4 xl:py-3">
+          <Link to="./#book-appointment-split" className="bg-rf-primary capitalize flex items-center gap-x-2 rounded-l-full rounded-tr-full py-2 px-2 hover:bg-rf-secondary active:bg-rf-secondary group xl:px-4 xl:py-3">
             <div className="bg-rf-white-100 p-2 rounded-full">
               <FaCalendarAlt className="size-6 fill-rf-primary group-hover:fill-rf-secondary group-active:fill-rf-secondary" />
             </div>
@@ -424,10 +446,11 @@ export default function Home({loaderData} : Route.ComponentProps) {
       <Wrapper
         as={"section"}
         className="bg-rf-secondary py-8 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-5 xs:py-16 xs:[&>div]:gap-y-8 xl:py-30 xl:[&>div]:gap-y-10"
+        id="book-appointment-split"
       >
         {/* Animating sky background */}
         <Sky/>
-        <div className="bg-rf-white-100/70 flex gap-x-4 px-4 py-8 rounded-xl shadow-rf-direct-100 relative overflow-hidden h-125 xs:h-120 sm:h-100 md:h-100 2xmd:h-120 2xmd:w-9/12 2xmd:py-4">
+        <div className="bg-rf-white-100/70 flex gap-x-4 px-4 py-8 rounded-xl shadow-rf-direct-100 relative overflow-hidden min-h-125 xs:min-h-120 sm:h-100 md:min-h-120 2xmd:min-h-140 2xmd:w-9/12 2xmd:py-4">
           {/* child image visible from tablet screen  */}
           <div className="hidden 2xmd:block w-1/2 bg-[url('~/assets/girl_biting_carrot.jpg')] bg-cover bg-center bg-no-repeat h-auto rounded-xl"/>
           <div className="flex flex-col items-center justify-center gap-y-4 2xmd:w-3/4">
@@ -439,7 +462,7 @@ export default function Home({loaderData} : Route.ComponentProps) {
             </h3>
             <FadeIn className="relative">
               {/* Booking form of split type */}
-              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formId="form-2" formType="split"/>
+              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formType="split" userData={customerData} doctorData={doctorData} specialityData={specialityData}/>
             </FadeIn>
           </div>
         </div>

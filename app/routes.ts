@@ -17,5 +17,6 @@ export default [
         ]),
         route("office-locations", "routes/office-locations.tsx"),
         route("login", "routes/login.tsx"),
+        route("thank-you", "routes/thank-you.tsx"),
     ])
 ] satisfies RouteConfig;

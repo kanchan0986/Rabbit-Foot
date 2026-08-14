@@ -1,0 +1,76 @@
+import { tabLabel } from "~/helper/tabLabel";
+import type { Route } from "./+types/thank-you";
+import { Link } from "react-router";
+import { Button } from "~/components/ui/button";
+import Sky from "~/components/custom-components/vectors/Sky";
+import Wrapper from "~/components/custom-components/Wrapper";
+import type { BookingDataType } from "~/data/static-data";
+
+export function meta({location}: Route.MetaArgs) {
+  return [
+    { title: `Rabbit Foot | ${tabLabel({ data: {...location, type: 'location'} })}` },
+    { name: "description", content: "A dental services company totally committed for your kids!" },
+  ];
+}
+
+export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
+  const bookingDataStringified = sessionStorage.getItem("bookingData") // get booking data stored in sessionStorage (stringified JSON)
+  const redirectPath = sessionStorage.getItem("redirectPath") // get redirect path stored in sessionStorage
+
+  const bookingData: BookingDataType & {["appointment-slot"]: string} = bookingDataStringified && JSON.parse(bookingDataStringified) // parse booking data back into an object if it exists
+
+  sessionStorage.removeItem("bookingData") // clear booking data from sessionStorage after retrieving it
+  sessionStorage.removeItem("redirectPath") // clear redirect path from sessionStorage after retrieving it
+
+  return {redirectPath, bookingData} // return data for use in the ThankYou component
+ }
+
+export default function ThankYou({loaderData}: Route.ComponentProps) {
+  const { redirectPath, bookingData } = loaderData;
+  const pathname = redirectPath === '/' ? 'homepage' : redirectPath?.
+        replace(/\/#.*$/, "")   // remove everything after /# (like /#book-appointment)
+        .replace(/^\/+|\/$/gm, '') // remove any leading or trailing slashes
+        .replace(/^.*our-doctors\//, "") // remove everything up to "our-doctors/"
+        .replace(/-+/gm, ' ');    // replace any - with empty space
+  return (
+    <main className="relative">
+      {/* Animating sky background */}
+      <Sky className="fill-rf-primary-200/40"/>
+      <Wrapper
+        as={"section"}
+        className="py-10 relative [&>div]:flex [&>div]:flex-col [&>div]:gap-y-10 xs:py-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:justify-center xmd:[&>div]:gap-x-8 xl:py-40 xl:[&>div]:gap-y-20"
+      >
+        <div className="flex flex-col item-center gap-4">
+          {/* thank you message with customer name */}
+          <h1 className="text-3xl text-center text-rf-primary-100 lg:text-4xl">Thank you <span className="capitalize">{bookingData["customer-name"]}</span></h1>
+
+          {/* confirmation message with doctor name */}
+          <h2 className="text-xl text-center">Your appointment with Dr. <span className="capitalize">{bookingData["doctor-name"]}</span> registered successfully!</h2>
+
+          {/* appointment details list */}
+          <ul className="self-center capitalize bg-rf-primary-200/20 p-3 rounded-md xl:w-120">
+            <span className="normal-case font-medium">Please check your appointment details below:</span>
+            <li><span className="font-medium">Doctor:</span> Dr. {bookingData["doctor-name"]}</li>
+            <li><span className="font-medium">Speciality:</span> {bookingData["doctor-speciality"]}</li>
+            <li><span className="font-medium">Appointment Date:</span> {bookingData["appointment-date"]}</li>
+            {/* show appointment slot only if it exists */}
+            {bookingData["appointment-slot"] && <li className="lowercase"><span className="font-medium capitalize">Appointment Slot:</span> {bookingData["appointment-slot"]}</li>}
+            <li><span className="font-medium">Doctor Fee:</span> ${bookingData["doctor-fee"]}</li>
+
+          </ul>
+          
+          {/* back button to redirect path */}
+          <Link to={redirectPath ?? '/'} className="self-center">
+              <Button
+              variant={"outline"}
+              size={"sm"}
+              className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
+              >
+              Back to {pathname}
+              </Button>
+          </Link>
+        </div>
+      </Wrapper>
+    </main>
+  )
+}

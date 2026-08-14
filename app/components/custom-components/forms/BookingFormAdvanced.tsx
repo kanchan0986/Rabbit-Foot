@@ -1,17 +1,18 @@
 import { Form } from "react-router"
-import type { Doctor, Slot, Speciality } from "~/data/static-data"
+import type { Customer, Doctor, Slot, Speciality } from "~/data/static-data"
 import { SpecialityDropdownMenuRadioGroup } from "../SpecialityDropdownMenuRadioGroup"
 import { useEffect, useState } from "react"
 import { Button } from "~/components/ui/button"
 import { twMerge } from "tailwind-merge"
-import type { FormError } from "~/routes/doctor-details"
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import FadeIn from "../animations/FadeIn"
 import SlideInUp from "../animations/SlideInUp"
+import type { ValidationAdvancedErrorsTypes } from "~/helper/validateBookingFormAdvanced"
 
 type BookingFormAdvancedProps = {
     doctorData: Doctor;
-    errors?: FormError;
+    errors?: ValidationAdvancedErrorsTypes;
+    userData: Customer;
 }
 
 // doctor's availability slots
@@ -19,7 +20,7 @@ const availabilitySlots: Slot[] = [
     '10:00 am', '11:00 pm', '12:00 pm', '01:00 pm', '03:00 pm', '04:00 pm', '05:00 pm'
 ]
 
-export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdvancedProps) {
+export default function BookingFormAdvanced({doctorData, errors, userData}: BookingFormAdvancedProps) {
     
     const today = new Date(); // Get today's date
 
@@ -33,7 +34,7 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
     const [selectedSlot, setSelectedSlot] = useState<string>('') 
 
     // Track form errors (coming from clientAction), start with any existing errors
-    const [formErrors, setFormErrors] = useState<FormError | undefined>(errors); 
+    const [formErrors, setFormErrors] = useState<ValidationAdvancedErrorsTypes | undefined>(errors); 
 
     // Create an array of the next 7 days (including today)
     const upcomingSevenDays = Array.from({length: 7}, (_, idx) => {
@@ -84,8 +85,8 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
         setSelectedSpeciality(newSpeciality)
 
         // Clear speciality error if it exists
-        if (formErrors?.speciality) {
-            setFormErrors(prev => ({ ...prev, speciality: undefined }));
+        if (formErrors?.doctorSpeciality) {
+            setFormErrors(prev => ({ ...prev, doctorSpeciality: '' }));
         }
     }
 
@@ -100,8 +101,8 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
         const isNewDateFullyBooked = fullyBookedDateStrings.includes(newDate) // Check if the new date is fully booked
 
         // If the new date is valid (not weekend, not fully booked) and errors exist, clear them
-        if (!isNewDateWeekend && !isNewDateFullyBooked && formErrors?.date && formErrors.slot) {
-            setFormErrors(prev => ({ ...prev, date: undefined, slot: undefined }));
+        if (!isNewDateWeekend && !isNewDateFullyBooked && formErrors?.appointmentDate && formErrors.appointmentSlot) {
+            setFormErrors(prev => ({ ...prev, appointmentDate: '', appointmentSlot: '' }));
         }
     }
 
@@ -115,29 +116,53 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
     <Form method="post">
         <div className="flex flex-col gap-y-5">
             <div className="flex flex-col">
+                {/* hidden customer name input */}
+                <input
+                    type="hidden"
+                    name="customer-name"
+                    defaultValue={userData.name}
+                />
+                {/* hidden customer email input */}
+                <input
+                    type="hidden"
+                    name="customer-email"
+                    value={userData.email}
+                />
+                {/* hidden customer phone input */}
+                <input
+                    type="hidden"
+                    name="customer-phone"
+                    value={userData.phone} 
+                />
                 {/* hidden doctor name input */}
                 <input
                     type="hidden"
-                    name="name"
+                    name="doctor-name"
                     defaultValue={doctorData.name}
                 />
                 {/* hidden doctor speciality input */}
                 <input
                     type="hidden"
-                    name="speciality"
+                    name="doctor-speciality"
                     value={selectedSpeciality}
                 />
                 {/* hidden appointment date input */}
                 <input
                     type="hidden"
-                    name="date"
+                    name="appointment-date"
                     value={isSelectedDateFullyBooked || isSelectedDateWeekend ? '' : selectedDate} // important to make fully booked dates look similar to fully booked slots 
                 />
                 {/* hidden appointment slot input */}
                 <input
                     type="hidden"
-                    name="slot"
+                    name="appointment-slot"
                     value={selectedSlot}
+                />
+                {/* hidden doctor fee input */}
+                <input
+                    type="hidden"
+                    name="doctor-fee"
+                    value={doctorData.fee} 
                 />
 
                 {/* title and subtitle */}
@@ -148,7 +173,7 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
                     <span>Choose Speciality</span>                    
                     <SpecialityDropdownMenuRadioGroup data={doctorData.speciality} initialSpeciality={selectedSpeciality} specialityChangeHandler={handleSpecialityChange} className="relative inset-0 shadow-none [&>button]:bg-rf-primary [&>button]:text-foreground w-full min-[350px]:w-[50%] md:w-2xs" reference="booking-form" defaultSpeciality={doctorData.speciality[0]} />
                     {/* errors in inline message for speciality */}
-                    {formErrors?.speciality && <small className="text-red-500 text-center">{formErrors.speciality}</small>}
+                    {formErrors?.doctorSpeciality && <small className="text-red-500 text-center">{formErrors.doctorSpeciality}</small>}
                 </div>
 
                 {/* availability selection box */}
@@ -178,7 +203,7 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
                         })}
                     </div>
                     {/* errors in inline message for date */}
-                    {formErrors?.date && <small className="text-red-500 text-center">{formErrors.date}</small>}
+                    {formErrors?.appointmentDate && <small className="text-red-500 text-center">{formErrors.appointmentDate}</small>}
 
                     {/* slot selection box */}
                     <div className="grid gap-y-1 gap-x-[0.2rem] grid-cols-2 min-[276px]:gap-2 xs:grid-cols-3 sm:grid-cols-4 xmd:grid-cols-3 min-[960px]:grid-cols-4! min-[960px]:gap-x-[0.2rem] min-[970px]:gap-2 xl:grid-cols-5! 2xl:grid-cols-6! 4xl:grid-cols-7!">
@@ -199,7 +224,7 @@ export default function BookingFormAdvanced({doctorData, errors}: BookingFormAdv
                         })}
                     </div>
                     {/* errors in inline message for slot */}
-                    {formErrors?.slot && <small className="text-red-500 text-center">{formErrors.slot}</small>}
+                    {formErrors?.appointmentSlot && <small className="text-red-500 text-center">{formErrors.appointmentSlot}</small>}
 
                 </div>
             </div>

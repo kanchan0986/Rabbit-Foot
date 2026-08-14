@@ -1913,3 +1913,32 @@ export const navMenuArr: NavMenu[] = [
   { to: "services", content: "Services", children: buildNavItems(servicesArray) },
   { to: "office-locations", content: "Office Locations" },
 ];
+
+export type Customer = {
+  id: string;
+  imageUrl?: string;
+  name: string;
+  email: string;
+  phone: number;
+  address?: string;
+} & { readonly type: 'customer'}
+
+export type BookingDataType = {
+  ['appointment-date'] : string;
+  ['customer-email'] : string;
+  ['customer-name'] : string;
+  ['customer-phone'] : string;
+  ['doctor-fee'] : string;
+  ['doctor-name'] : string;
+  ['doctor-speciality'] : string;
+}
+
+export const customerArr : Customer[] = [
+  {
+    id: generateRandomId(),
+    name: 'John Doe',
+    email: 'john.doe@gmail.com',
+    phone: 1234567890,
+    type: 'customer'
+  },
+]

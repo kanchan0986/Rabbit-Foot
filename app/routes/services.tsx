@@ -4,17 +4,18 @@ import Wrapper from '~/components/custom-components/Wrapper';
 import Sky from '~/components/custom-components/vectors/Sky';
 import SlideInLeft from '~/components/custom-components/animations/SlideInLeft';
 import SlideInUp from '~/components/custom-components/animations/SlideInUp';
-import { Link } from 'react-router';
+import { Link, redirect } from 'react-router';
 import { Button } from '~/components/ui/button';
 import SlideInRight from '~/components/custom-components/animations/SlideInRight';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import heart from '~/assets/Heart.png';
-import { servicesArray } from '~/data/static-data';
+import { customerArr, doctorArray, servicesArray, specialityArray, type BookingDataType } from '~/data/static-data';
 import FadeIn from '~/components/custom-components/animations/FadeIn';
 import BookingForm from '~/components/custom-components/forms/BookingForm';
 import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
 import Summary from '~/components/custom-components/Summary';
+import validateBookingForm from '~/helper/validateBookingForm';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -26,11 +27,36 @@ export function meta({location}: Route.MetaArgs) {
 export const clientLoader = ({} : Route.ClientLoaderArgs) => { 
   // make api call
   const servicesData = servicesArray
-  return { servicesData };
+  const specialityData = specialityArray;
+  const customerData = customerArr[0]
+  const doctorData = doctorArray
+  return { servicesData, specialityData, customerData, doctorData };
+ }
+
+export const clientAction = async ({ request, url }: Route.ClientActionArgs) => { 
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData)
+  const { errors } = validateBookingForm(data as BookingDataType);
+  const customerDataError = errors.customerName || errors.customerEmail || errors.customerPhone
+  const bookingError = errors.doctorSpeciality || errors.doctorName || errors.appointmentDate
+  const {pathname} = url
+
+  if(customerDataError && !bookingError){
+    sessionStorage.setItem("bookingData", JSON.stringify(data))
+    return redirect('/login')
+  }
+  
+  if(bookingError) {
+    return { errors }
+  }
+  
+  sessionStorage.setItem("bookingData", JSON.stringify(data))
+  sessionStorage.setItem("redirectPath", pathname)
+  return redirect('/thank-you')
  }
 
 export default function Services({ loaderData }: Route.ComponentProps) {
-  const { servicesData } = loaderData
+  const { servicesData, specialityData, customerData, doctorData } = loaderData
   return (
     <main className="overflow-hidden">
       {/*********************************************** Summary section ***********************************************/}
@@ -224,10 +250,11 @@ export default function Services({ loaderData }: Route.ComponentProps) {
       <Wrapper
         as={"section"}
         className="bg-rf-secondary py-8 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-5 xs:py-16 xs:[&>div]:gap-y-8 xl:py-30 xl:[&>div]:gap-y-10"
+        id='book-appointment'
       >
         {/* Animating sky background */}
         <Sky/>
-        <div className="bg-rf-white-100/70 flex gap-x-4 px-4 py-8 rounded-xl shadow-rf-direct-100 relative overflow-hidden h-125 xs:h-120 sm:h-100 md:h-100 2xmd:h-120 2xmd:w-9/12 2xmd:py-4">
+        <div className="bg-rf-white-100/70 flex gap-x-4 px-4 py-8 rounded-xl shadow-rf-direct-100 relative overflow-hidden min-h-125 xs:min-h-120 sm:h-100 md:min-h-120 2xmd:min-h-140 2xmd:w-9/12 2xmd:py-4">
           {/* child image visible from tablet screen  */}
           <div className="hidden 2xmd:block w-1/2 bg-[url('~/assets/girl_biting_carrot.jpg')] bg-cover bg-center bg-no-repeat h-auto rounded-xl"/>
           <div className="flex flex-col items-center justify-center gap-y-4 2xmd:w-3/4">
@@ -239,7 +266,7 @@ export default function Services({ loaderData }: Route.ComponentProps) {
             </h3>
             <FadeIn className="relative min-h-90 xs:min-h-fit lg:min-h-90">
               {/* Booking form of split type */}
-              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formId="form-4" formType="split"/>
+              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formType="split" userData={customerData} doctorData={doctorData} specialityData={specialityData} />
             </FadeIn>
           </div>
         </div>

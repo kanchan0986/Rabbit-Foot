@@ -1,4 +1,4 @@
-import { doctorArray } from "~/data/static-data";
+import { customerArr, doctorArray, type BookingDataType } from "~/data/static-data";
 import type { Route } from "./+types/doctor-details";
 import Wrapper from "~/components/custom-components/Wrapper";
 import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
@@ -8,10 +8,11 @@ import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import { IoMdEye, IoMdEyeOff  } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import Carousel from "~/components/custom-components/carousels/Carousel";
-import { Link, data, redirect } from "react-router";
+import { Link, redirect } from "react-router";
 import BookingFormAdvanced from "~/components/custom-components/forms/BookingFormAdvanced";
 import DoctorCard from "~/components/custom-components/cards/DoctorCard";
 import { tabLabel } from "~/helper/tabLabel";
+import { validateBookingFormAdvanced } from "~/helper/validateBookingFormAdvanced";
 
 export function meta({loaderData}: Route.MetaArgs) {
   // if the loaderData is null or undefined fallback to empty object
@@ -27,7 +28,8 @@ export const clientLoader = async ({params}: Route.ClientLoaderArgs) => {
   // fetch data from api
   const doctorData = doctorArray.find(doctor => doctor.id === doctorId);
   const relatedDoctorArray = doctorArray.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId)
-  return { doctorData, relatedDoctorArray }
+  const customerData = customerArr[0]
+  return { doctorData, relatedDoctorArray, customerData }
  }
 
 export type FormError = {
@@ -36,43 +38,36 @@ export type FormError = {
   slot?: string
 }
 
-export const clientAction = async ({request}: Route.ClientActionArgs) => { 
-  const formData = await request.formData()
-  const inputData = Object.fromEntries(formData)
-  const errors: FormError = {
-    speciality: '', date: '', slot: ''
-  };
+export const clientAction = async ({request, url}: Route.ClientActionArgs) => { 
+  const formData = await request.formData() // get submitted form data
+  const inputData = Object.fromEntries(formData) // convert formData into a plain object for easier handling
+  const { errors } = validateBookingFormAdvanced(inputData as BookingDataType & {["appointment-slot"]: string;}) // validate the form inputs using the advanced validator (includes appointment slot)
+  const customerDataError = errors.customerName || errors.customerEmail || errors.customerPhone // check if there are any errors in customer details
+  const bookingError = errors.doctorSpeciality || errors.appointmentDate || errors.appointmentSlot // check if there are any errors in booking details (speciality, date, slot)
+  const {pathname} = url // get current page path to store for redirect later
+
+  if(customerDataError && !bookingError){
+    // if customer details are invalid but booking details are fine
+    sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType & {["appointment-slot"]: string;}))
+    // temporarily save booking data in session storage
+    return redirect('/login') // redirect user to login page
+  }
   
-  // validation logic
-  if (!inputData.speciality) {
-    errors.speciality = 'Please select a speciality'
+  if(bookingError) {
+    // if booking details are invalid, return errors so they can be displayed on the form
+    return { errors }
   }
-  if (!inputData.date) {
-    errors.date = 'Please select an available date'
-  }
-  if (!inputData.slot) {
-    errors.slot = 'Please select an available slot'
-  }
-
   
-  // Check if any errors exist
-  const hasErrors = Object.values(errors).some((error) => error !== "");
-
-  if (hasErrors) {
-    // Return errors + status code
-    return data({ errors }, { status: 400 });
-  }
-
-  // Post data to API or handle booking logic
-  console.log(inputData)
-
-  // else, return success + errors as undefined
-  return redirect('../our-doctors')
+  // if no errors, save booking data and redirect path
+  sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType & {["appointment-slot"]: string;}))
+  sessionStorage.setItem("redirectPath", pathname)
+  
+  return redirect('/thank-you') // redirect user to thank-you page after successful booking
 
  }
 
 export default function DoctorDetails({loaderData, actionData}: Route.ComponentProps) {
-  const { doctorData, relatedDoctorArray } = loaderData;
+  const { doctorData, relatedDoctorArray, customerData } = loaderData;
   if(!doctorData || !relatedDoctorArray) return null;
   const errors = actionData?.errors
   return (
@@ -149,9 +144,9 @@ export default function DoctorDetails({loaderData, actionData}: Route.ComponentP
             </Wrapper>
           </SlideInRight>
           {/************************************ Availabele Slot booking box ************************************/}
-          <SlideInRight className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7">
+          <SlideInRight className="flex flex-col gap-y-4 xmd:w-full 2xmd:gap-y-7" id="book-appointment">
             <Wrapper className="border border-rf-grey-100/40 rounded-md [&>div]:flex [&>div]:flex-col [&>div]:gap-y-4">
-              <BookingFormAdvanced doctorData={doctorData} errors={errors}/>
+              <BookingFormAdvanced doctorData={doctorData} errors={errors} userData={customerData}/>
             </Wrapper>
           </SlideInRight>
         </div>

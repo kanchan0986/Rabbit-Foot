@@ -57,7 +57,7 @@ export function DatePickerInput() {
       <InputGroupInput
         id="date-required"
         value={value} // Display formatted date string
-        name="date"
+        name="appointment-date"
         required
         placeholder="June 01, 2025" // Example placeholder format
         onChange={(e) => {

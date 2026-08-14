@@ -8,9 +8,10 @@ type SlideInRightProps = {
     children: React.ReactNode;
     delay?: number;
     customScreenSize?: string;
+    id?: string;
 }
 
-export default function SlideInRight({className, children, delay, customScreenSize}: SlideInRightProps) {
+export default function SlideInRight({className, children, delay, customScreenSize, id}: SlideInRightProps) {
   // Hook to check if the screen size matches the given custom size or defaults to laptop size (≥ 992px)
   const isLaptop = useMediaQuery( customScreenSize || "(min-width: 992px)");
 
@@ -35,6 +36,7 @@ export default function SlideInRight({className, children, delay, customScreenSi
         key={isLaptop ? "large" : "small"} // important to remount the variant
         variants={isLaptop ? slideInVariant : fadeInVariant}
         transition={{duration: 0.5, ease: 'easeIn', delay: delay || 0}}
+        id={id}
     >
         {children}
     </motion.div>
@@ -48,6 +50,7 @@ export default function SlideInRight({className, children, delay, customScreenSi
         variants={isLaptop ? slideInVariant : fadeInVariant}
         transition={{duration: 0.5, ease: 'easeIn', delay: delay || 0}}
         viewport={{ once: true, amount: 0.5 }}
+        id={id}
     >
         {children}
     </motion.div>
