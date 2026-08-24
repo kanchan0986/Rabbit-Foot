@@ -10,7 +10,7 @@ import SlideInRight from '~/components/custom-components/animations/SlideInRight
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import heart from '~/assets/Heart.png';
-import { customerArr, doctorArray, servicesArray, specialityArray, type BookingDataType } from '~/data/static-data';
+import { customerArr, doctorArray, servicesArray, specialityArray, type BookingDataType, type Customer } from '~/data/static-data';
 import FadeIn from '~/components/custom-components/animations/FadeIn';
 import BookingForm from '~/components/custom-components/forms/BookingForm';
 import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
@@ -28,7 +28,9 @@ export const clientLoader = ({} : Route.ClientLoaderArgs) => {
   // make api call
   const servicesData = servicesArray
   const specialityData = specialityArray;
-  const customerData = customerArr[0]
+  const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
+  const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
+  const customerData = customerArr.find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
   const doctorData = doctorArray
   return { servicesData, specialityData, customerData, doctorData };
  }
@@ -43,6 +45,7 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
 
   if(customerDataError && !bookingError){
     sessionStorage.setItem("bookingData", JSON.stringify(data))
+    sessionStorage.setItem("redirectPath", pathname)
     return redirect('/login')
   }
   

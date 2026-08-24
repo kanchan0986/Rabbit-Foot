@@ -12,14 +12,16 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import Logo from "../../vectors/Logo";
-import type { NavMenu as NavMenuData } from "~/data/static-data";
+import type { Customer, Doctor, NavMenu as NavMenuData } from "~/data/static-data";
 import { CollapsibleMenu } from "../../CollapsibleMenu";
+import { FaUser, FaUserDoctor } from "react-icons/fa6";
 
 type MobileNavigationProps = {
-  navMenu: NavMenuData[]
+  navMenu: NavMenuData[];
+  userData?: Customer | Doctor;
 };
 
-export default function MobileNavigation({navMenu}: MobileNavigationProps) {
+export default function MobileNavigation({navMenu, userData}: MobileNavigationProps) {
   return (
     <nav className="flex items-center gap-x-2">
       {/* Main navigation link with active state styling */}
@@ -108,20 +110,62 @@ export default function MobileNavigation({navMenu}: MobileNavigationProps) {
                   <CollapsibleMenu key={idx} menuItem={menuItem} isMobile/>
               ))}
               {/* Telephone call link */}
-              <a href="tel:+18001234567" className="active:text-rf-primary-100">
-                Call Us Now
-              </a>
-              {/* Login link */}
-              <NavLink
-                to="login"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-rf-primary-100"
-                    : "active:text-rf-primary-100"
-                }
-              >
-                Login
-              </NavLink>
+                <a href="tel:+18001234567" className="active:text-rf-primary-100">
+                  <DrawerClose className="hover:cursor-pointer">Call Us Now</DrawerClose>
+                </a>
+              {/* Show login link if userData doesn't exist */}
+              {!userData &&
+                <NavLink
+                  to="login"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-rf-primary-100"
+                      : "active:text-rf-primary-100"
+                  }
+                >
+                  <DrawerClose className="hover:cursor-pointer">Login</DrawerClose>
+                </NavLink>
+              }
+
+              {/* Show dashboard link if userData is present */}
+              {userData &&
+                <NavLink
+                  to='/profile'
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-rf-primary-100 self-start [&>button>div]:border-rf-primary"
+                      : "hover:text-rf-primary-100 active:text-rf-primary-100 self-start [&>button>div]:border-black active:[&>button>div]:border-rf-primary hover:[&>button>div]:border-rf-primary"
+                  }
+                >
+                <DrawerClose className="hover:cursor-pointer flex items-center gap-2">
+                  {/* Show customer profile icon if user is a customer */}
+                  {userData.type === 'customer' &&
+                  <div className="border rounded-full p-1">
+                    <FaUser className="size-3" />
+                  </div>}
+                  {/* Show doctor profile icon if user is a doctor */}
+                  {userData.type === 'doctor' &&
+                  <div className="border rounded-full p-1">
+                    <FaUserDoctor className="size-3" />
+                  </div>}
+                  <span>Profile</span>
+                </DrawerClose>
+                </NavLink>
+              }
+
+              {/* Show logout link if userData is present */}
+              {userData &&
+                <NavLink
+                  to="logout"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-rf-primary-100"
+                      : "active:text-rf-primary-100"
+                  }
+                >
+                  <DrawerClose className="hover:cursor-pointer">Logout</DrawerClose>
+                </NavLink>
+              }
             </div>
           </DrawerContent>
         </Drawer>

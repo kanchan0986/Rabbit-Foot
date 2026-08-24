@@ -1,4 +1,4 @@
-import { customerArr, doctorArray, type BookingDataType } from "~/data/static-data";
+import { customerArr, doctorArray, type BookingDataType, type Customer } from "~/data/static-data";
 import type { Route } from "./+types/doctor-details";
 import Wrapper from "~/components/custom-components/Wrapper";
 import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
@@ -28,7 +28,9 @@ export const clientLoader = async ({params}: Route.ClientLoaderArgs) => {
   // fetch data from api
   const doctorData = doctorArray.find(doctor => doctor.id === doctorId);
   const relatedDoctorArray = doctorArray.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId)
-  const customerData = customerArr[0]
+  const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
+  const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
+  const customerData = customerArr.find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
   return { doctorData, relatedDoctorArray, customerData }
  }
 
@@ -49,6 +51,7 @@ export const clientAction = async ({request, url}: Route.ClientActionArgs) => {
   if(customerDataError && !bookingError){
     // if customer details are invalid but booking details are fine
     sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType & {["appointment-slot"]: string;}))
+    sessionStorage.setItem("redirectPath", pathname)
     // temporarily save booking data in session storage
     return redirect('/login') // redirect user to login page
   }

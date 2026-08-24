@@ -1,14 +1,16 @@
 import { NavLink } from "react-router";
 import Logo from "../../vectors/Logo";
-import { type NavMenu as NavMenuData } from "~/data/static-data";
+import { type Customer, type Doctor, type NavMenu as NavMenuData } from "~/data/static-data";
 import { NavMenu } from "../../NavMenu";
 import { NavigationMenu, NavigationMenuList } from "~/components/ui/navigation-menu";
+import { FaUser, FaUserDoctor } from "react-icons/fa6";
 
 type TabletNavigationProps = {
-  navMenu: NavMenuData[]
+  navMenu: NavMenuData[];
+  userData?: Customer | Doctor;
 };
 
-export default function TabletNavigation({navMenu}: TabletNavigationProps) {
+export default function TabletNavigation({navMenu, userData}: TabletNavigationProps) {
   return (
     <nav className="flex flex-col items-center gap-y-2">
       {/* Logo + brand link */}
@@ -51,17 +53,59 @@ export default function TabletNavigation({navMenu}: TabletNavigationProps) {
           Call Us Now
         </a>
 
-        {/* Login link */}
-        <NavLink
-          to="login"
-          className={({ isActive }) =>
-            isActive
-              ? "text-rf-primary-100"
-              : "hover:text-rf-primary-100 active:text-rf-primary-100 p-2"
-          }
-        >
-          Login
-        </NavLink>
+        {/* Show login link if userData doesn't exist */}
+        {!userData &&
+          <NavLink
+            to="login"
+            className={({ isActive }) =>
+              isActive
+                ? "text-rf-primary-100 p-2"
+                : "hover:text-rf-primary-100 p-2 active:text-rf-primary-100"
+            }
+          >
+            Login
+          </NavLink>
+        }
+
+        {/* Show dashboard link if userData is present */}
+        {userData &&
+          <NavLink
+            to='/profile'
+            className={({ isActive }) =>
+              isActive
+                ? "text-rf-primary-100 p-2 [&>div]:border-rf-primary"
+                : "hover:text-rf-primary-100 active:text-rf-primary-100 p-2 [&>div]:border-black active:[&>div]:border-rf-primary hover:[&>div]:border-rf-primary"
+            }
+          >
+
+            {/* Show customer profile icon if user is a customer */}
+            {userData.type === 'customer' && 
+            <div className="border-2 rounded-full p-1.25">
+              <FaUser className="size-5" />
+            </div>}
+
+            {/* Show doctor profile icon if user is a doctor */}
+            {userData.type === 'doctor' && 
+            <div className="border-2 rounded-full p-1.25">
+              <FaUserDoctor className="size-5" />
+            </div>}
+
+          </NavLink>
+        }
+
+        {/* Show logout link if userData is present */}
+        {userData &&
+          <NavLink
+            to="logout"
+            className={({ isActive }) =>
+              isActive
+                ? "text-rf-primary-100"
+                : "hover:text-rf-primary-100 active:text-rf-primary-100 p-2"
+            }
+          >
+            Logout
+          </NavLink>
+        }
       </div>
     </nav>
   );

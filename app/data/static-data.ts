@@ -157,6 +157,7 @@ export type Doctor = {
   fee: number;
   details: string[];
   availability: boolean;
+  password: string;
 } & { readonly type: 'doctor'}
 
 export const specialityArray : Speciality[] = [
@@ -177,6 +178,7 @@ export const doctorArray : Doctor[] = [
     availability: true,
     speciality: ["crowns", "extractions"],
     schedule: [],
+    password: '12345',
     type: "doctor"
   },
   {
@@ -201,6 +203,7 @@ export const doctorArray : Doctor[] = [
             slot: ['10:00 am', '03:00 pm', '04:00 pm', '05:00 pm']
         },
     ],
+    password: '12345',
     type: "doctor"
   },
   {
@@ -216,6 +219,7 @@ export const doctorArray : Doctor[] = [
     availability: true,
     speciality: ["fluoride-treatments", "hospital-dentistry", "mouthguards", "restorations"],
     schedule: [],
+    password: '12345',
     type: "doctor"
   },
   {
@@ -231,6 +235,7 @@ export const doctorArray : Doctor[] = [
     availability: true,
     speciality: ["nerve-treatments", "crowns", "nitrous-oxide-analgesia", "space-maintainers"],
     schedule: [],
+    password: '12345',
     type: "doctor"
   },
   {
@@ -246,6 +251,7 @@ export const doctorArray : Doctor[] = [
     availability: true,
     speciality: ["whitening", "restorations", "hospital-dentistry", "mouthguards", "sealants"],
     schedule: [],
+    password: '12345',
     type: "doctor"
   },
 ]
@@ -1921,6 +1927,7 @@ export type Customer = {
   email: string;
   phone: number;
   address?: string;
+  password: string;
 } & { readonly type: 'customer'}
 
 export type BookingDataType = {
@@ -1939,6 +1946,27 @@ export const customerArr : Customer[] = [
     name: 'John Doe',
     email: 'john.doe@gmail.com',
     phone: 1234567890,
+    password: '12345',
+    type: 'customer'
+  },
+  {
+    id: generateRandomId(),
+    name: 'Philip Kotler',
+    email: 'philip.kotler@gmail.com',
+    phone: 1234567890,
+    password: '12345',
     type: 'customer'
   },
 ]
+
+
+export type LoginDataType = {
+  username: string;
+  password: string;
+}
+
+export type SignUpDataType = {
+  name: string;
+  email: string;
+  phone: string;
+}

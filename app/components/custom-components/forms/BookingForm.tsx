@@ -14,7 +14,7 @@ type BookingFormProps = {
   formType?: 'split';
   doctorData: Doctor[];
   specialityData: Speciality[];
-  userData: Customer;
+  userData?: Customer;
 }
 
 export default function BookingForm({inputBoxStyles, buttonStyles, formType, doctorData, userData, specialityData}: BookingFormProps) {
@@ -48,19 +48,19 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
                 <input
                     type="hidden"
                     name="customer-name"
-                    defaultValue={userData.name}
+                    defaultValue={userData?.name}
                 />
                 {/* hidden customer email input */}
                 <input
                     type="hidden"
                     name="customer-email"
-                    value={userData.email}
+                    value={userData?.email}
                 />
                 {/* hidden customer phone input */}
                 <input
                     type="hidden"
                     name="customer-phone"
-                    value={userData.phone} 
+                    value={userData?.phone} 
                 />
                 {/* hidden doctor fee input */}
                 <input

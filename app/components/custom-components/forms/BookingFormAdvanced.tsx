@@ -12,7 +12,7 @@ import type { ValidationAdvancedErrorsTypes } from "~/helper/validateBookingForm
 type BookingFormAdvancedProps = {
     doctorData: Doctor;
     errors?: ValidationAdvancedErrorsTypes;
-    userData: Customer;
+    userData?: Customer;
 }
 
 // doctor's availability slots
@@ -120,19 +120,19 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
                 <input
                     type="hidden"
                     name="customer-name"
-                    defaultValue={userData.name}
+                    defaultValue={userData?.name}
                 />
                 {/* hidden customer email input */}
                 <input
                     type="hidden"
                     name="customer-email"
-                    value={userData.email}
+                    value={userData?.email}
                 />
                 {/* hidden customer phone input */}
                 <input
                     type="hidden"
                     name="customer-phone"
-                    value={userData.phone} 
+                    value={userData?.phone} 
                 />
                 {/* hidden doctor name input */}
                 <input

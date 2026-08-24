@@ -14,7 +14,11 @@ export default function TopNavigation({}: TopNavigationProps) {
   useEffect(() => {
     const element = document.getElementById('book-appointment');
     if(element){
-      setBookAppointmenLink(`${pathname}/#book-appointment`)
+      if(pathname !== '/') {
+        setBookAppointmenLink(`${pathname}/#book-appointment`)
+      }else{
+        setBookAppointmenLink('./#book-appointment')
+      }
     }else{
       setBookAppointmenLink('./#book-appointment')
     }

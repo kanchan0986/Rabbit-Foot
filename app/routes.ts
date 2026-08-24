@@ -17,6 +17,10 @@ export default [
         ]),
         route("office-locations", "routes/office-locations.tsx"),
         route("login", "routes/login.tsx"),
+        route("logout", "routes/logout.tsx"),
+        layout("layouts/dashboard-layout.tsx", [
+            route("profile", "routes/profile.tsx"),
+        ]),
         route("thank-you", "routes/thank-you.tsx"),
     ])
 ] satisfies RouteConfig;

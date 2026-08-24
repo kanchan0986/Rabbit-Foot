@@ -25,7 +25,7 @@ import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
 import SlideInRight from "~/components/custom-components/animations/SlideInRight";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import FadeIn from "~/components/custom-components/animations/FadeIn";
-import { servicesArray, galleryArray, testimonialArray, customerArr, doctorArray, specialityArray, type BookingDataType } from "~/data/static-data";
+import { servicesArray, galleryArray, testimonialArray, customerArr, doctorArray, specialityArray, type BookingDataType, type Customer } from "~/data/static-data";
 import { tabLabel } from "~/helper/tabLabel";
 import validateBookingForm from "~/helper/validateBookingForm";
 
@@ -42,7 +42,9 @@ export function meta({location}: Route.MetaArgs) {
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
   // fetch data from api
   const servicesData = servicesArray
-  const customerData = customerArr[0]
+  const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
+  const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
+  const customerData = customerArr.find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
   const doctorData = doctorArray
   const specialityData = specialityArray;
   return {servicesData, customerData, doctorData, specialityData};
@@ -58,6 +60,7 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
 
   if(customerDataError && !bookingError){
     sessionStorage.setItem("bookingData", JSON.stringify(data))
+    sessionStorage.setItem("redirectPath", pathname)
     return redirect('/login')
   }
   
@@ -68,7 +71,7 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
   sessionStorage.setItem("bookingData", JSON.stringify(data))
   sessionStorage.setItem("redirectPath", pathname)
   return redirect('/thank-you')
- }
+}
 
 export default function Home({loaderData} : Route.ComponentProps) {
   const { servicesData, customerData, doctorData, specialityData } = loaderData

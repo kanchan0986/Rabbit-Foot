@@ -10,7 +10,7 @@ import { Button } from '~/components/ui/button';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import { FaClipboardCheck, FaRegCircle } from 'react-icons/fa6';
-import { customerArr, doctorArray, funToKnowFacts, goodToKnowFacts, specialityArray, type BookingDataType } from '~/data/static-data';
+import { customerArr, doctorArray, funToKnowFacts, goodToKnowFacts, specialityArray, type BookingDataType, type Customer } from '~/data/static-data';
 import SpacerVector from '~/components/custom-components/vectors/SpacerVector';
 import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
 import FadeIn from '~/components/custom-components/animations/FadeIn';
@@ -28,7 +28,9 @@ export function meta({location}: Route.MetaArgs) {
 
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
   const specialityData = specialityArray;
-  const customerData = customerArr[0]
+  const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
+  const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
+  const customerData = customerArr.find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
   const doctorData = doctorArray
   return { specialityData, customerData, doctorData };
  }
@@ -44,6 +46,7 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
   if(customerDataError && !bookingError){
     // if customer details are invalid but booking details are fine
     sessionStorage.setItem("bookingData", JSON.stringify(data))
+    sessionStorage.setItem("redirectPath", pathname)
     // temporarily save booking data in session storage
     return redirect('/login')
   }
