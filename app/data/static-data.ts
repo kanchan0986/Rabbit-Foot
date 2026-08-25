@@ -146,17 +146,18 @@ export type Schedule = {
 
 export type Doctor = {
   id: string;
-  imageUrl: string;
+  imageUrl?: string;
   name: string;
   email: string;
-  address: string;
-  experience: number;
-  speciality: Speciality[];
-  schedule: Schedule[];
-  degree: Degree[];
-  fee: number;
-  details: string[];
-  availability: boolean;
+  phone?: number;
+  address?: string;
+  experience?: number;
+  speciality?: Speciality[];
+  schedule?: Schedule[];
+  degree?: Degree[];
+  fee?: number;
+  details?: string[];
+  availability?: boolean;
   password: string;
 } & { readonly type: 'doctor'}
 
@@ -1928,6 +1929,7 @@ export type Customer = {
   phone: number;
   address?: string;
   password: string;
+  subscriber: boolean;
 } & { readonly type: 'customer'}
 
 export type BookingDataType = {
@@ -1947,6 +1949,7 @@ export const customerArr : Customer[] = [
     email: 'john.doe@gmail.com',
     phone: 1234567890,
     password: '12345',
+    subscriber: true,
     type: 'customer'
   },
   {
@@ -1955,6 +1958,7 @@ export const customerArr : Customer[] = [
     email: 'philip.kotler@gmail.com',
     phone: 1234567890,
     password: '12345',
+    subscriber: false,
     type: 'customer'
   },
 ]
@@ -1969,4 +1973,8 @@ export type SignUpDataType = {
   name: string;
   email: string;
   phone: string;
-}
+  password: string;
+  subscriber?: boolean;
+} & { readonly type: 'customer' | 'doctor'; }
+
+export type User = 'customer' | 'doctor';

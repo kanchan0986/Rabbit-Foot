@@ -54,6 +54,12 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
     // Redirect customer to thank-you page after booking
     return redirect('/thank-you')
   }
+  
+  // If booking data exists and user is a doctor, clear booking data and redirect path from sessionStorage
+  if(bookingData && user?.type === "doctor") {
+    sessionStorage.removeItem("bookingData")
+    sessionStorage.removeItem("redirectPath")
+  }
 
   // If it is just a login then save user data to session storage and redirect to profile page
   sessionStorage.setItem("userData", JSON.stringify(user))
@@ -113,6 +119,20 @@ export default function Login({loaderData, actionData}: Route.ComponentProps) {
                 <IoLogInOutline className='size-5'/>
                 <span className="xl:text-xbase">Login</span>
               </button>
+            </SlideInUp>
+
+            {/* Divider text */}
+            <small className='text-center'>------ or ------</small>
+
+            {/* Sign-up button */}
+            <SlideInUp delay={0.1} className="rounded-full 2xmd:hover:shadow-rf-direct-100 justify-self-center w-60">
+              {/* Submit button */}
+              <Link to="/sign-up">
+                <button type='button' className="w-full flex gap-x-2 items-center justify-center outline outline-rf-white-100 bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-200 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
+                  <IoLogIn className='size-5'/>
+                  <span className="xl:text-xbase">Sign Up for Credentials</span>
+                </button>
+              </Link>
             </SlideInUp>
 
           </div>

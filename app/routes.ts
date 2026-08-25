@@ -18,6 +18,7 @@ export default [
         route("office-locations", "routes/office-locations.tsx"),
         route("login", "routes/login.tsx"),
         route("logout", "routes/logout.tsx"),
+        route("sign-up", "routes/sign-up.tsx"),
         layout("layouts/dashboard-layout.tsx", [
             route("profile", "routes/profile.tsx"),
         ]),
