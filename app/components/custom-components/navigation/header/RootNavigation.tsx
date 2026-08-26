@@ -72,8 +72,8 @@ export default function RootNavigation({navMenu, userData}: RootNavigationProps)
           </NavLink>
         }
 
-        {/* Show dashboard link if userData is present */}
-        {userData &&
+        {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor */}
+        {userData && (userData.type === "customer" || userData.type === "doctor" && userData.isVerified) &&
           <NavLink
             to='/profile'
             className={({ isActive }) =>
@@ -87,7 +87,7 @@ export default function RootNavigation({navMenu, userData}: RootNavigationProps)
               <FaUser className="size-4" />
             </div>}
 
-            {/* Show doctor profile icon if user is a doctor */}
+            {/* Show doctor profile icon if user is a verified doctor */}
             {userData.type === 'doctor' && <div className="border-2 rounded-full p-1.25">
               <FaUserDoctor className="size-4" />
             </div>}

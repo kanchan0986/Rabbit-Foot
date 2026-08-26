@@ -1,7 +1,7 @@
 import { tabLabel } from '~/helper/tabLabel';
 import type { Customer, Doctor } from '~/data/static-data';
 import type { Route } from './+types/dashboard-layout';
-import { Navigate, Outlet } from 'react-router';
+import { Outlet, redirect } from 'react-router';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -15,17 +15,24 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
 
   const userData : Customer | Doctor = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object if it exists
 
+  // if any un-authenticated users accidentally access this path, should be redirected to login page
+  if (!userData) {
+    return redirect('/login');
+  }
+
+  // if any un-verified doctor accidentally access this path, should be redirected to under review page
+  if (userData.type === 'doctor' && !userData.isVerified) {
+    return redirect('/under-review');
+  }
+
   return { userData }
  }
 
-export default function DashboardLayout({loaderData}: Route.ComponentProps) {
-    const { userData } = loaderData
-    const userIsDoctor = userData?.type === 'doctor';
-    const userIsCustomer = userData?.type === 'customer';
-
+export default function DashboardLayout({}: Route.ComponentProps) {
   return (
     <main className='h-screen'>
-        {userIsDoctor || userIsCustomer ? <Outlet/> : <Navigate to="/login" />}
+        {/* authenticated and verified users should move further */}
+        <Outlet/>
     </main>
   )
 }

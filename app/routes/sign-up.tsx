@@ -10,7 +10,7 @@ import { IoLogIn, IoLogInOutline } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import type { Route } from './+types/sign-up';
 import ValidateSignupForm from '~/helper/validateSignupForm';
-import type { BookingDataType, SignUpDataType, User } from '~/data/static-data';
+import type { BookingDataType, Doctor, SignUpDataType, User } from '~/data/static-data';
 import { useState } from 'react';
 
 export function meta({location}: Route.MetaArgs) {
@@ -51,13 +51,22 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
     return redirect('/thank-you')
   }
 
-  // If booking data exists and user is a doctor, clear booking data and redirect path from sessionStorage
-  if(bookingData && user?.type === "doctor") {
-    sessionStorage.removeItem("bookingData")
-    sessionStorage.removeItem("redirectPath")
+  // If the user is a doctor
+  if(user?.type === 'doctor'){
+    // For any type of signup, with or without booking data, save user data to session storage and mark isVerified as false
+    sessionStorage.setItem("userData", JSON.stringify({...user, isVerified: false} as Doctor))
+
+    // But if the booking data exists, clear booking data and redirect path from sessionStorage
+    if(bookingData) {
+      sessionStorage.removeItem("bookingData")
+      sessionStorage.removeItem("redirectPath")
+    }
+
+    // redirect to under-review page 
+    return redirect('/under-review')
   }
 
-  // If it is just a login then save user data to session storage and redirect to profile page
+  // If it is just a signup then save user data to session storage and redirect to profile page
   if(user) sessionStorage.setItem("userData", JSON.stringify(user))
   return redirect('/profile')
 

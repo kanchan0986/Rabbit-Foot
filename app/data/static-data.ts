@@ -159,6 +159,7 @@ export type Doctor = {
   details?: string[];
   availability?: boolean;
   password: string;
+  isVerified: boolean;
 } & { readonly type: 'doctor'}
 
 export const specialityArray : Speciality[] = [
@@ -180,6 +181,7 @@ export const doctorArray : Doctor[] = [
     speciality: ["crowns", "extractions"],
     schedule: [],
     password: '12345',
+    isVerified: true,
     type: "doctor"
   },
   {
@@ -205,6 +207,7 @@ export const doctorArray : Doctor[] = [
         },
     ],
     password: '12345',
+    isVerified: false,
     type: "doctor"
   },
   {
@@ -221,6 +224,7 @@ export const doctorArray : Doctor[] = [
     speciality: ["fluoride-treatments", "hospital-dentistry", "mouthguards", "restorations"],
     schedule: [],
     password: '12345',
+    isVerified: true,
     type: "doctor"
   },
   {
@@ -237,6 +241,7 @@ export const doctorArray : Doctor[] = [
     speciality: ["nerve-treatments", "crowns", "nitrous-oxide-analgesia", "space-maintainers"],
     schedule: [],
     password: '12345',
+    isVerified: true,
     type: "doctor"
   },
   {
@@ -253,6 +258,7 @@ export const doctorArray : Doctor[] = [
     speciality: ["whitening", "restorations", "hospital-dentistry", "mouthguards", "sealants"],
     schedule: [],
     password: '12345',
+    isVerified: true,
     type: "doctor"
   },
 ]

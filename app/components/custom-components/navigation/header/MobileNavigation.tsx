@@ -127,8 +127,8 @@ export default function MobileNavigation({navMenu, userData}: MobileNavigationPr
                 </NavLink>
               }
 
-              {/* Show dashboard link if userData is present */}
-              {userData &&
+              {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor */}
+              {userData && (userData.type === "customer" || userData.type === "doctor" && userData.isVerified) &&
                 <NavLink
                   to='/profile'
                   className={({ isActive }) =>
@@ -143,7 +143,7 @@ export default function MobileNavigation({navMenu, userData}: MobileNavigationPr
                   <div className="border rounded-full p-1">
                     <FaUser className="size-3" />
                   </div>}
-                  {/* Show doctor profile icon if user is a doctor */}
+                  {/* Show doctor profile icon if user is a verified doctor */}
                   {userData.type === 'doctor' &&
                   <div className="border rounded-full p-1">
                     <FaUserDoctor className="size-3" />

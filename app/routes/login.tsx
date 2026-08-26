@@ -54,12 +54,27 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
     // Redirect customer to thank-you page after booking
     return redirect('/thank-you')
   }
-  
-  // If booking data exists and user is a doctor, clear booking data and redirect path from sessionStorage
-  if(bookingData && user?.type === "doctor") {
-    sessionStorage.removeItem("bookingData")
-    sessionStorage.removeItem("redirectPath")
+
+  // If the user is a doctor
+  if(user?.type === 'doctor'){
+    // For any type of login, with or without booking data, save user data to session storage
+    sessionStorage.setItem("userData", JSON.stringify(user))
+
+    // But if the booking data exists, clear booking data and redirect path from sessionStorage
+    if(bookingData) {
+      sessionStorage.removeItem("bookingData")
+      sessionStorage.removeItem("redirectPath")
+    }
+
+    if(user.isVerified){
+      // if the doctor is verified, show their profile
+      return redirect('/profile')
+    }else{
+      // if the doctor is not verified, redirect to under-review route
+      return redirect('/under-review')
+    }
   }
+  
 
   // If it is just a login then save user data to session storage and redirect to profile page
   sessionStorage.setItem("userData", JSON.stringify(user))

@@ -23,5 +23,6 @@ export default [
             route("profile", "routes/profile.tsx"),
         ]),
         route("thank-you", "routes/thank-you.tsx"),
+        route("under-review", "routes/under-review.tsx"),
     ])
 ] satisfies RouteConfig;
