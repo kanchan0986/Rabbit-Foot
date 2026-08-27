@@ -1,5 +1,5 @@
 import { tabLabel } from '~/helper/tabLabel';
-import type { Customer, Doctor } from '~/data/static-data';
+import type { Administrator, Customer, Doctor } from '~/data/static-data';
 import type { Route } from './+types/dashboard-layout';
 import { Outlet, redirect } from 'react-router';
 
@@ -13,7 +13,7 @@ export function meta({location}: Route.MetaArgs) {
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
   const userDataStringified = sessionStorage.getItem("userData") // get user data stored in sessionStorage
 
-  const userData : Customer | Doctor = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object if it exists
+  const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object if it exists
 
   // if any un-authenticated users accidentally access this path, should be redirected to login page
   if (!userData) {
@@ -22,6 +22,11 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
 
   // if any un-verified doctor accidentally access this path, should be redirected to under review page
   if (userData.type === 'doctor' && !userData.isVerified) {
+    return redirect('/under-review');
+  }
+
+  // if any un-verified administrator accidentally access this path, should be redirected to under review page
+  if (userData.type === 'administrator' && !userData.isVerified) {
     return redirect('/under-review');
   }
 

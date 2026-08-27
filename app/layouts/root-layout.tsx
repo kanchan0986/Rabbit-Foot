@@ -11,13 +11,13 @@ import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import Wrapper from "~/components/custom-components/Wrapper";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
 import type { Route } from "./+types/root-layout";
-import { navMenuArr, type Customer, type Doctor } from "~/data/static-data";
+import { navMenuArr, type Administrator, type Customer, type Doctor } from "~/data/static-data";
 
 export const clientLoader = ({}:Route.ClientLoaderArgs) => { 
   // fetch data from api
   const navMenuData = navMenuArr
   const userDataStringified = sessionStorage.getItem("userData"); // Retrieve user data string from session storage (if it exists)
-  const userData: Customer | Doctor = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object or Doctor Object (only if data exists)
+  const userData: Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object or Doctor Object (only if data exists)
   return { navMenuData, userData }
  }
 

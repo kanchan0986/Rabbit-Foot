@@ -12,13 +12,14 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import Logo from "../../vectors/Logo";
-import type { Customer, Doctor, NavMenu as NavMenuData } from "~/data/static-data";
+import type { Administrator, Customer, Doctor, NavMenu as NavMenuData } from "~/data/static-data";
 import { CollapsibleMenu } from "../../CollapsibleMenu";
 import { FaUser, FaUserDoctor } from "react-icons/fa6";
+import { RiAdminFill } from "react-icons/ri";
 
 type MobileNavigationProps = {
   navMenu: NavMenuData[];
-  userData?: Customer | Doctor;
+  userData?: Customer | Doctor | Administrator;
 };
 
 export default function MobileNavigation({navMenu, userData}: MobileNavigationProps) {
@@ -127,8 +128,8 @@ export default function MobileNavigation({navMenu, userData}: MobileNavigationPr
                 </NavLink>
               }
 
-              {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor */}
-              {userData && (userData.type === "customer" || userData.type === "doctor" && userData.isVerified) &&
+              {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor or verified administrator*/}
+              {userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || userData.type === "administrator" && userData.isVerified) &&
                 <NavLink
                   to='/profile'
                   className={({ isActive }) =>
@@ -147,6 +148,11 @@ export default function MobileNavigation({navMenu, userData}: MobileNavigationPr
                   {userData.type === 'doctor' &&
                   <div className="border rounded-full p-1">
                     <FaUserDoctor className="size-3" />
+                  </div>}
+                  {/* Show administrator profile icon if user is a verified administrator */}
+                  {userData.type === 'administrator' &&
+                  <div className="border rounded-full p-1">
+                    <RiAdminFill className="size-3" />
                   </div>}
                   <span>Profile</span>
                 </DrawerClose>

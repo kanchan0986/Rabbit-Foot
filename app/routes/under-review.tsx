@@ -2,7 +2,7 @@ import { tabLabel } from "~/helper/tabLabel";
 import type { Route } from "./+types/under-review";
 import Sky from "~/components/custom-components/vectors/Sky";
 import Wrapper from "~/components/custom-components/Wrapper";
-import type { Customer, Doctor } from "~/data/static-data";
+import type { Administrator, Customer, Doctor } from "~/data/static-data";
 import { Link, redirect } from "react-router";
 import { Button } from "~/components/ui/button";
 
@@ -17,13 +17,13 @@ export function meta({location}: Route.MetaArgs) {
 
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
   const userDataStringified = sessionStorage.getItem("userData") // get user data stored in sessionStorage (stringified JSON)
-  const userData: Doctor | Customer = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an Doctor or Customer object if it exists
+  const userData: Doctor | Customer | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an Doctor or Customer object if it exists
 
   // any un-authenticated user accidentally access this path, should be redirected to login page
   if(!userData) return redirect('/login')
 
-  // if the authenticated user is a customer or verified doctor and accidentally access this path, then should be redirected to their profile page
-  if(userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified))) return redirect('/profile');
+  // if the authenticated user is a customer or verified doctor or verified administrator and accidentally access this path, then should be redirected to their profile page
+  if(userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || (userData.type === "administrator" && userData.isVerified))) return redirect('/profile');
 
   return { userData }
  }

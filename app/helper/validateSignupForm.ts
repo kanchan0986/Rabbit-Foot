@@ -1,4 +1,5 @@
 import { customerArr, doctorArray, type Customer, type Doctor, type SignUpDataType } from "~/data/static-data"
+import { generateDoctorId } from "./generateDoctorId";
 
 export default function ValidateSignupForm(data: SignUpDataType) {
 
@@ -56,12 +57,13 @@ export default function ValidateSignupForm(data: SignUpDataType) {
     // If type of data is doctor, assign user as a doctor
     if(data.type === 'doctor') {
         user = {
-            id: crypto.randomUUID(),
+            id: generateDoctorId(nameInput),
             type: data.type,
             name: nameInput,
             email: emailInput,
             phone: Number(phoneInput),
-            password: passwordInput
+            password: passwordInput,
+            isVerified: false
         }
     }
 

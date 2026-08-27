@@ -1,13 +1,14 @@
 import { NavLink } from "react-router";
 import Logo from "../../vectors/Logo";
-import { type Customer, type Doctor, type NavMenu as NavMenuData } from "~/data/static-data";
+import { type Administrator, type Customer, type Doctor, type NavMenu as NavMenuData } from "~/data/static-data";
 import { NavMenu } from "../../NavMenu";
 import { NavigationMenu, NavigationMenuList } from "~/components/ui/navigation-menu";
 import { FaUser, FaUserDoctor } from "react-icons/fa6";
+import { RiAdminFill } from "react-icons/ri";
 
 type TabletNavigationProps = {
   navMenu: NavMenuData[];
-  userData?: Customer | Doctor;
+  userData?: Customer | Doctor | Administrator;
 };
 
 export default function TabletNavigation({navMenu, userData}: TabletNavigationProps) {
@@ -67,8 +68,8 @@ export default function TabletNavigation({navMenu, userData}: TabletNavigationPr
           </NavLink>
         }
 
-        {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor */}
-        {userData && (userData.type === "customer" || userData.type === "doctor" && userData.isVerified) &&
+        {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor or verified administrator*/}
+        {userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || userData.type === "administrator" && userData.isVerified) &&
           <NavLink
             to='/profile'
             className={({ isActive }) =>
@@ -88,6 +89,12 @@ export default function TabletNavigation({navMenu, userData}: TabletNavigationPr
             {userData.type === 'doctor' && 
             <div className="border-2 rounded-full p-1.25">
               <FaUserDoctor className="size-5" />
+            </div>}
+
+            {/* Show administrator profile icon if user is a verified administrator */}
+            {userData.type === 'administrator' && 
+            <div className="border-2 rounded-full p-1.25">
+              <RiAdminFill className="size-5" />
             </div>}
 
           </NavLink>

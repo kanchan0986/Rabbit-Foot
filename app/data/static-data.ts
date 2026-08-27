@@ -1984,3 +1984,30 @@ export type SignUpDataType = {
 } & { readonly type: 'customer' | 'doctor'; }
 
 export type User = 'customer' | 'doctor';
+
+export type Administrator = {
+  id: string;
+  imageUrl?: string;
+  name: string;
+  email: string;
+  phone?: number;
+  address?: string;
+  password: string;
+  isVerified: boolean;
+  doctors: Doctor[];
+  customers: Customer[];
+} & { readonly type: 'administrator'}
+
+export const adminArr : Administrator[] = [
+  {
+    id: generateRandomId(),
+    name: 'David Jones',
+    email: 'david.jones@gmail.com',
+    phone: 1234567890,
+    password: '12345',
+    isVerified: true,
+    customers: customerArr,
+    doctors: doctorArray,
+    type: "administrator"
+  }
+]

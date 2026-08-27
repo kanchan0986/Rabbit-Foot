@@ -53,8 +53,8 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
   // If the user is a doctor
   if(user?.type === 'doctor'){
-    // For any type of signup, with or without booking data, save user data to session storage and mark isVerified as false
-    sessionStorage.setItem("userData", JSON.stringify({...user, isVerified: false} as Doctor))
+    // For any type of signup, with or without booking data, save user data to session storage
+    sessionStorage.setItem("userData", JSON.stringify(user))
 
     // But if the booking data exists, clear booking data and redirect path from sessionStorage
     if(bookingData) {

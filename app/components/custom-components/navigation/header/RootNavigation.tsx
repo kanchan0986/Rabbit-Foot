@@ -4,12 +4,13 @@ import { PiPhoneCallLight } from "react-icons/pi";
 import Logo from "../../vectors/Logo";
 import { NavMenu } from "../../NavMenu";
 import { NavigationMenu, NavigationMenuList } from "~/components/ui/navigation-menu";
-import type { Customer, Doctor, NavMenu as NavMenuData } from "~/data/static-data";
+import type { Administrator, Customer, Doctor, NavMenu as NavMenuData } from "~/data/static-data";
 import { FaUser, FaUserDoctor } from "react-icons/fa6";
+import { RiAdminFill } from "react-icons/ri";
 
 type RootNavigationProps = {
   navMenu: NavMenuData[];
-  userData?: Customer | Doctor;
+  userData?: Customer | Doctor | Administrator;
 };
 
 export default function RootNavigation({navMenu, userData}: RootNavigationProps) {
@@ -72,8 +73,8 @@ export default function RootNavigation({navMenu, userData}: RootNavigationProps)
           </NavLink>
         }
 
-        {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor */}
-        {userData && (userData.type === "customer" || userData.type === "doctor" && userData.isVerified) &&
+        {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor or verified administrator*/}
+        {userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || (userData.type === "administrator" && userData.isVerified)) &&
           <NavLink
             to='/profile'
             className={({ isActive }) =>
@@ -90,6 +91,11 @@ export default function RootNavigation({navMenu, userData}: RootNavigationProps)
             {/* Show doctor profile icon if user is a verified doctor */}
             {userData.type === 'doctor' && <div className="border-2 rounded-full p-1.25">
               <FaUserDoctor className="size-4" />
+            </div>}
+
+            {/* Show administrator profile icon if user is a verified administrator */}
+            {userData.type === 'administrator' && <div className="border-2 rounded-full p-1.25">
+              <RiAdminFill className="size-4" />
             </div>}
 
           </NavLink>

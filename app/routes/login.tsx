@@ -8,7 +8,7 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { IoLogIn, IoLogInOutline } from "react-icons/io5";
 import { validateLoginForm } from '~/helper/validateLoginForm';
-import type { BookingDataType, Customer, Doctor, LoginDataType } from '~/data/static-data';
+import type { Administrator, BookingDataType, Customer, Doctor, LoginDataType } from '~/data/static-data';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -20,7 +20,7 @@ export function meta({location}: Route.MetaArgs) {
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
   // Retrieve user data string from session storage and parse the string into a Customer or Doctor object if it exists
   const userDataStringified = sessionStorage.getItem("userData")
-  const user: Customer | Doctor = userDataStringified && JSON.parse(userDataStringified)
+  const user: Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified)
   return { user }
  }
 
@@ -74,6 +74,26 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
       return redirect('/under-review')
     }
   }
+
+  // If the user is a administrator
+  if(user?.type === 'administrator'){
+    // For any type of login, with or without booking data, save user data to session storage
+    sessionStorage.setItem("userData", JSON.stringify(user))
+
+    // But if the booking data exists, clear booking data and redirect path from sessionStorage
+    if(bookingData) {
+      sessionStorage.removeItem("bookingData")
+      sessionStorage.removeItem("redirectPath")
+    }
+
+    if(user.isVerified){
+      // if the administrator is verified, show their profile
+      return redirect('/profile')
+    }else{
+      // if the administrator is not verified, redirect to under-review route
+      return redirect('/under-review')
+    }
+  }
   
 
   // If it is just a login then save user data to session storage and redirect to profile page
@@ -94,9 +114,9 @@ export default function Login({loaderData, actionData}: Route.ComponentProps) {
         <Form method='post' className="flex flex-col gap-6 w-full xs:w-md">
           <div className="flex flex-col item-center gap-4">
 
-            {/* Heading changes if user is a doctor */}
+            {/* Heading changes if user is a doctor or an administrator */}
             <h1 className="text-2xl text-center text-rf-primary-100 lg:text-3xl mb-3">
-              Login{user?.type === 'doctor' && ' as a Patient'}
+              Login{(user?.type === 'doctor' || user?.type === 'administrator') && ' as a Patient'}
             </h1>
 
               {/* Username / Email input field */}
