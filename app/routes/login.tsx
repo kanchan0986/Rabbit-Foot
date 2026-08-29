@@ -68,7 +68,7 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
     if(user.isVerified){
       // if the doctor is verified, show their profile
-      return redirect('/profile')
+      return redirect('/dashboard')
     }else{
       // if the doctor is not verified, redirect to under-review route
       return redirect('/under-review')
@@ -88,7 +88,7 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
     if(user.isVerified){
       // if the administrator is verified, show their profile
-      return redirect('/profile')
+      return redirect('/dashboard')
     }else{
       // if the administrator is not verified, redirect to under-review route
       return redirect('/under-review')
@@ -98,7 +98,7 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
   // If it is just a login then save user data to session storage and redirect to profile page
   sessionStorage.setItem("userData", JSON.stringify(user))
-  return redirect('/profile')
+  return redirect('/dashboard')
  }
 
 export default function Login({loaderData, actionData}: Route.ComponentProps) {

@@ -14,7 +14,7 @@ export function meta({loaderData, location}: Route.MetaArgs) {
 export const clientLoader = ({ params }: Route.ClientLoaderArgs) => {
   const subServiceId = params['sub-service-id'];
   const subServicesData = servicesArray.flatMap(services => services.serviceNiche).find(subService => subService?.id === subServiceId)
-  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality.some(speciality => subServicesData?.speciality.includes(speciality) ))
+  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality?.some(speciality => subServicesData?.speciality.includes(speciality) ))
   return { subServicesData, relatedDoctorsData };
 };
 

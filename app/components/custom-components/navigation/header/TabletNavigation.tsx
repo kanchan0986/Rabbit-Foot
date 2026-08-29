@@ -71,7 +71,7 @@ export default function TabletNavigation({navMenu, userData}: TabletNavigationPr
         {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor or verified administrator*/}
         {userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || userData.type === "administrator" && userData.isVerified) &&
           <NavLink
-            to='/profile'
+            to='dashboard'
             className={({ isActive }) =>
               isActive
                 ? "text-rf-primary-100 p-2 [&>div]:border-rf-primary"

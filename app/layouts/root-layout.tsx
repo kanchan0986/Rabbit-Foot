@@ -12,6 +12,7 @@ import Wrapper from "~/components/custom-components/Wrapper";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
 import type { Route } from "./+types/root-layout";
 import { navMenuArr, type Administrator, type Customer, type Doctor } from "~/data/static-data";
+import spacer from '~/assets/spacer-vector-footer.png'
 
 export const clientLoader = ({}:Route.ClientLoaderArgs) => { 
   // fetch data from api
@@ -25,11 +26,13 @@ export default function RootLayout({loaderData}: Route.ComponentProps) {
   const { navMenuData, userData } = loaderData
   const isTablet = useMediaQuery("(min-width: 640px)");
   const isLaptop = useMediaQuery("(min-width: 992px)");
+  const isTabletAndAbove = useMediaQuery("(min-width: 768px)");
 
   const isHomepage = useMatch("/");
   const isAboutUsPage = useMatch("about-us");
   const isDoctorsDetailsPage = useMatch("our-doctors/:doctor-id");
   const isServicesPage = useMatch("services");
+  const isDashboardPage = useMatch("dashboard/*");
 
   // Default navigation menu (mobile)
   let navigationMenu = (
@@ -111,11 +114,16 @@ export default function RootLayout({loaderData}: Route.ComponentProps) {
       {/* Outlet for nested routes */}
       <Outlet />
 
-      {/* Decorated curvy spacer before the footer */}
-      <SpacerVector className={`[&>path:nth-child(2)]:fill-rf-primary-300  ${(isHomepage || isAboutUsPage  || isServicesPage) && '[&>path:nth-child(1)]:fill-rf-secondary'} ${isDoctorsDetailsPage && '[&>path:nth-child(1)]:fill-rf-white-100'} w-full [&>path:nth-child(2)]:drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]`}  />
+      {/* Decorated curvy spacer before the footer but not for dashboard pages*/}
+      {!isDashboardPage && <SpacerVector className={`[&>path:nth-child(2)]:fill-rf-primary-300  ${(isHomepage || isAboutUsPage  || isServicesPage) && '[&>path:nth-child(1)]:fill-rf-secondary'} ${isDoctorsDetailsPage && '[&>path:nth-child(1)]:fill-rf-white-100'} w-full [&>path:nth-child(2)]:drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]`}  />}
+      
+      {/* Decorated curvy spacer before the footer only for dashboard pages */}
+      {isDashboardPage && <img src={spacer} alt="spacer" className="object-cover object-center -mt-18 relative z-1 drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]" />}
       
       {/* Responsive footer navigation menu (mobile/tablet/laptop) */}
       {footerMenu}
+
+      {(!isTabletAndAbove && isDashboardPage) && <div className="h-10 bg-rf-secondary"/>}
     </>
   );
 }

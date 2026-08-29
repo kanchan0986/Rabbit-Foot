@@ -23,7 +23,7 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   if(!userData) return redirect('/login')
 
   // if the authenticated user is a customer or verified doctor or verified administrator and accidentally access this path, then should be redirected to their profile page
-  if(userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || (userData.type === "administrator" && userData.isVerified))) return redirect('/profile');
+  if(userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || (userData.type === "administrator" && userData.isVerified))) return redirect('/dashboard');
 
   return { userData }
  }

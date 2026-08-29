@@ -1,7 +1,10 @@
 import { tabLabel } from '~/helper/tabLabel';
-import type { Administrator, Customer, Doctor } from '~/data/static-data';
+import { dashboardMenuArr, type Administrator, type Customer, type Doctor } from '~/data/static-data';
 import type { Route } from './+types/dashboard-layout';
-import { Outlet, redirect } from 'react-router';
+import { redirect } from 'react-router';
+import { useMediaQuery } from '~/hooks/useMediaQuery';
+import DashboardLayoutForLargeScreen from '~/components/custom-components/dashboard/DashboardLayoutForLargeScreen';
+import DashboardLayoutForSmallScreen from '~/components/custom-components/dashboard/DashboardLayoutForSmallScreen';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -11,6 +14,10 @@ export function meta({location}: Route.MetaArgs) {
 }
 
 export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
+
+  // fetch data from API
+  const dashboardMenu = dashboardMenuArr
+  
   const userDataStringified = sessionStorage.getItem("userData") // get user data stored in sessionStorage
 
   const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object if it exists
@@ -30,14 +37,18 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
     return redirect('/under-review');
   }
 
-  return { userData }
+  return { userData, dashboardMenu }
  }
 
-export default function DashboardLayout({}: Route.ComponentProps) {
-  return (
-    <main className='h-screen'>
-        {/* authenticated and verified users should move further */}
-        <Outlet/>
-    </main>
-  )
+export default function DashboardLayout({loaderData}: Route.ComponentProps) {
+  const isTabletAndAbove = useMediaQuery("(min-width: 768px)");
+  const { dashboardMenu } = loaderData
+  
+  // authenticated and verified users should move further on tablet and above breakpoints
+  if(isTabletAndAbove) {
+    return <DashboardLayoutForLargeScreen data={dashboardMenu} />
+  }
+  
+  // authenticated and verified users should move further on mobile breakpoints
+  return <DashboardLayoutForSmallScreen data={dashboardMenu} />
 }

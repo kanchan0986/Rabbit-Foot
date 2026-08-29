@@ -26,6 +26,11 @@ export const tabLabel = ({data}:TabLabelProps) => {
     capitalizedTabLabel = replaceDashWithSpace.replace(/\b\w/g, char => char.toUpperCase())
   }
 
+  // If data type is location and the path is a root path "/dashboard", return "Profile"
+  if (data.type === 'location' && data.pathname === "/dashboard") {
+    capitalizedTabLabel = "Profile";
+  }
+
   // If data type is doctor
   if(data.type === 'doctor'){
     // regex to find the first letter of each word and turn it to uppercase

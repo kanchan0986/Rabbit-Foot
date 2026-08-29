@@ -131,7 +131,7 @@ export default function MobileNavigation({navMenu, userData}: MobileNavigationPr
               {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor or verified administrator*/}
               {userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || userData.type === "administrator" && userData.isVerified) &&
                 <NavLink
-                  to='/profile'
+                  to='dashboard'
                   className={({ isActive }) =>
                     isActive
                       ? "text-rf-primary-100 self-start [&>button>div]:border-rf-primary"

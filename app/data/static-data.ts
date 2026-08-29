@@ -41,6 +41,8 @@ import type { IconType } from "react-icons/lib";
 import { generateRandomId } from "~/helper/generateRandomId";
 import { FaClipboardCheck } from "react-icons/fa6";
 import buildNavItems from "~/helper/buildNavItems";
+import { RiProfileLine } from "react-icons/ri";
+import { IoLogOutOutline } from "react-icons/io5";
 
 export const goodToKnowFacts = [
   "Pediatric Dentistry Specialist",
@@ -1925,6 +1927,17 @@ export const navMenuArr: NavMenu[] = [
   { to: "our-doctors", content: "Our Doctors" },
   { to: "services", content: "Services", children: buildNavItems(servicesArray) },
   { to: "office-locations", content: "Office Locations" },
+];
+
+export type DashboardMenu = {
+  to: string;
+  content: string;
+  icon: IconType;
+}
+
+export const dashboardMenuArr: DashboardMenu[] = [
+  { to: ".", content: "Profile", icon: RiProfileLine  },
+  { to: "/logout", content: "Logout", icon: IoLogOutOutline },
 ];
 
 export type Customer = {

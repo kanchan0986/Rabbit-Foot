@@ -15,7 +15,7 @@ export const clientLoader = ({params} : Route.ClientLoaderArgs) => {
     const serviceId = params["service-id"]
   // make api call
   const servicesData = servicesArray.find(service => service.id === serviceId)
-  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality.some(speciality => servicesData?.speciality.includes(speciality) ))
+  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality?.some(speciality => servicesData?.speciality.includes(speciality) ))
   return { servicesData, relatedDoctorsData };
  }
 

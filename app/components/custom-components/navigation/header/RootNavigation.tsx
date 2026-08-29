@@ -76,7 +76,7 @@ export default function RootNavigation({navMenu, userData}: RootNavigationProps)
         {/* Show the dashboard link if the userData is present and the user is a customer or verified doctor or verified administrator*/}
         {userData && (userData.type === "customer" || (userData.type === "doctor" && userData.isVerified) || (userData.type === "administrator" && userData.isVerified)) &&
           <NavLink
-            to='/profile'
+            to='dashboard'
             className={({ isActive }) =>
               isActive
                 ? "text-rf-primary-100 flex gap-x-1 [&>div]:border-rf-primary"

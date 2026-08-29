@@ -68,7 +68,7 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
   // If it is just a signup then save user data to session storage and redirect to profile page
   if(user) sessionStorage.setItem("userData", JSON.stringify(user))
-  return redirect('/profile')
+  return redirect('/dashboard')
 
  }
 
