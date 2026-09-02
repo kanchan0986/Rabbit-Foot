@@ -44,14 +44,14 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
     })
 
     // Find dates where all slots are fully booked
-    const fullyBookedSchedules = doctorData.schedule.filter(item => item.slot.length === availabilitySlots.length) 
-    const fullyBookedDateStrings = fullyBookedSchedules.map(item => new Date(item.date).toDateString()) 
+    const fullyBookedSchedules = doctorData.schedule?.filter(item => item.slot.length === availabilitySlots.length) 
+    const fullyBookedDateStrings = fullyBookedSchedules?.map(item => new Date(item.date).toDateString()) 
 
     // Get the slots already booked for the selected date (or empty if none)
-    const bookedSlotsForSelectedDate = doctorData.schedule.find(item => new Date(item.date).toDateString() === selectedDate)?.slot || [] 
+    const bookedSlotsForSelectedDate = doctorData.schedule?.find(item => new Date(item.date).toDateString() === selectedDate)?.slot || [] 
 
     // Check if the selected date is fully booked
-    const isSelectedDateFullyBooked = fullyBookedDateStrings.includes(selectedDate) 
+    const isSelectedDateFullyBooked = fullyBookedDateStrings?.includes(selectedDate) 
 
     // Create a Date instance from the selected date
     const selectedDateInstance = selectedDate && new Date(selectedDate) 
@@ -98,7 +98,7 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
         // Error handling logic
         const newDateInstance = new Date(newDate) // Create a Date instance from the new date
         const isNewDateWeekend = newDateInstance.getDay() === 0 || newDateInstance.getDay() === 6 // Check if the new date falls on a weekend
-        const isNewDateFullyBooked = fullyBookedDateStrings.includes(newDate) // Check if the new date is fully booked
+        const isNewDateFullyBooked = fullyBookedDateStrings?.includes(newDate) // Check if the new date is fully booked
 
         // If the new date is valid (not weekend, not fully booked) and errors exist, clear them
         if (!isNewDateWeekend && !isNewDateFullyBooked && formErrors?.appointmentDate && formErrors.appointmentSlot) {
@@ -183,7 +183,7 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
                     <div className="grid grid-cols-4 gap-2 min-[330px]:grid-cols-5 xs:grid-cols-7 xs:w-full min-[500px]:w-[90%]! min-[520px]:w-[60%] sm:w-[80%]! md:w-[70%] xmd:w-full! 2xmd:w-[90%]! lg:w-110!">
                         {upcomingSevenDays.map(({date, day}, idx) => {
                             const isWeekendDay = day === 0 || day === 6 // Check if this date falls on a weekend
-                            const isFullyBookedDay = fullyBookedDateStrings.some(bookedDate => bookedDate === date.toDateString()) // Check if this date is fully booked (all slots taken)
+                            const isFullyBookedDay = fullyBookedDateStrings?.some(bookedDate => bookedDate === date.toDateString()) // Check if this date is fully booked (all slots taken)
                             const isNotAvailable = isWeekendDay || isFullyBookedDay // Mark date as unavailable if it’s weekend, or fully booked
                             return (
                                 <div key={idx} 

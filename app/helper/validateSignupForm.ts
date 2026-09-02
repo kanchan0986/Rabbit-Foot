@@ -63,6 +63,7 @@ export default function ValidateSignupForm(data: SignUpDataType) {
             email: emailInput,
             phone: Number(phoneInput),
             password: passwordInput,
+            speciality: ['all'],
             isVerified: false
         }
     }

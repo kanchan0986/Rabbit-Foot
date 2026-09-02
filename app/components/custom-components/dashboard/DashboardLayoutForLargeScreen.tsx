@@ -9,7 +9,7 @@ export default function DashboardLayoutForLargeScreen({data}: {data: DashboardMe
       {/* sidebar navigation area for tablet and above */}
       <DashboardSidebar data={data}/>
       {/* children contents of the dashboard-layout */}
-      <main>
+      <main className='w-full'>
         <Outlet/>
       </main>
     </SidebarProvider>

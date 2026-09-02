@@ -29,7 +29,7 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
                     >
                         <item.icon />
                         {/* Show text label only on small tablets and larger */}
-                        {isSmallTablet && <span>{item.content}</span>}
+                        {isSmallTablet && <span className="font-normal text-[15px] min-[676px]:text-[1rem]">{item.content}</span>}
                     </NavLink>
                 </li>
                 ))}

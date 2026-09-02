@@ -18,9 +18,9 @@ export function DashboardSidebar({data}: {data: DashboardMenu[]}) {
         <SidebarTrigger className={(`w-full flex items-center hover:cursor-w-resize ${!open ? "justify-end pr-2" : "justify-center  hover:text-rf-primary active:text-rf-primary"}`)}>
           {/* change the trigger icons based on expanded & collapsed state of the sidebar */}
           {!open ? (
-            <GoSidebarExpand className="size-5 text-rf-primary" />
+            <GoSidebarExpand className="size-5 text-rf-primary lg:size-6" />
           ) : (
-            <GoSidebarCollapse className="size-5" />
+            <GoSidebarCollapse className="size-5 lg:size-6" />
           )}
         </SidebarTrigger>
         {/* only show this navigation on tablet and above breakpoints */}

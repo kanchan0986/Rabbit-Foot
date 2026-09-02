@@ -25,9 +25,9 @@ export default function DashboardLargeScreenNavigationMenu({items}: DashboardLar
                     }
                     end
                 >
-                  <SidebarMenuButton tooltip={item.content} className='[&>svg]:size-5'>
+                  <SidebarMenuButton tooltip={item.content} className='[&>svg]:size-5 lg:[&>svg]:size-6'>
                     <item.icon />
-                    <span>{item.content}</span>
+                    <span className='font-normal text-[1rem]'>{item.content}</span>
                   </SidebarMenuButton>
                 </NavLink>
             </SidebarMenuItem>

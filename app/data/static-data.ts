@@ -154,7 +154,7 @@ export type Doctor = {
   phone?: number;
   address?: string;
   experience?: number;
-  speciality?: Speciality[];
+  speciality: Speciality[];
   schedule?: Schedule[];
   degree?: Degree[];
   fee?: number;
@@ -1949,6 +1949,8 @@ export type Customer = {
   address?: string;
   password: string;
   subscriber: boolean;
+  gender?: 'male' | 'female',
+  dob?: string;
 } & { readonly type: 'customer'}
 
 export type BookingDataType = {

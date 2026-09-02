@@ -38,7 +38,7 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
   const handleDoctorInputChange = (value: Doctor | Speciality) => { 
     // find doctor by name and set their fee in state
     const selectedDoctor = filteredDoctorData.find(doctor => doctor.name === value)
-    selectedDoctor && setSelectedDoctorFee(selectedDoctor.fee.toString())
+    selectedDoctor?.fee && setSelectedDoctorFee(selectedDoctor.fee.toString())
    }
 
   return (

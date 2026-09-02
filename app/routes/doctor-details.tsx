@@ -135,7 +135,7 @@ export default function DoctorDetails({loaderData, actionData}: Route.ComponentP
               <div className="flex flex-col gap-y-1">
                 <small className="text-rf-primary">About</small>
                 <div className="flex flex-col gap-y-4">
-                  {doctorData.details.map((details, idx) => (
+                  {doctorData.details?.map((details, idx) => (
                     <SlideInUp delay={idx * 0.1} key={idx}>
                       <p className="text-xbase lg:text-xl">{details}</p>
                   </SlideInUp>

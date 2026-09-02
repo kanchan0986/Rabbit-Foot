@@ -10,7 +10,7 @@ import { IoLogIn, IoLogInOutline } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import type { Route } from './+types/sign-up';
 import ValidateSignupForm from '~/helper/validateSignupForm';
-import type { BookingDataType, Doctor, SignUpDataType, User } from '~/data/static-data';
+import type { BookingDataType, SignUpDataType, User } from '~/data/static-data';
 import { useState } from 'react';
 
 export function meta({location}: Route.MetaArgs) {
