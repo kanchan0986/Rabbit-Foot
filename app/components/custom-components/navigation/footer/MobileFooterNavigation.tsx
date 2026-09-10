@@ -105,7 +105,7 @@ export default function MobileFooterNavigation({navMenu}: MobileFooterNavigation
                   <strong className="text-rf-secondary group-active:text-rf-primary-100">
                     Email:{" "}
                   </strong>
-                  <span className="text-center xs:text-start">
+                  <span className="wrap-anywhere text-center xs:text-start">
                     dev.kanchan.sanyal@gmail.com
                   </span>
                 </p>
@@ -129,7 +129,7 @@ export default function MobileFooterNavigation({navMenu}: MobileFooterNavigation
               type="email"
               name="newsletter-email"
               id="newsletter-email"
-              className="outline-none"
+              className="outline-none w-full"
             />
             <label htmlFor="newsletter-email">
               <TfiEmail className="fill-rf-primary cursor-pointer" />

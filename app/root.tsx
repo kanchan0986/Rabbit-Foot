@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import Loader from "./components/custom-components/Loader";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -39,6 +40,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
+}
+
+export function HydrateFallback() {
+  return <Loader/>;
 }
 
 export default function App() {

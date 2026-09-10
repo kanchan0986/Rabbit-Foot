@@ -141,6 +141,8 @@ export type Degree = "D.D.S." | "D.M.D." | "M.S." | "M.D.Sc." | "Ph.D."
 
 export type Slot = '10:00 am' | '11:00 pm' | '12:00 pm' | '01:00 pm' | '03:00 pm' | '04:00 pm' | '05:00 pm';
 
+export const degreeArr : Degree[] = ['D.D.S.', 'D.M.D.', 'M.S.', 'M.D.Sc.', 'Ph.D.']
+
 export type Schedule = {
   date: string; 
   slot: Slot[]
@@ -2006,7 +2008,6 @@ export type Administrator = {
   name: string;
   email: string;
   phone?: number;
-  address?: string;
   password: string;
   isVerified: boolean;
   doctors: Doctor[];
