@@ -23,7 +23,6 @@ export default function DashboardLargeScreenNavigationMenu({items}: DashboardLar
                         ? "text-rf-primary-100"
                         : "hover:text-rf-primary-100"
                     }
-                    end
                 >
                   <SidebarMenuButton tooltip={item.content} className='[&>svg]:size-5 lg:[&>svg]:size-6'>
                     <item.icon />

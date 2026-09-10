@@ -21,6 +21,7 @@ export default [
         route("sign-up", "routes/sign-up.tsx"),
         route("dashboard", "layouts/dashboard-layout.tsx", [
             index("routes/profile.tsx"),
+            route("edit-profile", "routes/edit-profile.tsx"),
         ]),
         route("thank-you", "routes/thank-you.tsx"),
         route("under-review", "routes/under-review.tsx"),

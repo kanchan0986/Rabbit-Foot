@@ -25,7 +25,6 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
                             ? `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
                             : 'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
                         }
-                        end
                     >
                         <item.icon />
                         {/* Show text label only on small tablets and larger */}
