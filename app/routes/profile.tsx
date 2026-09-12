@@ -270,7 +270,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
         {/* Change password button*/}
         <SlideInUp delay={0.1} className="rounded-full 2xmd:hover:shadow-rf-direct-100">
-          <Link to="./" className="w-full flex gap-x-2 items-center justify-center outline outline-rf-secondary bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
+          <Link to="change-password" className="w-full flex gap-x-2 items-center justify-center outline outline-rf-secondary bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
             <span className="xl:text-xbase lg:text-xl">Change Password</span>
           </Link>
         </SlideInUp>

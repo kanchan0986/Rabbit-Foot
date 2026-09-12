@@ -22,6 +22,7 @@ export default [
         route("dashboard", "layouts/dashboard-layout.tsx", [
             index("routes/profile.tsx"),
             route("edit-profile", "routes/edit-profile.tsx"),
+            route("change-password", "routes/change-password.tsx"),
         ]),
         route("thank-you", "routes/thank-you.tsx"),
         route("under-review", "routes/under-review.tsx"),
