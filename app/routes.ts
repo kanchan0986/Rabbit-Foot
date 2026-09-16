@@ -23,6 +23,7 @@ export default [
             index("routes/profile.tsx"),
             route("edit-profile", "routes/edit-profile.tsx"),
             route("change-password", "routes/change-password.tsx"),
+            route("appointments", "routes/appointments.tsx"),
         ]),
         route("thank-you", "routes/thank-you.tsx"),
         route("under-review", "routes/under-review.tsx"),

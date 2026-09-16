@@ -49,7 +49,8 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   
     // Save updated booking and user data back to session storage
     sessionStorage.setItem("bookingData", JSON.stringify(newBookingData))
-    sessionStorage.setItem("userData", JSON.stringify(user))
+    const updatedUserData = {...user, appointments: [...(user.appointments || []), newBookingData as BookingDataType]} // add on new appointment to existing appointments list (if exists)
+    sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
 
     // Redirect customer to thank-you page after booking
     return redirect('/thank-you')

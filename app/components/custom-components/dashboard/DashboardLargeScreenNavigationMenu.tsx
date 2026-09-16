@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useMatch } from 'react-router';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar'
 import { TooltipProvider } from '~/components/ui/tooltip';
 import type { DashboardMenu } from '~/data/static-data';
@@ -9,6 +9,7 @@ type DashboardLargeScreenNavigationMenuProps = {
 
 export default function DashboardLargeScreenNavigationMenu({items}: DashboardLargeScreenNavigationMenuProps) {
   const { open } = useSidebar(); // useSidebar hook provides sidebar state; "open" here actually means "collapsed"
+  const isAppointmentsPage = useMatch("dashboard/appointments");
   return (
     // Wrapping with TooltipProvider ensures tooltips to show up on collapsed view in tablet and above breakpoints
     <TooltipProvider>
@@ -23,6 +24,7 @@ export default function DashboardLargeScreenNavigationMenu({items}: DashboardLar
                         ? "text-rf-primary-100"
                         : "hover:text-rf-primary-100"
                     }
+                    end={isAppointmentsPage ? true : false}
                 >
                   <SidebarMenuButton tooltip={item.content} className='[&>svg]:size-5 lg:[&>svg]:size-6'>
                     <item.icon />

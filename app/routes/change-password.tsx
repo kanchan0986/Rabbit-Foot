@@ -27,6 +27,8 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
 
   const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object (Customer, Doctor, or Administrator) (if it exists)
 
+  if(!userData) return redirect('/login');
+
   return { userData }
 
  }

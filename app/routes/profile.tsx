@@ -11,7 +11,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { TbPhoneCall } from "react-icons/tb";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
-import { Link, useNavigation } from "react-router";
+import { Link, redirect, useNavigation } from "react-router";
 import { PiCertificate } from "react-icons/pi";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { RiMoneyDollarCircleLine, RiUserStarLine, RiVerifiedBadgeFill } from "react-icons/ri";
@@ -31,6 +31,8 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const userDataStringified = sessionStorage.getItem("userData") // get user data stored in sessionStorage (if exists)
 
   const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object (Customer, Doctor, or Administrator) (if it exists)
+
+  if(!userData) return redirect('/login');
 
   return { userData }
 

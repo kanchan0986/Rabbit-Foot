@@ -7,6 +7,7 @@ import SlideInUp from '../animations/SlideInUp';
 import { useState } from 'react';
 import type { Customer, Doctor, Speciality } from '~/data/static-data';
 import SelectScrollable from '../SelectScrollable';
+import { generateRandomId } from '~/helper/generateRandomId';
 
 type BookingFormProps = {
   inputBoxStyles?: string;
@@ -25,6 +26,10 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
 
   const [selectedDoctorFee, setSelectedDoctorFee] = useState<string>("") // state to store the fee of the selected doctor
 
+  const [selectedDoctorImageUrl, setSelectedDoctorImageUrl] = useState<string>("") // state to store the imageUrl of the selected doctor
+
+  const [selectedDoctorPhone, setSelectedDoctorPhone] = useState<string>("") // state to store the phone of the selected doctor
+
   const filteredDoctorData = selectedSpeciality === "all" ? doctorData : doctorData.filter(doctor => doctor.speciality.includes(selectedSpeciality)); // filter doctors based on selected speciality, or show all if "all" is chosen
 
   // if formType is "split" then use the variable to show different styles within the same breakpoints
@@ -39,11 +44,17 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
     // find doctor by name and set their fee in state
     const selectedDoctor = filteredDoctorData.find(doctor => doctor.name === value)
     selectedDoctor?.fee && setSelectedDoctorFee(selectedDoctor.fee.toString())
+    selectedDoctor?.imageUrl && setSelectedDoctorImageUrl(selectedDoctor.imageUrl)
+    selectedDoctor?.phone && setSelectedDoctorPhone(selectedDoctor.phone.toString())
    }
 
   return (
       <fetcher.Form method='post' className={twMerge(`flex flex-col gap-y-8 xl:gap-y-10 ${isSplitForm && 'mt-3 xl:gap-y-6 xl:mt-6'}`)}>
           <div className={twMerge(`grid grid-cols-1 sm:grid-cols-2 2xmd:grid-cols-3 gap-y-4 gap-x-4 ${isSplitForm && '2xmd:grid-cols-1 xl:grid-cols-2'}`)}>
+
+                {/* hidden appointment ID */}
+                <input type="hidden" name="appointment-id" value={generateRandomId()} />
+
                 {/* hidden customer name input */}
                 <input
                     type="hidden"
@@ -54,19 +65,31 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
                 <input
                     type="hidden"
                     name="customer-email"
-                    value={userData?.email}
+                    defaultValue={userData?.email}
                 />
                 {/* hidden customer phone input */}
                 <input
                     type="hidden"
                     name="customer-phone"
-                    value={userData?.phone} 
+                    defaultValue={userData?.phone} 
                 />
                 {/* hidden doctor fee input */}
                 <input
                     type="hidden"
                     name="doctor-fee"
                     value={selectedDoctorFee} 
+                />
+                {/* hidden doctor imageUrl input */}
+                <input
+                    type="hidden"
+                    name="doctor-imageUrl"
+                    value={selectedDoctorImageUrl} 
+                />
+                {/* hidden doctor phone input */}
+                <input
+                    type="hidden"
+                    name="doctor-phone"
+                    value={selectedDoctorPhone} 
                 />
             {/* Speciality input */}
             <div className="flex flex-col gap-1">

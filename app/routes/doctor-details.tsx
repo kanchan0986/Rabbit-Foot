@@ -48,8 +48,11 @@ export const clientAction = async ({request, url}: Route.ClientActionArgs) => {
   const bookingError = errors.doctorSpeciality || errors.appointmentDate || errors.appointmentSlot // check if there are any errors in booking details (speciality, date, slot)
   const {pathname} = url // get current page path to store for redirect later
 
-  if(customerDataError && !bookingError){
-    // if customer details are invalid but booking details are fine
+  const userData = sessionStorage.getItem("userData");
+  const parsedUserData : Customer = userData && JSON.parse(userData)
+
+  if(customerDataError && !parsedUserData && !bookingError){
+    // if filled up customer details are invalid but user details and booking details are fine
     sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType & {["appointment-slot"]: string;}))
     sessionStorage.setItem("redirectPath", pathname)
     // temporarily save booking data in session storage
@@ -61,8 +64,16 @@ export const clientAction = async ({request, url}: Route.ClientActionArgs) => {
     return { errors }
   }
   
-  // if no errors, save booking data and redirect path
-  sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType & {["appointment-slot"]: string;}))
+  // if no errors, update the userData, booking data and redirect path
+  let updatedUserData : Customer = parsedUserData // initialize with userData
+  updatedUserData = {...parsedUserData, appointments: [...(parsedUserData.appointments || []), inputData as BookingDataType & {["appointment-slot"]: string;}]} // add on new appointment to existing appointments list (if exists)
+  sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
+  sessionStorage.setItem("bookingData", JSON.stringify({
+    ...inputData, 
+    "customer-name": updatedUserData.name,
+    "customer-email": updatedUserData.email,
+    "customer-phone": updatedUserData.phone.toString()
+  } as BookingDataType & {["appointment-slot"]: string;}))
   sessionStorage.setItem("redirectPath", pathname)
   
   return redirect('/thank-you') // redirect user to thank-you page after successful booking

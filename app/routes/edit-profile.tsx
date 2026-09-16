@@ -9,7 +9,7 @@ import { TbPhoneCall } from 'react-icons/tb';
 import { BsGenderAmbiguous } from 'react-icons/bs';
 import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { PiCertificate } from 'react-icons/pi';
-import { Form, Link, useNavigation } from 'react-router';
+import { Form, Link, redirect, useNavigation } from 'react-router';
 import SlideInUp from '~/components/custom-components/animations/SlideInUp';
 import { FaRegEdit } from "react-icons/fa";
 import { useState } from 'react';
@@ -33,6 +33,8 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const userDataStringified = sessionStorage.getItem("userData") // get user data stored in sessionStorage (if exists)
 
   const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object (Customer, Doctor, or Administrator) (if it exists)
+
+  if(!userData) return redirect('/login');
 
   return { userData }
 

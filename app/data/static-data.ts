@@ -42,7 +42,7 @@ import { generateRandomId } from "~/helper/generateRandomId";
 import { FaClipboardCheck } from "react-icons/fa6";
 import buildNavItems from "~/helper/buildNavItems";
 import { RiProfileLine } from "react-icons/ri";
-import { IoLogOutOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoLogOutOutline } from "react-icons/io5";
 
 export const goodToKnowFacts = [
   "Pediatric Dentistry Specialist",
@@ -1939,6 +1939,7 @@ export type DashboardMenu = {
 
 export const dashboardMenuArr: DashboardMenu[] = [
   { to: ".", content: "Profile", icon: RiProfileLine  },
+  { to: "appointments", content: "Appointments", icon: IoCalendarOutline },
   { to: "/logout", content: "Logout", icon: IoLogOutOutline },
 ];
 
@@ -1953,9 +1954,11 @@ export type Customer = {
   subscriber: boolean;
   gender?: 'male' | 'female',
   dob?: string;
+  appointments?: (BookingDataType & {["appointment-slot"]?: string;})[]
 } & { readonly type: 'customer'}
 
 export type BookingDataType = {
+  ['appointment-id'] : string;
   ['appointment-date'] : string;
   ['customer-email'] : string;
   ['customer-name'] : string;
@@ -1963,6 +1966,8 @@ export type BookingDataType = {
   ['doctor-fee'] : string;
   ['doctor-name'] : string;
   ['doctor-speciality'] : string;
+  ['doctor-imageUrl'] : string;
+  ['doctor-phone'] : string;
 }
 
 export const customerArr : Customer[] = [

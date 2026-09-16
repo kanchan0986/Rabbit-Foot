@@ -8,6 +8,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import FadeIn from "../animations/FadeIn"
 import SlideInUp from "../animations/SlideInUp"
 import type { ValidationAdvancedErrorsTypes } from "~/helper/validateBookingFormAdvanced"
+import { generateRandomId } from "~/helper/generateRandomId"
 
 type BookingFormAdvancedProps = {
     doctorData: Doctor;
@@ -116,6 +117,10 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
     <Form method="post">
         <div className="flex flex-col gap-y-5">
             <div className="flex flex-col">
+
+                {/* hidden appointment ID */}
+                <input type="hidden" name="appointment-id" value={generateRandomId()} />
+
                 {/* hidden customer name input */}
                 <input
                     type="hidden"
@@ -163,6 +168,18 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
                     type="hidden"
                     name="doctor-fee"
                     value={doctorData.fee} 
+                />
+                {/* hidden doctor imageUrl input */}
+                <input
+                    type="hidden"
+                    name="doctor-imageUrl"
+                    value={doctorData.imageUrl} 
+                />
+                {/* hidden doctor phone input */}
+                <input
+                    type="hidden"
+                    name="doctor-phone"
+                    value={doctorData.phone} 
                 />
 
                 {/* title and subtitle */}

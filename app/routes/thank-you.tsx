@@ -1,10 +1,11 @@
 import { tabLabel } from "~/helper/tabLabel";
 import type { Route } from "./+types/thank-you";
-import { Link } from "react-router";
+import { Link, redirect, useNavigation } from "react-router";
 import { Button } from "~/components/ui/button";
 import Sky from "~/components/custom-components/vectors/Sky";
 import Wrapper from "~/components/custom-components/Wrapper";
-import type { BookingDataType } from "~/data/static-data";
+import type { Administrator, BookingDataType, Customer, Doctor } from "~/data/static-data";
+import Loader from "~/components/custom-components/Loader";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -18,9 +19,21 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const redirectPath = sessionStorage.getItem("redirectPath") // get redirect path stored in sessionStorage
 
   const bookingData: BookingDataType & {["appointment-slot"]: string} = bookingDataStringified && JSON.parse(bookingDataStringified) // parse booking data back into an object if it exists
+  
+  const userDataStringified = sessionStorage.getItem("userData");
+  const userDataParsed : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified);
 
   sessionStorage.removeItem("bookingData") // clear booking data from sessionStorage after retrieving it
   sessionStorage.removeItem("redirectPath") // clear redirect path from sessionStorage after retrieving it
+
+  // In case of not userData, redirect to login page
+  if(!userDataParsed) return redirect('/login');
+
+  // if any doctor or administrator accidentally access this path, should be redirected to their dashboard page
+  if(userDataParsed.type === "doctor" || userDataParsed.type === "administrator") return redirect("/dashboard");
+
+  // if anyone tries to access this path without booking an appointment, should be redirected to their dashboard page
+  if(!bookingData) return redirect('/dashboard/appointments');
 
   return {redirectPath, bookingData} // return data for use in the ThankYou component
  }
@@ -32,6 +45,10 @@ export default function ThankYou({loaderData}: Route.ComponentProps) {
         .replace(/^\/+|\/$/gm, '') // remove any leading or trailing slashes
         .replace(/^.*our-doctors\//, "") // remove everything up to "our-doctors/"
         .replace(/-+/gm, ' ');    // replace any - with empty space
+
+  const navigation = useNavigation();
+  if(navigation.state === "loading") return <Loader/>
+
   return (
     <main className="relative">
       {/* Animating sky background */}
@@ -59,16 +76,29 @@ export default function ThankYou({loaderData}: Route.ComponentProps) {
 
           </ul>
           
-          {/* back button to redirect path */}
-          <Link to={redirectPath ?? '/'} className="self-center">
-              <Button
-              variant={"outline"}
-              size={"sm"}
-              className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize 2xmd:cursor-pointer lg:text-xl xl:w-130 xl:py-6"
-              >
-              Back to {pathname}
-              </Button>
-          </Link>
+          <section className="flex flex-col gap-2 xmd:flex-row xmd:gap-4">
+            {/* back button to redirect path */}
+            <Link to={redirectPath ?? '/'} className="self-center">
+                <Button
+                variant={"outline"}
+                size={"sm"}
+                className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize 2xmd:cursor-pointer lg:text-xl xl:w-100 xl:py-5"
+                >
+                Back to {pathname}
+                </Button>
+            </Link>
+            
+            {/* back button to redirect path */}
+            <Link to="/dashboard/appointments" className="self-center">
+                <Button
+                variant={"outline"}
+                size={"sm"}
+                className="rounded-full bg-rf-primary hover:bg-rf-primary-100 hover:text-white text-sm capitalize 2xmd:cursor-pointer lg:text-xl xl:w-100 xl:py-5"
+                >
+                Manage / Pay for Appointment
+                </Button>
+            </Link>
+          </section>
         </div>
       </Wrapper>
     </main>

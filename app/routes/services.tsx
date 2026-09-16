@@ -43,17 +43,31 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
   const bookingError = errors.doctorSpeciality || errors.doctorName || errors.appointmentDate
   const {pathname} = url
 
-  if(customerDataError && !bookingError){
+  const userData = sessionStorage.getItem("userData");
+  const parsedUserData : Customer = userData && JSON.parse(userData)
+
+  if(customerDataError && !parsedUserData && !bookingError){
+    // if filled up customer details are invalid but user details and booking details are fine
     sessionStorage.setItem("bookingData", JSON.stringify(data))
     sessionStorage.setItem("redirectPath", pathname)
     return redirect('/login')
   }
   
   if(bookingError) {
+    // if booking details are invalid
     return { errors }
   }
   
-  sessionStorage.setItem("bookingData", JSON.stringify(data))
+  // if no errors, update the userData, booking data and redirect path
+  let updatedUserData : Customer = parsedUserData // initialize with userData
+  updatedUserData = {...parsedUserData, appointments: [...(parsedUserData.appointments || []), data as BookingDataType]} // add on new appointment to existing appointments list (if exists)
+  sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
+  sessionStorage.setItem("bookingData", JSON.stringify({
+    ...data, 
+    "customer-name": updatedUserData.name,
+    "customer-email": updatedUserData.email,
+    "customer-phone": updatedUserData.phone.toString()
+  } as BookingDataType))
   sessionStorage.setItem("redirectPath", pathname)
   return redirect('/thank-you')
  }
