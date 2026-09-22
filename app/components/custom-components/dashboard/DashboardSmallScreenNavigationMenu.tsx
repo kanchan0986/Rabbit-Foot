@@ -11,7 +11,15 @@ type DashboardSmallScreenNavigationMenuProps = {
 
 export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmallScreenNavigationMenuProps) {
  const isSmallTablet = useMediaQuery("(min-width: 470px)"); // check if the screen width is from small tablet to larger tablets
- const isAppointmentsPage = useMatch("dashboard/appointments");
+
+  const isDashboard =  useMatch("/dashboard"); // Match the exact "/dashboard" route
+  const isEditProfile =  useMatch("/dashboard/edit-profile"); // Match the exact "/dashboard/edit-profile" route
+  const isChangePassword =  useMatch("/dashboard/change-password"); // Match the exact "/dashboard/change-password" route
+
+  const isProfileActive = isDashboard || isEditProfile || isChangePassword; // Whether it is dashboard or editProfile or changePassword, it should be under Profile 
+
+  const isAppointmentsActive = useMatch("/dashboard/appointments/*"); // any nested route under appointments should be under Appointments
+
   return (
     // provide an animated slide-in-up effect for the menu bar
     <SlideInUp inView={false}>
@@ -21,12 +29,26 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
                 <li key={item.content}>
                     <NavLink
                         to={item.to}
-                        className={({ isActive }) =>
-                        isActive
-                            ? `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
-                            : 'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
-                        }
-                        end={isAppointmentsPage ? true : false}
+                        className={() => {
+
+                            // Profile menu: highlight if any profile-related route is active or hover on it's in-active state
+                            if(item.to === ".") return isProfileActive ? 
+                                `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
+                            : 
+                                'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
+
+                            // Appointments menu: highlight if any appointment-related route is active or hover on it's in-active state
+                            if(item.to === "appointments") return isAppointmentsActive ?
+                                `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
+                            : 
+                                'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
+
+                            // Default menu: highlight on hover only
+                            return 'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5'
+
+                        }}
+                        
+                        end={false} // disables exact matching, so nested routes can still mark the parent link as active
                     >
                         <item.icon />
                         {/* Show text label only on small tablets and larger */}

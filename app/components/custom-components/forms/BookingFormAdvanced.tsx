@@ -17,7 +17,7 @@ type BookingFormAdvancedProps = {
 }
 
 // doctor's availability slots
-const availabilitySlots: Slot[] = [
+export const availabilitySlots: Slot[] = [
     '10:00 am', '11:00 pm', '12:00 pm', '01:00 pm', '03:00 pm', '04:00 pm', '05:00 pm'
 ]
 
@@ -206,7 +206,9 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
                                 <div key={idx} 
                                     className={twMerge(`
                                         flex flex-col items-center justify-center min-h-25 py-4 rounded-full border border-rf-primary transition-[colors_shadow] duration-200 ease-in hover:cursor-pointer hover:bg-rf-primary hover:shadow-rf-direct-300 hover:text-rf-white-100 focus:bg-rf-primary active:bg-rf-primary text-xs uppercase gap-y-1 min-[500px]:text-sm 
-                                        ${(date.toDateString() === selectedDate) && 'bg-rf-primary'} 
+                                        ${
+                                            (date.toDateString() === new Date(selectedDate).toDateString()) && 'bg-rf-primary' // change the date and string to dateString for equality comparison
+                                        } 
                                         ${isNotAvailable && 'bg-gray-300 active:bg-rf-primary active:text-rf-white-100'}
                                     `)}
                                     onClick={() => handleDateSelection(date.toDateString())}

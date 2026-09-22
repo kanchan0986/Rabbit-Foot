@@ -49,19 +49,21 @@ export default function AccordionAppointments({userData}: AccordionAppointmentsP
             className="border-b last:border-b-0 border-rf-primary"
             >
             <AccordionTrigger className="px-4 bg-rf-primary/50 rounded-none [&[data-state=closed]>svg]:stroke-black [&[data-state=open]>svg]:stroke-rf-primary text-md lg:text-lg lg:[&>svg]:size-5! hover:cursor-pointer hover:data-[state=open]:cursor-auto">{appointment["appointment-date"]}</AccordionTrigger>
-            <AccordionContent className="bg-rf-primary-300 px-4 py-4 h-fit text-md lg:text-lg flex flex-col items-center gap-2 sm:flex-row sm:gap-4 ">
+            <AccordionContent className="bg-rf-primary-300 px-4 py-4 h-fit text-md lg:text-lg flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
 
                 {/* Profile image or fallback icon */}
                 {appointment["doctor-imageUrl"] ?
-                    <img src={appointment["doctor-imageUrl"]} alt={appointment["doctor-name"]} className="object-cover object-center rounded-md sm:max-h-70 xmd:max-h-80" />
+                    <img src={appointment["doctor-imageUrl"]} alt={appointment["doctor-name"]} className="object-cover object-center rounded-md sm:max-h-70 min-[920px]:max-h-80" />
                 :
-                    <section className=" flex items-center justify-center size-20 [&>svg]:size-10 [&>svg]:fill-rf-primary border-4 border-rf-primary rounded-full sm:size-30 sm:[&>svg]:size-15 sm:border-5 xmd:size-40 xmd:[&>svg]:size-20 xmd:border-6">
-                          {/* Doctor icon */}
-                        <FaUserDoctor className=""/>
-                    </section>
+                    <div className="flex items-center justify-center w-full sm:w-[38%] md:w-[30%] xmd:w-[20%]">
+                        <div className="flex items-center justify-center size-20 [&>svg]:size-10 [&>svg]:fill-rf-primary border-4 border-rf-primary rounded-full sm:size-30 sm:[&>svg]:size-15 sm:border-5 min-[920px]:size-40 min-[920px]:[&>svg]:size-20 min-[920px]:border-6">
+                            {/* Doctor icon */}
+                            <FaUserDoctor className=""/>
+                        </div>
+                    </div>
                 }
 
-                <Form method="delete" action="/dashboard/appointments" className="flex flex-col items-center gap-2 sm:self-start">
+                <Form method="delete" action="/dashboard/appointments" className="w-full pr-6 flex flex-col items-center gap-2 sm:self-start sm:w-[62%] md:w-2/3 xmd:w-[80%]">
                     {/* hidden appointment-id input */}
                     <input type="hidden" name="appointment-id" value={appointment["appointment-id"]} />
                     {/* Doctor details */}
@@ -98,19 +100,19 @@ export default function AccordionAppointments({userData}: AccordionAppointmentsP
                         </h2>}
                     </section>
                     {/* Action buttons */}
-                    <section className="flex flex-col items-center gap-2 min-[400px]:mt-2 min-[700px]:flex-row">
+                    <section className="w-full flex flex-col items-center gap-2 mt-6 min-[500px]:flex-row min-[500px]:justify-start">
                         {/* Update appointment link */}
-                        <Link to="update" className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer min-[400px]:text-lg sm:w-30"
+                        <Link to={appointment["appointment-id"]} className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30"
                         >
                             Update
                         </Link>
                         {/* Pay online link */}
-                        <Link to="/" className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer min-[400px]:text-lg sm:w-30"
+                        <Link to="/" className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg xmd:w-30"
                         >
                             Pay Online
                         </Link>
                         {/* Cancel appointment link */}
-                        <button className="text-xbase w-40 min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer min-[400px]:text-lg sm:w-30"
+                        <button className="text-xbase w-40 min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30"
                         >
                             Cancel
                         </button>

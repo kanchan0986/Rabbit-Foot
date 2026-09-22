@@ -1970,6 +1970,12 @@ export type BookingDataType = {
   ['doctor-phone'] : string;
 }
 
+export type UpdateDataType = {
+  ['appointment-id'] : string;
+  ['appointment-date'] : string;
+  ["appointment-slot"]: string;
+}
+
 export const customerArr : Customer[] = [
   {
     id: generateRandomId(),
