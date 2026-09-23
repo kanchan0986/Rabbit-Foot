@@ -20,9 +20,12 @@ export default [
         route("logout", "routes/logout.tsx"),
         route("sign-up", "routes/sign-up.tsx"),
         route("dashboard", "layouts/dashboard-layout.tsx", [
-            index("routes/profile.tsx"),
-            route("edit-profile", "routes/edit-profile.tsx"),
-            route("change-password", "routes/change-password.tsx"),
+            index("routes/dashboard.tsx"),
+            ...prefix("profile", [
+                index("routes/profile.tsx"),
+                route("edit-profile", "routes/edit-profile.tsx"),
+                route("change-password", "routes/change-password.tsx"),
+            ]),
             ...prefix("appointments", [
                 index("routes/appointments.tsx"),
                 route(":appointment-id", "routes/update-appointments.tsx"),

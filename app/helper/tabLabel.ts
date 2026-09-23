@@ -26,9 +26,9 @@ export const tabLabel = ({data}:TabLabelProps) => {
     capitalizedTabLabel = replaceDashWithSpace.replace(/\b\w/g, char => char.toUpperCase())
   }
 
-  // If data type is location and the path is a root path "/dashboard", return "Profile"
+  // If data type is location and the path is a root path "/dashboard", return "Overview"
   if (data.type === 'location' && data.pathname === "/dashboard") {
-    capitalizedTabLabel = "Profile";
+    capitalizedTabLabel = "Overview";
   }
 
   // If data type is doctor

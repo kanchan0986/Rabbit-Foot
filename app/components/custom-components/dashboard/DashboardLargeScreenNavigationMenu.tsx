@@ -1,20 +1,21 @@
 import { NavLink, useMatch } from 'react-router';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar'
 import { TooltipProvider } from '~/components/ui/tooltip';
-import type { DashboardMenu } from '~/data/static-data';
+import type { Administrator, Customer, DashboardMenu, Doctor } from '~/data/static-data';
 
 type DashboardLargeScreenNavigationMenuProps = {
-    items: DashboardMenu[]
+    items: DashboardMenu[];
+    userData: Customer | Doctor | Administrator
 }
 
-export default function DashboardLargeScreenNavigationMenu({items}: DashboardLargeScreenNavigationMenuProps) {
+export default function   DashboardLargeScreenNavigationMenu({items, userData}: DashboardLargeScreenNavigationMenuProps) {
   const { open } = useSidebar(); // useSidebar hook provides sidebar state; "open" here actually means "collapsed"
 
-  const isDashboard =  useMatch("/dashboard"); // Match the exact "/dashboard" route
-  const isEditProfile =  useMatch("/dashboard/edit-profile"); // Match the exact "/dashboard/edit-profile" route
-  const isChangePassword =  useMatch("/dashboard/change-password"); // Match the exact "/dashboard/change-password" route
+  const isCustomer = userData.type === "customer"; // type check for customer
 
-  const isProfileActive = isDashboard || isEditProfile || isChangePassword; // Whether it is dashboard or editProfile or changePassword, it should be under Profile 
+  const isDashboardActive =  useMatch("/dashboard"); // Match the exact "/dashboard" route
+
+  const isProfileActive =  useMatch("/dashboard/profile/*"); // Match the exact "/dashboard/profile" route 
 
   const isAppointmentsActive = useMatch("/dashboard/appointments/*"); // any nested route under appointments should be under Appointments
 
@@ -23,14 +24,17 @@ export default function DashboardLargeScreenNavigationMenu({items}: DashboardLar
     <TooltipProvider>
       {/* align the menu icons at the center when sidebar is collapsed */}
         <SidebarMenu  className={`w-full flex gap-y-1 ${open && 'items-center'}`}>
-          {items.map((item) => (
+          {(isCustomer ? items.filter(item => item.to !== ".") : items).map((item) => (
             <SidebarMenuItem key={item.content}>
                 <NavLink
                     to={item.to}
                     className={() => {
 
+                      // Dashboard menu: highlight dashboard route when active or hover on it's in-active state
+                      if(item.to === ".") return isDashboardActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
+
                       // Profile menu: highlight if any profile-related route is active or hover on it's in-active state
-                      if(item.to === ".") return isProfileActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
+                      if(item.to === "profile") return isProfileActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
 
                       // Appointments menu: highlight if any appointment-related route is active or hover on it's in-active state
                       if(item.to === "appointments") return isAppointmentsActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";

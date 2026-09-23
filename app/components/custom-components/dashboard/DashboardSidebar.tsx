@@ -6,10 +6,17 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar"
 import { GoSidebarCollapse, GoSidebarExpand  } from "react-icons/go";
-import type { DashboardMenu } from "~/data/static-data";
+import type { Administrator, Customer, DashboardMenu, Doctor } from "~/data/static-data";
 import DashboardLargeScreenNavigationMenu from "./DashboardLargeScreenNavigationMenu";
 
-export function DashboardSidebar({data}: {data: DashboardMenu[]}) {
+type DashboardSidebarProps = {
+  data: {
+    userData: Customer | Doctor | Administrator;
+    dashboardMenu: DashboardMenu[];
+  }
+}
+
+export function DashboardSidebar({data}: DashboardSidebarProps) {
   const { open } = useSidebar(); // useSidebar hook provides sidebar state; "open" here actually means "collapsed"
   return (
     <Sidebar className="sticky inset-y-18 z-0">
@@ -24,7 +31,7 @@ export function DashboardSidebar({data}: {data: DashboardMenu[]}) {
           )}
         </SidebarTrigger>
         {/* only show this navigation on tablet and above breakpoints */}
-        <DashboardLargeScreenNavigationMenu items={data} />
+        <DashboardLargeScreenNavigationMenu items={data.dashboardMenu} userData={data.userData} />
       </SidebarContent>
       <SidebarRail/>
     </Sidebar>

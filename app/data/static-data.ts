@@ -43,6 +43,7 @@ import { FaClipboardCheck } from "react-icons/fa6";
 import buildNavItems from "~/helper/buildNavItems";
 import { RiProfileLine } from "react-icons/ri";
 import { IoCalendarOutline, IoLogOutOutline } from "react-icons/io5";
+import { LuLayoutList } from "react-icons/lu";
 
 export const goodToKnowFacts = [
   "Pediatric Dentistry Specialist",
@@ -1938,7 +1939,8 @@ export type DashboardMenu = {
 }
 
 export const dashboardMenuArr: DashboardMenu[] = [
-  { to: ".", content: "Profile", icon: RiProfileLine  },
+  { to: ".", content: "Overview", icon: LuLayoutList  },
+  { to: "profile", content: "Profile", icon: RiProfileLine  },
   { to: "appointments", content: "Appointments", icon: IoCalendarOutline },
   { to: "/logout", content: "Logout", icon: IoLogOutOutline },
 ];

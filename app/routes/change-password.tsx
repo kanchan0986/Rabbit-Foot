@@ -150,7 +150,7 @@ export default function ChangePassword({loaderData, actionData}: Route.Component
 
             {/* Back button*/}
             <SlideInUp delay={0.1} className="w-full rounded-full 2xmd:hover:shadow-rf-direct-100">
-              <Link to=".." className="w-full flex gap-x-2 items-center justify-center outline outline-rf-secondary bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
+              <Link to=".." relative='path' className="w-full flex gap-x-2 items-center justify-center outline outline-rf-secondary bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
                 <span className="xl:text-xbase lg:text-xl">Back</span>
               </Link>
             </SlideInUp>

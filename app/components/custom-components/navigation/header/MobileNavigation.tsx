@@ -154,7 +154,7 @@ export default function MobileNavigation({navMenu, userData}: MobileNavigationPr
                   <div className="border rounded-full p-1">
                     <RiAdminFill className="size-3" />
                   </div>}
-                  <span>Profile</span>
+                  <span>Account</span>
                 </DrawerClose>
                 </NavLink>
               }

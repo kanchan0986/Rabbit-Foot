@@ -13,7 +13,7 @@ export function meta({location}: Route.MetaArgs) {
   ];
 }
 
-export const clientLoader = ({}: Route.ClientLoaderArgs) => { 
+export const clientLoader = ({ url }: Route.ClientLoaderArgs) => { 
 
   // fetch data from API
   const dashboardMenu = dashboardMenuArr
@@ -37,18 +37,25 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
     return redirect('/under-review');
   }
 
+  // Send the customer type user to "/dashboard/profile" page instead of "/dashboard" route
+  if (url.pathname === "/dashboard") {
+    if (userData.type === "customer") {
+      return redirect("/dashboard/profile");
+    }
+  }
+
   return { userData, dashboardMenu }
  }
 
 export default function DashboardLayout({loaderData}: Route.ComponentProps) {
   const isTabletAndAbove = useMediaQuery("(min-width: 768px)");
-  const { dashboardMenu } = loaderData
+  const { userData, dashboardMenu } = loaderData
   
   // authenticated and verified users should move further on tablet and above breakpoints
   if(isTabletAndAbove) {
-    return <DashboardLayoutForLargeScreen data={dashboardMenu} />
+    return <DashboardLayoutForLargeScreen data={{userData, dashboardMenu}} />
   }
   
   // authenticated and verified users should move further on mobile breakpoints
-  return <DashboardLayoutForSmallScreen data={dashboardMenu} />
+  return <DashboardLayoutForSmallScreen data={{userData, dashboardMenu}} />
 }
