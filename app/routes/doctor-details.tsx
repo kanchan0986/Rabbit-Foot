@@ -1,4 +1,4 @@
-import { customerArr, doctorArray, type BookingDataType, type Customer } from "~/data/static-data";
+import { doctorArray, type BookingDataType, type Customer } from "~/data/static-data";
 import type { Route } from "./+types/doctor-details";
 import Wrapper from "~/components/custom-components/Wrapper";
 import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
@@ -13,6 +13,7 @@ import BookingFormAdvanced from "~/components/custom-components/forms/BookingFor
 import DoctorCard from "~/components/custom-components/cards/DoctorCard";
 import { tabLabel } from "~/helper/tabLabel";
 import { validateBookingFormAdvanced } from "~/helper/validateBookingFormAdvanced";
+import handleErrorFreeBookings from "~/helper/handleErrorFreeBookings";
 
 export function meta({loaderData}: Route.MetaArgs) {
   // if the loaderData is null or undefined fallback to empty object
@@ -30,7 +31,11 @@ export const clientLoader = async ({params}: Route.ClientLoaderArgs) => {
   const relatedDoctorArray = doctorArray.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId)
   const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
   const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
-  const customerData = customerArr.find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
+
+  const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
+  const customerArr: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
+
+  const customerData = (customerArr || []).find(item => item.id === customer?.id) // Find the matching customer record from customerArrr using the parsed customer's id
   return { doctorData, relatedDoctorArray, customerData }
  }
 
@@ -43,17 +48,14 @@ export type FormError = {
 export const clientAction = async ({request, url}: Route.ClientActionArgs) => { 
   const formData = await request.formData() // get submitted form data
   const inputData = Object.fromEntries(formData) // convert formData into a plain object for easier handling
-  const { errors } = validateBookingFormAdvanced(inputData as BookingDataType & {["appointment-slot"]: string;}) // validate the form inputs using the advanced validator (includes appointment slot)
+  const { errors } = validateBookingFormAdvanced(inputData as BookingDataType) // validate the form inputs using the advanced validator (includes appointment slot)
   const customerDataError = errors.customerName || errors.customerEmail || errors.customerPhone // check if there are any errors in customer details
   const bookingError = errors.doctorSpeciality || errors.appointmentDate || errors.appointmentSlot // check if there are any errors in booking details (speciality, date, slot)
   const {pathname} = url // get current page path to store for redirect later
 
-  const userData = sessionStorage.getItem("userData");
-  const parsedUserData : Customer = userData && JSON.parse(userData)
-
-  if(customerDataError && !parsedUserData && !bookingError){
-    // if filled up customer details are invalid but user details and booking details are fine
-    sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType & {["appointment-slot"]: string;}))
+  if(customerDataError && !bookingError){
+    // if filled up customer details are invalid but booking details are fine
+    sessionStorage.setItem("bookingData", JSON.stringify(inputData as BookingDataType))
     sessionStorage.setItem("redirectPath", pathname)
     // temporarily save booking data in session storage
     return redirect('/login') // redirect user to login page
@@ -64,19 +66,11 @@ export const clientAction = async ({request, url}: Route.ClientActionArgs) => {
     return { errors }
   }
   
-  // if no errors, update the userData, booking data and redirect path
-  let updatedUserData : Customer = parsedUserData // initialize with userData
-  updatedUserData = {...parsedUserData, appointments: [...(parsedUserData.appointments || []), inputData as BookingDataType & {["appointment-slot"]: string;}]} // add on new appointment to existing appointments list (if exists)
-  sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
-  sessionStorage.setItem("bookingData", JSON.stringify({
-    ...inputData, 
-    "customer-name": updatedUserData.name,
-    "customer-email": updatedUserData.email,
-    "customer-phone": updatedUserData.phone.toString()
-  } as BookingDataType & {["appointment-slot"]: string;}))
-  sessionStorage.setItem("redirectPath", pathname)
+  // if no errors, update the userData, booking data, redirect path and appointments data
+  handleErrorFreeBookings({bookingData: inputData as BookingDataType, pathname: pathname})
   
-  return redirect('/thank-you') // redirect user to thank-you page after successful booking
+  // redirect user to thank-you page after successful booking
+  return redirect('/thank-you')
 
  }
 

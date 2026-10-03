@@ -24,7 +24,11 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
 
   const [selectedSpeciality, setSelectedSpeciality] = useState<Speciality>('all') // state to track which speciality is currently selected
 
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string>("") // state to store the id of the selected doctor
+
   const [selectedDoctorFee, setSelectedDoctorFee] = useState<string>("") // state to store the fee of the selected doctor
+
+  const [selectedCustomerPhone, setSelectedCustomerPhone] = useState<string>("") // state to store the phone of the selected customer
 
   const [selectedDoctorImageUrl, setSelectedDoctorImageUrl] = useState<string>("") // state to store the imageUrl of the selected doctor
 
@@ -41,11 +45,14 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
    }
 
   const handleDoctorInputChange = (value: Doctor | Speciality) => { 
-    // find doctor by name and set their fee in state
+    // find doctor by name and set their fee, image, phone in state
     const selectedDoctor = filteredDoctorData.find(doctor => doctor.name === value)
+    selectedDoctor?.id && setSelectedDoctorId(selectedDoctor.id)
     selectedDoctor?.fee && setSelectedDoctorFee(selectedDoctor.fee.toString())
     selectedDoctor?.imageUrl && setSelectedDoctorImageUrl(selectedDoctor.imageUrl)
     selectedDoctor?.phone && setSelectedDoctorPhone(selectedDoctor.phone.toString())
+    // if the user is customer and customer phone is available, set the phone in state
+    userData?.type === "customer" && userData.phone && setSelectedCustomerPhone(userData.phone.toString())
    }
 
   return (
@@ -61,6 +68,24 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
                     name="customer-name"
                     defaultValue={userData?.name}
                 />
+                {/* hidden customer imageUrl input */}
+                <input
+                    type="hidden"
+                    name="customer-imageUrl"
+                    defaultValue={userData?.imageUrl}
+                />
+                {/* hidden customer gender input */}
+                <input
+                    type="hidden"
+                    name="customer-gender"
+                    defaultValue={userData?.gender}
+                />
+                {/* hidden customer dob input */}
+                <input
+                    type="hidden"
+                    name="customer-dob"
+                    defaultValue={userData?.dob}
+                />
                 {/* hidden customer email input */}
                 <input
                     type="hidden"
@@ -72,6 +97,12 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
                     type="hidden"
                     name="customer-phone"
                     defaultValue={userData?.phone} 
+                />
+                {/* hidden doctor id input */}
+                <input
+                    type="hidden"
+                    name="doctor-id"
+                    value={selectedDoctorId} 
                 />
                 {/* hidden doctor fee input */}
                 <input
@@ -90,6 +121,12 @@ export default function BookingForm({inputBoxStyles, buttonStyles, formType, doc
                     type="hidden"
                     name="doctor-phone"
                     value={selectedDoctorPhone} 
+                />
+                {/* hidden customer phone input */}
+                <input
+                    type="hidden"
+                    name="customer-phone"
+                    defaultValue={selectedCustomerPhone} 
                 />
             {/* Speciality input */}
             <div className="flex flex-col gap-1">

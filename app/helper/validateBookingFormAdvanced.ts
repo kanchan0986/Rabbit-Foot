@@ -10,7 +10,7 @@ export type ValidationAdvancedErrorsTypes = {
 }
 
 // Advanced booking form validation: includes appointment slot check
-export const validateBookingFormAdvanced = (inputData: BookingDataType & {["appointment-slot"]: string;}) => { 
+export const validateBookingFormAdvanced = (inputData: BookingDataType) => { 
   // initialize an errors object with empty strings for each field
   const errors: ValidationAdvancedErrorsTypes = {
     customerEmail: '',

@@ -10,7 +10,7 @@ import { Button } from '~/components/ui/button';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import { FaClipboardCheck, FaRegCircle } from 'react-icons/fa6';
-import { customerArr, doctorArray, funToKnowFacts, goodToKnowFacts, specialityArray, type BookingDataType, type Customer } from '~/data/static-data';
+import { doctorArray, funToKnowFacts, goodToKnowFacts, specialityArray, type BookingDataType, type Customer } from '~/data/static-data';
 import SpacerVector from '~/components/custom-components/vectors/SpacerVector';
 import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
 import FadeIn from '~/components/custom-components/animations/FadeIn';
@@ -18,6 +18,7 @@ import BookingForm from '~/components/custom-components/forms/BookingForm';
 import heart from '~/assets/Heart.png';
 import { tabLabel } from '~/helper/tabLabel';
 import validateBookingForm from '~/helper/validateBookingForm';
+import handleErrorFreeBookings from '~/helper/handleErrorFreeBookings';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -30,7 +31,10 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const specialityData = specialityArray;
   const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
   const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
-  const customerData = customerArr.find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
+  const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
+  const customerArr: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
+
+  const customerData = (customerArr || []).find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
   const doctorData = doctorArray
   return { specialityData, customerData, doctorData };
  }
@@ -43,11 +47,8 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
   const bookingError = errors.doctorSpeciality || errors.doctorName || errors.appointmentDate // check if there are any errors in booking details (doctor + date)
   const {pathname} = url // get current page path to store for redirect later
 
-  const userData = sessionStorage.getItem("userData");
-  const parsedUserData : Customer = userData && JSON.parse(userData)
-
-  if(customerDataError && !parsedUserData && !bookingError){
-    // if filled up customer details are invalid but user details and booking details are fine
+  if(customerDataError && !bookingError){
+    // if filled up customer details are invalid but booking details are fine
     sessionStorage.setItem("bookingData", JSON.stringify(data))
     sessionStorage.setItem("redirectPath", pathname)
     // temporarily save booking data in session storage
@@ -59,18 +60,10 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
     return { errors }
   }
   
-  // if no errors, update the userData, booking data and redirect path
-  let updatedUserData : Customer = parsedUserData // initialize with userData
-  updatedUserData = {...parsedUserData, appointments: [...(parsedUserData.appointments || []), data as BookingDataType]} // add on new appointment to existing appointments list (if exists)
-  sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
-  sessionStorage.setItem("bookingData", JSON.stringify({
-    ...data, 
-    "customer-name": updatedUserData.name,
-    "customer-email": updatedUserData.email,
-    "customer-phone": updatedUserData.phone.toString()
-  } as BookingDataType))
-  sessionStorage.setItem("redirectPath", pathname)
-  // redirect user to thank-you page after successful booking
+  // if no errors, update the userData, booking data, redirect path and appointments data
+  handleErrorFreeBookings({bookingData: data as BookingDataType, pathname: pathname});
+  
+  // rediredt to thank-you page on success
   return redirect('/thank-you')
  }
 

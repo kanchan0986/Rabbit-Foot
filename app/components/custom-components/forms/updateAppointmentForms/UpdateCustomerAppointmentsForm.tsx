@@ -1,14 +1,14 @@
-import type { Customer, Doctor } from '~/data/static-data';
+import type { Appointment, Doctor } from '~/data/static-data';
 import Wrapper from '../../Wrapper'
 import { Form, Link, useParams } from 'react-router'
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import type { ValidationAppointmentUpdateTypes } from '~/helper/validateAppointmentsUpdateForm';
 import { twMerge } from 'tailwind-merge';
 import { availabilitySlots } from '../BookingFormAdvanced';
 import { FaUserDoctor } from 'react-icons/fa6';
 
 type UpdateCustomerAppointmentsFormProps = {
-    userData: Customer;
+    appointmentsData: Appointment[];
     doctorArr: Doctor[];
     actionData?: {
         errors: ValidationAppointmentUpdateTypes;
@@ -16,20 +16,20 @@ type UpdateCustomerAppointmentsFormProps = {
 }
 
 export default function UpdateCustomerAppointmentsForm({
-    userData, 
+    appointmentsData, 
     doctorArr, 
     actionData,
 }: UpdateCustomerAppointmentsFormProps) {
 
   const { "appointment-id": appointmentId } = useParams<{ "appointment-id": string; }>(); // Get appointment ID from URL params
 
-  const customer = userData.appointments?.filter(appointment => appointment["appointment-id"] === appointmentId) // Find the customer appointment that matches the appointment ID
+  const appointment = appointmentsData?.find(appointment => appointment["appointment-id"] === appointmentId) // Find the customer's appointment from the appointmentsData, that matches the appointment ID
   
-  const doctorData = doctorArr.find(doctor => doctor.name === (customer && customer[0]["doctor-name"])) // Find doctor details based on the doctor name in the appointment
+  const doctorData = doctorArr.find(doctor => doctor.name === (appointment && appointment["doctor-name"])) // Find doctor details based on the doctor name in the appointment
 
-  const previousSelectedDate = customer && customer[0]["appointment-date"]; // Store previously selected date
+  const previousSelectedDate = appointment && appointment["appointment-date"]; // Store previously selected date
 
-  const previousSelectedSlot = customer && customer[0]?.["appointment-slot"]; // Store previously selected slot (if any)
+  const previousSelectedSlot = appointment && appointment?.["appointment-slot"]; // Store previously selected slot (if any)
     
   const today = new Date(); // Get today's date
 
@@ -113,16 +113,16 @@ export default function UpdateCustomerAppointmentsForm({
         setSelectedSlot(previousSelectedSlot || '')
      }
 
-    if(!customer) return
+    if(!appointment) return
 
     return (        
         // Wrapper for profile Information sections
         <Wrapper className="overflow-hidden pb-20 [&>div]:grid [&>div]:gap-y-8 md:[&>div]:w-full md:[&>div]:pl-4 md:[&>div]:pr-4 md:[&>div]:gap-x-4 md:[&>div]:gap-y-4 xl:pb-30 3xl:pb-40" as={"aside"}>
             <div className="bg-rf-primary-300 px-4 py-4 h-fit text-md lg:text-lg flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
 
-                {/* Profile image or fallback icon */}
-                {customer[0]["doctor-imageUrl"] ?
-                    <img src={customer[0]["doctor-imageUrl"]} alt={customer[0]["doctor-name"]} className="object-cover object-center rounded-md sm:max-h-70 min-[920px]:max-h-100" />
+                {/* Doctor's profile image or fallback icon */}
+                {appointment["doctor-imageUrl"] ?
+                    <img src={appointment["doctor-imageUrl"]} alt={appointment["doctor-name"]} className="object-cover object-center rounded-md sm:max-h-70 min-[920px]:max-h-100" />
                 :
                     <div className="flex items-center justify-center w-full sm:w-[38%] md:w-[30%] xmd:w-[20%]">
                         <div className="flex items-center justify-center size-20 [&>svg]:size-10 [&>svg]:fill-rf-primary border-4 border-rf-primary rounded-full sm:size-30 sm:[&>svg]:size-15 sm:border-5 min-[920px]:size-40 min-[920px]:[&>svg]:size-20 min-[920px]:border-6">
@@ -135,7 +135,7 @@ export default function UpdateCustomerAppointmentsForm({
                 <Form method="put" className="w-full pr-6 flex flex-col items-center gap-2 sm:self-start sm:w-[62%] md:w-2/3 xmd:w-[80%]">
 
                     {/* hidden appointment-id input to send appointment details */}
-                    <input type="hidden" name="appointment-id" value={customer[0]["appointment-id"]} />
+                    <input type="hidden" name="appointment-id" value={appointment["appointment-id"]} />
 
                     {/* hidden appointment date input to send appointment details */}
                     <input
@@ -156,18 +156,18 @@ export default function UpdateCustomerAppointmentsForm({
                         {/* Doctor name */}
                         <h2 className="text-xbase flex flex-col items-center min-[400px]:flex-row min-[400px]:gap-x-2 min-[400px]:text-lg">
                             <span className="text-rf-primary">Doctor Name: </span>
-                            <span className="capitalize">{customer[0]["doctor-name"]}</span>
+                            <span className="capitalize">{appointment["doctor-name"]}</span>
                         </h2>
                         {/* Doctor Speciality */}
                         <h2 className="text-xbase flex flex-col items-center min-[400px]:flex-row min-[400px]:gap-x-2 min-[400px]:text-lg">
                             <span className="text-rf-primary">Doctor Speciality: </span>
-                            <span className="capitalize">{customer[0]["doctor-speciality"]}</span>
+                            <span className="capitalize">{appointment["doctor-speciality"]}</span>
                         </h2>
                         {/* Doctor Contact number */}
-                        {customer[0]["doctor-phone"] &&
+                        {appointment["doctor-phone"] &&
                         <h2 className="text-xbase flex flex-col items-center min-[400px]:flex-row min-[400px]:gap-x-2 min-[400px]:text-lg">
                             <span className="text-rf-primary">Doctor Contact: </span>
-                            <span className="capitalize">{customer[0]["doctor-phone"]}</span>
+                            <span className="capitalize">{appointment["doctor-phone"]}</span>
                         </h2>}
                     </section>
 

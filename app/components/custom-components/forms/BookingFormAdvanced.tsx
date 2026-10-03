@@ -127,6 +127,24 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
                     name="customer-name"
                     defaultValue={userData?.name}
                 />
+                {/* hidden customer imageUrl input */}
+                <input
+                    type="hidden"
+                    name="customer-imageUrl"
+                    defaultValue={userData?.imageUrl}
+                />
+                {/* hidden customer gender input */}
+                <input
+                    type="hidden"
+                    name="customer-gender"
+                    defaultValue={userData?.gender}
+                />
+                {/* hidden customer dob input */}
+                <input
+                    type="hidden"
+                    name="customer-dob"
+                    defaultValue={userData?.dob}
+                />
                 {/* hidden customer email input */}
                 <input
                     type="hidden"
@@ -138,6 +156,12 @@ export default function BookingFormAdvanced({doctorData, errors, userData}: Book
                     type="hidden"
                     name="customer-phone"
                     value={userData?.phone} 
+                />
+                {/* hidden doctor id input */}
+                <input
+                    type="hidden"
+                    name="doctor-id"
+                    value={doctorData.id} 
                 />
                 {/* hidden doctor name input */}
                 <input

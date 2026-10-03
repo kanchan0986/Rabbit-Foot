@@ -9,6 +9,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { IoLogIn, IoLogInOutline } from "react-icons/io5";
 import { validateLoginForm } from '~/helper/validateLoginForm';
 import type { Administrator, BookingDataType, Customer, Doctor, LoginDataType } from '~/data/static-data';
+import handleErrorFreeBookings from '~/helper/handleErrorFreeBookings';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -35,23 +36,15 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   const data = Object.fromEntries(formData);
 
   // If validation errors exist, return them to display on UI
-  const { errors, user } = validateLoginForm(data as LoginDataType);
+  const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
+  const customerDataParsed: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
+  const { errors, user } = validateLoginForm({data: data as LoginDataType, customerArr: customerDataParsed});
   if(errors.username || errors.password) return { errors };
 
   // If booking data exists and user is a customer, update booking info with customer details
   if(bookingData && user?.type == 'customer'){
-    const newBookingData: BookingDataType = {
-      ...bookingData,
-      "customer-name": user.name,
-      "customer-email": user.email,
-      "customer-phone": user.phone.toString(),
-    }
-  
-    // Save updated booking and user data back to session storage
-    sessionStorage.setItem("bookingData", JSON.stringify(newBookingData))
-    const updatedUserData = {...user, appointments: [...(user.appointments || []), newBookingData as BookingDataType]} // add on new appointment to existing appointments list (if exists)
-    sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
-
+    // update the userData, booking data, and appointments data
+    handleErrorFreeBookings({bookingData: bookingData as BookingDataType, user: user});
     // Redirect customer to thank-you page after booking
     return redirect('/thank-you')
   }

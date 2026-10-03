@@ -1,5 +1,5 @@
 import { tabLabel } from "~/helper/tabLabel";
-import { doctorArray, type Administrator, type BookingDataType, type Customer, type Doctor, type UpdateDataType } from "~/data/static-data";
+import { doctorArray, type Administrator, type Appointment, type BookingDataType, type Customer, type Doctor, type UpdateDataType } from "~/data/static-data";
 import { redirect, useNavigation } from "react-router";
 import type { Route } from "./+types/update-appointments";
 import { validateAppointmentsUpdateForm } from "~/helper/validateAppointmentsUpdateForm";
@@ -23,7 +23,11 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
 
   if(!userData) return redirect('/login'); // If no user data found, redirect to login page
 
-  return { userData, doctorArr } // Return user data and doctor array for use in the component
+
+  const appointmentsDataStringified = sessionStorage.getItem("appointmentsData");  // get appointments data stored in sessionStorage (if exists)
+  const appointmentsData : Appointment[] = appointmentsDataStringified && JSON.parse(appointmentsDataStringified); // parse appointments data back into appointmentsData array (if it exists)
+
+  return { userData, doctorArr, appointmentsData } // Return user data, doctor array and appointmentsData for use in the component
 
  }
  
@@ -61,10 +65,25 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
         ...item, // spread the matching appointment
         "appointment-date": inputData["appointment-date"], // update the date
         "appointment-slot": inputData?.["appointment-slot"] // update the slot (if exists)
-      } as BookingDataType & {["appointment-slot"]: string;})
+      } as BookingDataType)
       : item // OR return the non-matching appointment
   )}
   sessionStorage.setItem("userData", JSON.stringify(updatedUserData)) // update the userData on the session storage
+
+  const appointmentsDataStringified = sessionStorage.getItem("appointmentsData");  // get appointments data stored in sessionStorage (if exists)
+  const appointmentsDataParsed : Appointment[] = appointmentsDataStringified && JSON.parse(appointmentsDataStringified); // parse appointments data back into appointmentsData array (if it exists)
+
+  // update the selected appointment with changed date & slot
+  const appointmentsDataUpdated : Appointment[] = appointmentsDataParsed.map(item => item["appointment-id"] === inputData["appointment-id"] ? ({
+      ...item,
+      "appointment-date": inputData['appointment-date'] as string,
+      "appointment-slot": inputData['appointment-slot'] as string,
+    })
+    : item
+  )
+
+  sessionStorage.setItem("appointmentsData", JSON.stringify(appointmentsDataUpdated)); // store the updated changes to the session storage
+
 
   return redirect("../appointments") // redirect to appointments route after successful update
 
@@ -73,14 +92,14 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
 export default function UpdateAppointments({loaderData, actionData}: Route.ComponentProps) {
 
-  const { userData, doctorArr } = loaderData;
+  const { userData, doctorArr, appointmentsData } = loaderData;
 
   const navigation = useNavigation();
   if(navigation.state === "loading") return <Loader/> // Show loader while navigating
 
   {/* UI for customers */}
   if(userData.type === "customer") {
-    return <UpdateCustomerAppointmentsForm userData={userData} doctorArr={doctorArr} actionData={actionData} />
+    return <UpdateCustomerAppointmentsForm appointmentsData={appointmentsData} doctorArr={doctorArr} actionData={actionData} />
   }
 
   {/* UI for doctors */}

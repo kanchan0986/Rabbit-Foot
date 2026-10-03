@@ -1,7 +1,7 @@
-import { customerArr, doctorArray, type Customer, type Doctor, type SignUpDataType } from "~/data/static-data"
+import { doctorArray, type Customer, type Doctor, type SignUpDataType } from "~/data/static-data"
 import { generateDoctorId } from "./generateDoctorId";
 
-export default function ValidateSignupForm(data: SignUpDataType) {
+export default function ValidateSignupForm({data, customerArr}:{data: SignUpDataType, customerArr: Customer[]}) {
 
     // Initialize error messages for username, email, phone and password
     const errors: Omit<SignUpDataType, "type"> = {

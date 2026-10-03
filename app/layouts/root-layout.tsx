@@ -11,19 +11,21 @@ import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import Wrapper from "~/components/custom-components/Wrapper";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
 import type { Route } from "./+types/root-layout";
-import { navMenuArr, type Administrator, type Customer, type Doctor } from "~/data/static-data";
+import { navMenuArr, type Administrator, type Customer, type Doctor, customerArr } from "~/data/static-data";
 import spacer from '~/assets/spacer-vector-footer.png'
+import { useEffect } from "react";
 
 export const clientLoader = ({}:Route.ClientLoaderArgs) => { 
   // fetch data from api
   const navMenuData = navMenuArr
   const userDataStringified = sessionStorage.getItem("userData"); // Retrieve user data string from session storage (if it exists)
   const userData: Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object or Doctor Object (only if data exists)
-  return { navMenuData, userData }
+  const customerData = customerArr; // fetch the customer array data from the server at app reload
+  return { navMenuData, userData, customerData }
  }
 
 export default function RootLayout({loaderData}: Route.ComponentProps) {
-  const { navMenuData, userData } = loaderData
+  const { navMenuData, userData, customerData } = loaderData
   const isTablet = useMediaQuery("(min-width: 640px)");
   const isLaptop = useMediaQuery("(min-width: 992px)");
   const isTabletAndAbove = useMediaQuery("(min-width: 768px)");
@@ -33,6 +35,9 @@ export default function RootLayout({loaderData}: Route.ComponentProps) {
   const isDoctorsDetailsPage = useMatch("our-doctors/:doctor-id");
   const isServicesPage = useMatch("services");
   const isDashboardPage = useMatch("dashboard/*");
+  useEffect(() => {
+    sessionStorage.setItem("customerData", JSON.stringify(customerData)) // store the customerData to the session storage and watch for it's changes
+  }, [customerData])
 
   // Default navigation menu (mobile)
   let navigationMenu = (

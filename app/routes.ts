@@ -28,7 +28,10 @@ export default [
             ]),
             ...prefix("appointments", [
                 index("routes/appointments.tsx"),
-                route(":appointment-id", "routes/update-appointments.tsx"),
+                ...prefix(":appointment-id", [
+                    index("routes/update-appointments.tsx"),
+                    route("payments", "routes/payments.tsx"),
+                ]),
             ]),
         ]),
         route("thank-you", "routes/thank-you.tsx"),

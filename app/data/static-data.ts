@@ -165,6 +165,7 @@ export type Doctor = {
   availability?: boolean;
   password: string;
   isVerified: boolean;
+  weeklyEarnings?: number;
 } & { readonly type: 'doctor'}
 
 export const specialityArray : Speciality[] = [
@@ -187,6 +188,7 @@ export const doctorArray : Doctor[] = [
     schedule: [],
     password: '12345',
     isVerified: true,
+    phone: 8257463452,
     type: "doctor"
   },
   {
@@ -1956,20 +1958,24 @@ export type Customer = {
   subscriber: boolean;
   gender?: 'male' | 'female',
   dob?: string;
-  appointments?: (BookingDataType & {["appointment-slot"]?: string;})[]
+  appointments?: BookingDataType[]
 } & { readonly type: 'customer'}
 
 export type BookingDataType = {
   ['appointment-id'] : string;
   ['appointment-date'] : string;
+  ["appointment-slot"]?: string;
   ['customer-email'] : string;
   ['customer-name'] : string;
-  ['customer-phone'] : string;
+  ['customer-imageUrl']?: string;
+  ["customer-gender"]?: 'male' | 'female';
+  ['customer-phone']?: string;
   ['doctor-fee'] : string;
+  ['doctor-id']: string;
   ['doctor-name'] : string;
   ['doctor-speciality'] : string;
-  ['doctor-imageUrl'] : string;
-  ['doctor-phone'] : string;
+  ['doctor-imageUrl']?: string;
+  ['doctor-phone']?: string;
 }
 
 export type UpdateDataType = {
@@ -1980,8 +1986,9 @@ export type UpdateDataType = {
 
 export const customerArr : Customer[] = [
   {
-    id: generateRandomId(),
+    id: '9eed51a7-251d-4f76-a558-c6d97cfa680e',
     name: 'John Doe',
+    gender: "female",
     email: 'john.doe@gmail.com',
     phone: 1234567890,
     password: '12345',
@@ -1989,8 +1996,10 @@ export const customerArr : Customer[] = [
     type: 'customer'
   },
   {
-    id: generateRandomId(),
+    id: 'e9d67299-be52-4600-bd3d-dcec1ed0ad55',
     name: 'Philip Kotler',
+    gender: "male",
+    dob: "Sep-11-1986",
     email: 'philip.kotler@gmail.com',
     phone: 1234567890,
     password: '12345',
@@ -2040,3 +2049,24 @@ export const adminArr : Administrator[] = [
     type: "administrator"
   }
 ]
+
+export type Appointment = {
+  "customer-id": string;
+  "customer-name": string;
+  "customer-imageUrl"?: string;
+  "customer-dob"?: string;
+  "customer-gender"?: 'male' | 'female';
+  "customer-phone"?: string;
+  "appointment-id": string;
+  "appointment-date": string;
+  "appointment-slot"?: string;
+  "doctor-id": string;
+  "doctor-name": string;
+  "doctor-imageUrl"?: string;
+  "doctor-speciality": Speciality;
+  "doctor-fee": string;
+  "doctor-phone"?: string;
+  "appointment-status": "complete" | "pending";
+  "payment-mode": "cash" | "online";
+  "payment-status": "paid" | "unpaid";
+}

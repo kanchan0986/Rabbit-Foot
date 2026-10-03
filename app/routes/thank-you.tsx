@@ -18,7 +18,7 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const bookingDataStringified = sessionStorage.getItem("bookingData") // get booking data stored in sessionStorage (stringified JSON)
   const redirectPath = sessionStorage.getItem("redirectPath") // get redirect path stored in sessionStorage
 
-  const bookingData: BookingDataType & {["appointment-slot"]: string} = bookingDataStringified && JSON.parse(bookingDataStringified) // parse booking data back into an object if it exists
+  const bookingData: BookingDataType = bookingDataStringified && JSON.parse(bookingDataStringified) // parse booking data back into an object if it exists
   
   const userDataStringified = sessionStorage.getItem("userData");
   const userDataParsed : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified);
@@ -76,7 +76,7 @@ export default function ThankYou({loaderData}: Route.ComponentProps) {
 
           </ul>
           
-          <section className="flex flex-col gap-2 xmd:flex-row xmd:gap-4">
+          <section className="flex flex-col gap-2 xmd:flex-row xmd:gap-4 xmd:justify-center">
             {/* back button to redirect path */}
             <Link to={redirectPath ?? '/'} className="self-center">
                 <Button

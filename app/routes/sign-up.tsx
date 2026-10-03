@@ -10,8 +10,9 @@ import { IoLogIn, IoLogInOutline } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import type { Route } from './+types/sign-up';
 import ValidateSignupForm from '~/helper/validateSignupForm';
-import type { BookingDataType, SignUpDataType, User } from '~/data/static-data';
+import type { BookingDataType, Customer, SignUpDataType, User } from '~/data/static-data';
 import { useState } from 'react';
+import handleErrorFreeBookings from '~/helper/handleErrorFreeBookings';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -31,22 +32,17 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   const data = Object.fromEntries(formData);
 
   // If validation errors exist, return them to display on UI
-  const { errors, user } = ValidateSignupForm(data as unknown as SignUpDataType);
+  const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
+  const customerDataParsed: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
+  const { errors, user } = ValidateSignupForm({data: data as unknown as SignUpDataType, customerArr: customerDataParsed});
   if(errors.name || errors.email || errors.phone || errors.password) return { errors };
 
   // If booking data exists and user is a customer, update booking info with customer details
-  if(bookingData && user?.type == 'customer'){
-    const newBookingData: BookingDataType = {
-      ...bookingData,
-      "customer-name": user.name,
-      "customer-email": user.email,
-      "customer-phone": user.phone.toString(),
-    }
-  
-    // Save updated booking and user data back to session storage
-    sessionStorage.setItem("bookingData", JSON.stringify(newBookingData))
-    const updatedUserData = {...user, appointments: [...(user.appointments || []), newBookingData as BookingDataType]} // add on new appointment to existing appointments list (if exists)
-    sessionStorage.setItem("userData", JSON.stringify(updatedUserData))
+  if(bookingData && user?.type === 'customer'){
+    // update the new userData, booking data, and appointments data
+    handleErrorFreeBookings({bookingData: bookingData as BookingDataType, user: user})
+    // store the new user to the customerData in session storage
+    sessionStorage.setItem("customerData", JSON.stringify([...(customerDataParsed || []), user])) 
 
     // Redirect customer to thank-you page after booking
     return redirect('/thank-you')
@@ -68,8 +64,13 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   }
 
   // If it is just a signup then save user data to session storage and redirect to profile page
-  if(user) sessionStorage.setItem("userData", JSON.stringify(user))
+  if(user) {
+  sessionStorage.setItem("userData", JSON.stringify(user))
+  const customerDataStringified = sessionStorage.getItem("customerData")
+  const customerDataParsed: Customer[] = customerDataStringified && JSON.parse(customerDataStringified)
+  sessionStorage.setItem("customerData", JSON.stringify([...(customerDataParsed || []), user]))
   return redirect('/dashboard')
+  }
 
  }
 

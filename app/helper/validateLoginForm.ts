@@ -1,6 +1,6 @@
-import { adminArr, customerArr, doctorArray, type Administrator, type Customer, type Doctor, type LoginDataType } from "~/data/static-data";
+import { adminArr, doctorArray, type Administrator, type Customer, type Doctor, type LoginDataType } from "~/data/static-data";
 
-export const validateLoginForm = (data: LoginDataType) => { 
+export const validateLoginForm = ({data, customerArr}: {data: LoginDataType, customerArr: Customer[]}) => { 
     // Initialize error messages for username and password as empty string
     const errors: LoginDataType = {
         username: '',
