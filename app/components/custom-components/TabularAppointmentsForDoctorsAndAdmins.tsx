@@ -2,26 +2,40 @@ import type { Appointment, Doctor } from "~/data/static-data"
 import { calculateAge } from "~/helper/calculateAge"
 import Wrapper from "./Wrapper"
 import { FaUserInjured } from "react-icons/fa6";
-import { Form, Link } from "react-router";
+import { Form, Link, useMatch } from "react-router";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdDoneAll } from "react-icons/io";
+import { PiCalendarXDuotone } from "react-icons/pi";
 
-type TabularUpcomingAppointmentsProps = {
+type TabularAppointmentsForDoctorsAndAdminsProps = {
     appointments: Appointment[];
     userData: Doctor | null;
+    activeLink?: "all" | "pending" | "complete";
 }
 
-// TabularUpcomingAppointments component to display upcoming appointments in a tabular format
-export function TabularUpcomingAppointments({appointments, userData}: TabularUpcomingAppointmentsProps) {
+// TabularAppointmentsForDoctorsAndAdmins component to display upcoming appointments in a tabular format
+export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, activeLink}: TabularAppointmentsForDoctorsAndAdminsProps) {
 
-    // if no upcoming appointments, show fallback message
-    if(!appointments || appointments.length === 0) return <div className="text-center">Sorry! You do not have any upcoming appointments yet.</div>
+    // Check current route to adjust links accordingly
+    const isDashboard = useMatch("/dashboard");
+    const isAppointments = useMatch("/dashboard/appointments");
+
+    // if no upcoming appointments, show fallback message depending upon the active link
+    if(!appointments || appointments.length === 0) {
+        if(activeLink === 'complete'){
+            return <div className="text-center">Sorry! You do not have any completed appointments yet.</div>
+        }else if(activeLink === 'all'){
+            return <div className="text-center">Sorry! You do not have any appointments yet.</div>
+        }else{
+            return <div className="text-center">Sorry! You do not have any pending appointments yet.</div>
+        }
+    }
 
   return (
     <Wrapper className="w-full pt-0 [&>div]:w-full">
 
         {/* Table header section */}
-        <div className="grid grid-cols-[2.5fr_2fr_1.5fr_1fr_0.5fr] items-center text-sm leading-3 text-center bg-rf-primary/50 border-x border-t border-rf-primary rounded-t-md [&>span]:not-last:border-r [&>span]:border-rf-primary">
+        <div className="mt-2 grid grid-cols-[2.5fr_2fr_1.5fr_1fr_0.5fr] items-center text-sm leading-3 text-center bg-rf-primary/50 border-x border-t border-rf-primary rounded-t-md [&>span]:not-last:border-r [&>span]:border-rf-primary">
 
             {/* Patient column headers */}
             <span className="flex flex-col items-center">
@@ -68,8 +82,8 @@ export function TabularUpcomingAppointments({appointments, userData}: TabularUpc
         <div className="bg-rf-primary-300 h-fit rounded-b-md border border-rf-primary overflow-hidden">
         {appointments.map((item) => {
 
-            const customerAge = item["customer-dob"] && calculateAge(item["customer-dob"])  // Extract calculate age of the customer
-            const loggedInDoctorsName = item["doctor-name"] === userData?.name // Check if logged-in doctor matches appointment doctor
+            const customerAge = item["customer-dob"] && calculateAge(item["customer-dob"])  // Calculate customer's age if DOB exists
+            const isLoggedInDoctorsId = item["doctor-id"] === userData?.id // Check if logged-in doctor id matches appointment doctor id
 
             return (
 
@@ -78,7 +92,7 @@ export function TabularUpcomingAppointments({appointments, userData}: TabularUpc
                     {/* Patient details row */}
                     <div className="w-full grid grid-cols-[0.7fr_2fr_0.8fr_1.2fr_2fr] items-baseline h-full">
                         {/* Patient image or fallback icon */}
-                        <Link to={`./appointments/${item["appointment-id"]}`} className="py-2 w-full h-full peer">
+                        <Link to={isDashboard ? `appointments/${item["appointment-id"]}` : isAppointments ? `./${item["appointment-id"]}` : ''} className="py-2 w-full h-full peer">
                             {item["customer-imageUrl"] ?
                                 <div style={{backgroundImage: `url(${item["customer-imageUrl"]})`}} className="bg-cover bg-center bg-no-repeat size-6 rounded-full border border-rf-primary shadow-rf-direct-300 mx-auto" />
                                 :
@@ -87,7 +101,7 @@ export function TabularUpcomingAppointments({appointments, userData}: TabularUpc
                         </Link>
 
                         {/* Patient name */}
-                        <Link to={`./appointments/${item["appointment-id"]}`} className="py-2 border-r border-rf-primary w-full h-full text-start underline-offset-2 hover:underline decoration-[1.5px] peer-hover:underline">
+                        <Link to={isDashboard ? `appointments/${item["appointment-id"]}` : isAppointments ? `./${item["appointment-id"]}` : ''} className="py-2 border-r border-rf-primary w-full h-full text-start underline-offset-2 hover:underline decoration-[1.5px] peer-hover:underline">
                             <span>{item["customer-name"]}</span>
                         </Link>
 
@@ -118,7 +132,7 @@ export function TabularUpcomingAppointments({appointments, userData}: TabularUpc
                     <div className="w-full flex justify-evenly items-baseline h-full">
 
                         {/* Doctor name */}
-                        <span className="py-2 border-r border-rf-primary w-full h-full">{loggedInDoctorsName ? 'myself' : 'N/A'}</span>
+                        <span className="py-2 border-r border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
 
                         {/* Doctor fee */}
                         <span className="py-2 border-r border-rf-primary w-full h-full">{item["doctor-fee"]}</span>
@@ -131,20 +145,30 @@ export function TabularUpcomingAppointments({appointments, userData}: TabularUpc
                         <span className="py-2 border-r border-rf-primary w-full h-full">{item["payment-status"]}</span>
 
                         {/* Payment Mode */}
-                        <span className="py-2 border-r border-rf-primary w-full h-full">{item["payment-mode"]}</span>
+                        <span className="py-2 border-r border-rf-primary w-full h-full">{item["payment-status"] === "paid" ? `${item["payment-mode"]}` : 'N/A'}</span>
                     </div>
 
                     {/* Action buttons row */}
                     <div className="w-full h-full flex flex-col xl:flex-row ">
 
-                        {/* Mark appointment as completed */}
-                        <Form method="PUT" className="w-full h-full">
-                            <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
-                            <button className="text-rf-primary hover:text-green-600 hover:cursor-pointer"><IoMdDoneAll className="size-6 xl:-mb-2"/></button>
-                        </Form>
+                        {/* Mark appointment as completed (only if pending) */}
+                        {item["appointment-status"] === "pending" && 
+                            <Form method="PUT" className="w-full h-full">
+                                <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
+                                <button className="text-rf-primary hover:text-green-600 hover:cursor-pointer"><IoMdDoneAll className="size-6 xl:-mb-2"/></button>
+                            </Form>
+                        }
 
                         {/* Cancel appointment (only if unpaid) */}
                         {item["payment-status"] !== "paid" &&
+                            <Form method="DELETE" className="w-full h-full">
+                                <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
+                                <button className="text-rf-primary hover:text-red-600 hover:cursor-pointer"><PiCalendarXDuotone className="size-6 xl:-mb-2"/></button>
+                            </Form>
+                        }
+
+                        {/* Delete appointment (only if paid and completed) */}
+                        {(item["payment-status"] === "paid" && item["appointment-status"] === "complete") &&
                             <Form method="DELETE" className="w-full h-full">
                                 <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
                                 <button className="text-rf-primary hover:text-red-600 hover:cursor-pointer"><MdDeleteForever className="size-6 xl:-mb-2"/></button>

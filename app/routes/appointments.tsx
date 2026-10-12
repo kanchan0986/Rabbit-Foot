@@ -1,10 +1,11 @@
 import { tabLabel } from '~/helper/tabLabel';
 import type { Route } from './+types/appointments'
 import type { Administrator, Appointment, Customer, Doctor } from '~/data/static-data';
-import AccordionAppointments from '~/components/custom-components/AccordionAppointments';
 import Wrapper from '~/components/custom-components/Wrapper';
 import { redirect, useNavigation } from 'react-router';
 import Loader from '~/components/custom-components/Loader';
+import DoctorAppointments from '~/components/custom-components/DoctorAppointments';
+import AccordionAppointmentsForCustomers from '~/components/custom-components/AccordionAppointmentsForCustomers';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -33,20 +34,48 @@ export const clientAction = async ({request} : Route.ClientActionArgs) => {
   const appointmentId = formData.get("appointment-id");
   
   const userDataStringified = sessionStorage.getItem("userData"); // get user data stored in sessionStorage (if exists)
-  const userDataParsed : Customer = userDataStringified && JSON.parse(userDataStringified); // parse user data back into an Customer object (if it exists)
-  const userDataAfterDeletion = {
-    ...userDataParsed,
-    appointments: userDataParsed.appointments?.filter(appointment => appointment['appointment-id'] !== appointmentId)
-  } as Customer; // store the un-deleted appointments of the existing user to a constant
-  sessionStorage.setItem("userData", JSON.stringify(userDataAfterDeletion)); // update the userData in sessionStorage
+  const userDataParsed : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified); // parse user data back into an object (if it exists)
 
   const appointmentsDataStringified = sessionStorage.getItem("appointmentsData");  // get appointments data stored in sessionStorage (if exists)
   const appointmentsDataParsed : Appointment[] = appointmentsDataStringified && JSON.parse(appointmentsDataStringified); // parse appointments data back into appointmentsData array (if it exists)
 
-  // remove the selected appointment from the appointmentsData and show the remaining appointments
-  const appointmentsDataAfterDeletion : Appointment[] = appointmentsDataParsed.filter(item => item['appointment-id'] !== appointmentId)
+  // if the user is a customer
+  if (userDataParsed.type === 'customer') {
+      const userDataAfterDeletion = {
+        ...userDataParsed,
+        appointments: userDataParsed.appointments?.filter(appointment => appointment['appointment-id'] !== appointmentId)
+      } as Customer; // store the un-deleted appointments of the existing user to a constant
+      sessionStorage.setItem("userData", JSON.stringify(userDataAfterDeletion)); // update the userData in sessionStorage
+    
+      // remove the selected appointment from the appointmentsData and show the remaining appointments
+      const appointmentsDataAfterDeletion : Appointment[] = appointmentsDataParsed.filter(item => item['appointment-id'] !== appointmentId)
+    
+      sessionStorage.setItem("appointmentsData", JSON.stringify(appointmentsDataAfterDeletion)); // store the remaining appointmets back to the session storage
+  }
 
-  sessionStorage.setItem("appointmentsData", JSON.stringify(appointmentsDataAfterDeletion)); // store the remaining appointmets back to the session storage
+  // if the user is a doctor or an administrator
+  if (userDataParsed.type === 'doctor' || userDataParsed.type === 'administrator') {
+      // Separate selected and unselected appointments
+      const unselectedAppointments = appointmentsDataParsed.filter(item => item["appointment-id"] !== appointmentId?.toString());
+      const selectedAppointment = appointmentsDataParsed.filter(item => item["appointment-id"] === appointmentId?.toString());
+    
+      // Handle DELETE request and remove selected appointment
+      if(request.method === "DELETE"){
+        sessionStorage.setItem("appointmentsData", JSON.stringify(unselectedAppointments)); // update the appointmentsData with remaining unselected appointments
+      }
+    
+      // Handle PUT request and mark appointment as paid and complete
+      if(request.method === "PUT"){
+        const updatedAppointment = selectedAppointment.map(item => ({
+          ...item,
+          "payment-mode": "cash",
+          "payment-status": "paid",
+          "appointment-status": "complete"
+        }) as Appointment)
+    
+        sessionStorage.setItem("appointmentsData", JSON.stringify([...unselectedAppointments, ...updatedAppointment])); // Save updated appointments back to sessionStorage along with remaining appointments
+      }
+  }
 
  }
 
@@ -57,15 +86,17 @@ export default function Appointments({loaderData}: Route.ComponentProps) {
   const navigation = useNavigation();
   if(navigation.state === "loading") return <Loader/>
 
+  const userDoctorData = userData.type === "doctor" ? userData : null; // Ensure this userData is only passed if the user is a doctor
+
   return (      
       // Wrapper for profile Information sections
       <Wrapper className="overflow-hidden pb-20 [&>div]:grid [&>div]:gap-y-8 md:[&>div]:w-full md:[&>div]:pl-4 md:[&>div]:pr-8 md:[&>div]:gap-x-4 md:[&>div]:gap-y-4 xl:pb-30 3xl:pb-40" as={"aside"}>
 
         {/* appointments UI for customers / patients */}
-        {userData.type === "customer" && <AccordionAppointments userData={userData} appointmentsData={appointmentsData}/>}
+        {userData.type === "customer" && <AccordionAppointmentsForCustomers userData={userData} appointmentsData={appointmentsData}/>}
 
         {/* appointments UI for doctors */}
-        {userData.type === "doctor" && <div>Appointments related to Doctors</div>}
+        {userData.type === "doctor" && <DoctorAppointments userDoctorData={userDoctorData} appointmentsData={appointmentsData} />}
 
 
         {/* appointments UI for administrators */}

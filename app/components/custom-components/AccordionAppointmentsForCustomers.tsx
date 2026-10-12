@@ -10,12 +10,12 @@ import {
 } from "~/components/ui/accordion"
 import type { Appointment, Customer } from "~/data/static-data"
 
-type AccordionAppointmentsProps = {
+type AccordionAppointmentsForCustomersProps = {
     userData: Customer;
     appointmentsData: Appointment[];
 }
 
-export default function AccordionAppointments({userData, appointmentsData}: AccordionAppointmentsProps) {
+export default function AccordionAppointmentsForCustomers({userData, appointmentsData}: AccordionAppointmentsForCustomersProps) {
 
     // Filter appointments belonging to the logged-in customer
     const appointments = (appointmentsData || []).filter(item => item["customer-id"] === userData.id)
@@ -77,7 +77,7 @@ export default function AccordionAppointments({userData, appointmentsData}: Acco
                 }
 
                 {/* Appointment form with (delete/cancel actions) */}
-                <Form method="delete" action="/dashboard/appointments" className="w-full pr-6 flex flex-col items-center gap-2 sm:self-start sm:w-[62%] md:w-2/3 xmd:w-[80%]">
+                <Form method="delete" action="/dashboard/appointments" className="w-full flex flex-col items-center gap-2 sm:self-start sm:w-[62%] md:w-2/3 xmd:w-[80%]">
 
                     {/* hidden appointment-id input */}
                     <input type="hidden" name="appointment-id" value={appointment["appointment-id"]} />
@@ -134,9 +134,9 @@ export default function AccordionAppointments({userData, appointmentsData}: Acco
 
                     </section>
 
-                    {/* Action buttons for upcoming appointments */}
+                    {/* Action buttons for pending appointments */}
                     {appointment["appointment-status"] === "pending" && 
-                        <section className="w-full flex flex-col items-center gap-2 mt-6 min-[500px]:flex-row min-[500px]:justify-start">
+                        <section className="w-full flex flex-col flex-wrap items-center gap-2 mt-6 min-[500px]:flex-row justify-center sm:justify-start">
 
                             {/* Update appointment link */}
                             <Link to={appointment["appointment-id"]} className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30"
@@ -146,16 +146,29 @@ export default function AccordionAppointments({userData, appointmentsData}: Acco
 
                             {/* Pay online link */}
                             {appointment["payment-status"] === "unpaid" && 
-                                <Link to={`${appointment["appointment-id"]}/payments`} className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg xmd:w-30"
+                                <Link to={`${appointment["appointment-id"]}/payments`} className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30"
                                 >
-                                    Pay Online
+                                    Pay Now
                                 </Link>
                             }
 
                             {/* Cancel appointment link */}
-                            <button className="text-xbase w-40 min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30"
+                            <button className="no-underline! w-40 text-xbase min-[400px]:w-4xs flex gap-x-2 items-center justify-center bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 hover:text-rf-white-100! active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30"
                             >
                                 Cancel
+                            </button>
+                            
+                        </section>
+                    }
+
+                    {/* Action buttons for completed appointments */}
+                    {appointment["appointment-status"] === "complete" && 
+                        <section className="w-full flex flex-col gap-2 mt-3 min-[500px]:flex-row justify-center sm:justify-start">
+
+                            {/* Delete appointment link */}
+                            <button className="w-40 min-[400px]:w-4xs mx-auto bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-2 px-3 hover:cursor-pointer min-[400px]:text-lg min-[500px]:w-30 sm:mx-0"
+                            >
+                                Delete
                             </button>
                             
                         </section>

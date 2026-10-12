@@ -6,9 +6,9 @@ import Wrapper from "~/components/custom-components/Wrapper";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaUserInjured } from "react-icons/fa6";
 import { GiTakeMyMoney } from "react-icons/gi";
-import { AccordionUpcomingAppointments } from "~/components/custom-components/AccordionUpcomingAppointments";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
-import { TabularUpcomingAppointments } from "~/components/custom-components/TabularUpcomingAppointments";
+import { AccordionAppointmentsForDoctorsAndAdmins } from "~/components/custom-components/AccordionAppointmentsForDoctorsAndAdmins";
+import { TabularAppointmentsForDoctorsAndAdmins } from "~/components/custom-components/TabularAppointmentsForDoctorsAndAdmins";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -42,7 +42,7 @@ export const clientAction = async ({request} : Route.ClientActionArgs) => {
   const appointmentsDataStringified = sessionStorage.getItem("appointmentsData");  // get appointments data stored in sessionStorage (if exists)
   const appointmentsDataParsed : Appointment[] = appointmentsDataStringified && JSON.parse(appointmentsDataStringified); // parse appointments data back into appointmentsData array (if it exists)
 
-  // Filter out the selected appointment and keep unselected ones
+  // Separate selected and unselected appointments
   const unselectedAppointments = appointmentsDataParsed.filter(item => item["appointment-id"] !== appointmentId?.toString());
   const selectedAppointment = appointmentsDataParsed.filter(item => item["appointment-id"] === appointmentId?.toString());
 
@@ -51,7 +51,7 @@ export const clientAction = async ({request} : Route.ClientActionArgs) => {
     sessionStorage.setItem("appointmentsData", JSON.stringify(unselectedAppointments)); // update the appointmentsData with remaining unselected appointments
   }
 
-  // Handle PUT request and update selected appointment with the payment details
+  // Handle PUT request and mark appointment as paid and complete
   if(request.method === "PUT"){
     const updatedAppointment = selectedAppointment.map(item => ({
       ...item,
@@ -76,7 +76,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
   && (item["doctor-id"] === userData.id)
   );
 
-  // Calculate total earnings for the logged-in doctor (only paid appointments)
+  // Calculate total earnings for the logged-in doctor (sum of fees from only paid appointments)
   const totalEarnings = (appointmentsData || []).filter(item => item["doctor-id"] === userData.id).reduce((accumulator, currentValue) => {
     if(currentValue["payment-status"] === "paid"){
       accumulator = accumulator + Number(currentValue["doctor-fee"]);
@@ -131,14 +131,14 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
         </section>
 
         {/* Upcoming appointments section */}
-        <section className="grid grid-cols-1 gap-y-8 place-items-center">
-          <h2 className="w-full text-center xs:col-span-2 min-[600px]:col-span-3!">Upcoming Appointments</h2>
+        <section className="grid grid-cols-1 gap-y-3 place-items-center">
+          <h2 className="w-full text-center xs:col-span-2 min-[600px]:col-span-3!">Pending Appointments</h2>
           
-          {/* Show accordion view for small screens */}
-          {!isLargeScreen && <AccordionUpcomingAppointments appointments={upcomingAppointments} />}
+          {/* Show appointments UI for doctors & administrators in an accordion view on small screens */}
+          {!isLargeScreen && <AccordionAppointmentsForDoctorsAndAdmins appointments={upcomingAppointments} userData={userDoctorData} />}
 
-          {/* Show tabular view for large screens */}
-          {isLargeScreen && <TabularUpcomingAppointments appointments={upcomingAppointments} userData={userDoctorData} />}
+          {/* Show appointments UI for doctors & administrators in a tabular view on large screens */}
+          {isLargeScreen && <TabularAppointmentsForDoctorsAndAdmins appointments={upcomingAppointments} userData={userDoctorData} />}
         </section>
 
       </Wrapper>

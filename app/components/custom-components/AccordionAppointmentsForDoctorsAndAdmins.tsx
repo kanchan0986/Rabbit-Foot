@@ -7,18 +7,28 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion"
-import type { Appointment } from "~/data/static-data"
+import type { Appointment, Doctor } from "~/data/static-data"
 import { calculateAge } from "~/helper/calculateAge"
 
-type AccordionUpcomingAppointmentsProps = {
-    appointments: Appointment[]
+type AccordionAppointmentsForDoctorsAndAdminsProps = {
+    appointments: Appointment[];
+    userData: Doctor | null;
+    activeLink?: "all" | "pending" | "complete";
 }
 
-// AccordionUpcomingAppointments component to display upcoming appointments in an accordion view
-export function AccordionUpcomingAppointments({appointments}: AccordionUpcomingAppointmentsProps) {
+// AccordionAppointmentsForDoctorsAndAdmins component to display upcoming appointments in an accordion view
+export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData, activeLink}: AccordionAppointmentsForDoctorsAndAdminsProps) {
 
-    // if ther is no upcoming appointments, show fallback message
-    if(!appointments || appointments.length === 0) return <div className="text-center">Sorry! You do not have any upcoming appointments yet.</div>
+    // if no upcoming appointments, show fallback message depending upon the active link
+    if(!appointments || appointments.length === 0) {
+        if(activeLink === 'complete'){
+            return <div className="text-center">Sorry! You do not have any completed appointments yet.</div>
+        }else if(activeLink === 'all'){
+            return <div className="text-center">Sorry! You do not have any appointments yet.</div>
+        }else{
+            return <div className="text-center">Sorry! You do not have any pending appointments yet.</div>
+        }
+    }
 
   return (
     // Accordion wrapper for upcoming appointments
@@ -32,6 +42,7 @@ export function AccordionUpcomingAppointments({appointments}: AccordionUpcomingA
         // Extract first name and age of the customer
         const firstName = item["customer-name"].split(" ")[0] // extract the first name
         const customerAge = item["customer-dob"] && calculateAge(item["customer-dob"]) // calculate age
+        const isLoggedInDoctorsId = item["doctor-id"] === userData?.id // Check if logged-in doctor id matches appointment's doctor id
 
         return (
         <AccordionItem
@@ -98,6 +109,14 @@ export function AccordionUpcomingAppointments({appointments}: AccordionUpcomingA
                     <span>{item["appointment-date"]}</span>
                 </div>
 
+                {/* Doctor Name (shows 'myself' if logged-in doctor matches) */}
+                {item["appointment-slot"] &&
+                    <div className="justify-self-start flex gap-x-2 text-sm capitalize">
+                        <span className="font-medium text-rf-primary">Doctor Name: </span>
+                        <span>{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
+                    </div>
+                }
+
                 {/* Appointment slot */}
                 {item["appointment-slot"] &&
                     <div className="justify-self-start flex gap-x-2 text-sm ">
@@ -124,20 +143,30 @@ export function AccordionUpcomingAppointments({appointments}: AccordionUpcomingA
                     <span className="capitalize flex items-center gap-x-1">{item["payment-status"]} {item["payment-status"] === "paid" && <PiSealCheckFill className="fill-green-600" />}</span>
                 </div>
 
-                {/* Action buttons (Complete / Cancel) */}
+                {/* Action buttons (Complete / Cancel / Delete) */}
                 <div className=" flex flex-col items-center justify-center gap-2 mt-2 2xs:w-full xs:flex-row">
 
-                    {/* Mark appointment as completed */}
-                    <Form method="PUT" className="flex gap-x-2">
-                        <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
-                        <button className="bg-rf-primary/80 w-30 text-sm hover:bg-rf-primary hover:cursor-pointer rounded-full px-4 py-1 font-medium text-rf-white-100">Completed</button>
-                    </Form>
+                    {/* Mark appointment as completed (only if pending) */}
+                    {item["appointment-status"] === "pending" &&
+                        <Form method="PUT" className="flex gap-x-2">
+                            <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
+                            <button className="bg-rf-primary/80 w-40 text-sm hover:bg-rf-primary hover:cursor-pointer rounded-full px-4 py-1 font-medium text-rf-white-100">Mark Completed</button>
+                        </Form>
+                    }
 
                     {/* Cancel appointment (only if unpaid) */}
                     {item["payment-status"] !== "paid" &&
                         <Form method="DELETE" className="flex gap-x-2">
                             <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
                             <button className="bg-rf-primary/80 w-30 text-sm hover:bg-rf-primary hover:cursor-pointer rounded-full px-4 py-1 font-medium text-rf-white-100">Cancel</button>
+                        </Form>
+                    }
+
+                    {/* Delete appointment (only if paid and completed) */}
+                    {(item["payment-status"] === "paid" && item["appointment-status"] === "complete") &&
+                        <Form method="DELETE" className="flex gap-x-2">
+                            <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
+                            <button className="bg-rf-primary/80 w-30 text-sm hover:bg-rf-primary hover:cursor-pointer rounded-full px-4 py-1 font-medium text-rf-white-100">Remove</button>
                         </Form>
                     }
                 </div>
