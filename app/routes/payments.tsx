@@ -19,6 +19,7 @@ export const clientLoader = ({params}: Route.ClientLoaderArgs) => {
   const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object (if it exists)
 
   if(!userData) return redirect('/login'); // If no user data found, redirect to login page
+  if(userData.type !== "customer") return redirect('..') // if user is not a customer, redirect to previous route
 
   const appointmentsDataStringified = sessionStorage.getItem("appointmentsData"); // get appointments data stored in sessionStorage (if exists)
   const appointmentsData : Appointment[] = appointmentsDataStringified && JSON.parse(appointmentsDataStringified); // parse appointments data back into appointmentData array (if it exists)

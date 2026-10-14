@@ -5,6 +5,7 @@ import type { Route } from "./+types/update-appointments";
 import { validateAppointmentsUpdateForm } from "~/helper/validateAppointmentsUpdateForm";
 import UpdateCustomerAppointmentsForm from "~/components/custom-components/forms/updateAppointmentForms/UpdateCustomerAppointmentsForm";
 import Loader from "~/components/custom-components/Loader";
+import CustomerProfile from "~/components/custom-components/CustomerProfile";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -104,7 +105,7 @@ export default function UpdateAppointments({loaderData, actionData}: Route.Compo
 
   {/* UI for doctors */}
   if(userData.type === "doctor") {
-    <div>Update Appointments related to Doctors</div>
+    return <CustomerProfile appointmentsData={appointmentsData} />
   } 
 
   {/* UI for administrators */}

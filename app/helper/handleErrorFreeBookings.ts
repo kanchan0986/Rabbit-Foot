@@ -63,21 +63,22 @@ export default function handleErrorFreeBookings({bookingData, pathname, user}: h
   // Add the new appointment to the appointments list
   const appointmentsDataUpdated : Appointment[] = [...(appointmentsDataParsed || []), 
     {
-      "appointment-id": bookingData["appointment-id"] as string,
+      "appointment-id": bookingData["appointment-id"],
       "customer-id": updatedUserData.id,
-      "customer-name": bookingData["customer-name"] as string || updatedUserData.name,
+      "customer-name": updatedUserData.name,
+      "customer-email": updatedUserData.email,
       "customer-dob": updatedUserData.dob,
       "customer-imageUrl": updatedUserData.imageUrl,
       "customer-gender": updatedUserData.gender,
       "customer-phone": updatedUserData.phone.toString(),
-      "appointment-date": bookingData['appointment-date'] as string,
-      "appointment-slot": bookingData['appointment-slot'] as string,
-      "doctor-id": bookingData['doctor-id'] as string,
-      "doctor-name": bookingData['doctor-name'] as string,
-      "doctor-imageUrl": bookingData['doctor-imageUrl'] as string,
+      "appointment-date": bookingData['appointment-date'],
+      "appointment-slot": bookingData['appointment-slot'],
+      "doctor-id": bookingData['doctor-id'],
+      "doctor-name": bookingData['doctor-name'],
+      "doctor-imageUrl": bookingData['doctor-imageUrl'],
       "doctor-speciality": bookingData['doctor-speciality'] as Speciality,
-      "doctor-fee": bookingData['doctor-fee'] as string,
-      "doctor-phone": bookingData["doctor-phone"]?.toString() as string,
+      "doctor-fee": bookingData['doctor-fee'],
+      "doctor-phone": bookingData["doctor-phone"],
       "appointment-status": 'pending', // Default status for new appointment
       "payment-mode": 'cash', // Default payment mode
       "payment-status": 'unpaid' // Default payment status

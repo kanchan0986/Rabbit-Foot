@@ -51,7 +51,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
           className="border-b last:border-b-0 border-rf-primary"
         >
           {/* Accordion header showing customer image or fallback icon along with first name */}
-          <AccordionTrigger className="px-4 flex items-center gap-2 bg-rf-primary/50 rounded-none [&[data-state=closed]>svg]:stroke-black [&[data-state=open]>svg]:stroke-rf-primary text-md lg:text-lg lg:[&>svg]:size-5! hover:cursor-pointer hover:data-[state=open]:cursor-auto">
+          <AccordionTrigger className={`px-4 ${item["appointment-status"] === 'complete' ? 'bg-gray-400/70! [&>svg]:stroke-black!' : 'bg-rf-primary/50!'} flex items-center gap-2 bg-rf-primary/50 rounded-none [&[data-state=closed]>svg]:stroke-black [&[data-state=open]>svg]:stroke-rf-primary text-md lg:text-lg lg:[&>svg]:size-5! hover:cursor-pointer hover:data-[state=open]:cursor-auto`}>
           {item["customer-imageUrl"] ? 
             <div style={{backgroundImage: `url(${item["customer-imageUrl"]})`}} className="bg-cover bg-center bg-no-repeat size-6 rounded-full border border-rf-primary shadow-rf-direct-300" />
             : 
@@ -61,7 +61,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
           </AccordionTrigger>
 
           {/* Accordion content with detailed appointment info */}
-          <AccordionContent className="bg-rf-primary-300 h-fit">
+          <AccordionContent className={`${item["appointment-status"] === 'complete' ? 'bg-gray-400/30!' : 'bg-rf-primary-300!'} bg-rf-primary-300 h-fit`}>
 
             <div className="px-4 pt-2 text-md flex flex-col items-center justify-center gap-2 2xs:flex-row flex-wrap lg:text-lg">
 
@@ -109,14 +109,6 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                     <span>{item["appointment-date"]}</span>
                 </div>
 
-                {/* Doctor Name (shows 'myself' if logged-in doctor matches) */}
-                {item["appointment-slot"] &&
-                    <div className="justify-self-start flex gap-x-2 text-sm capitalize">
-                        <span className="font-medium text-rf-primary">Doctor Name: </span>
-                        <span>{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
-                    </div>
-                }
-
                 {/* Appointment slot */}
                 {item["appointment-slot"] &&
                     <div className="justify-self-start flex gap-x-2 text-sm ">
@@ -125,10 +117,24 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                     </div>
                 }
 
+                {/* Doctor Name (shows 'myself' if logged-in doctor matches) */}
+                {item["appointment-slot"] &&
+                    <div className="justify-self-start flex gap-x-2 text-sm capitalize">
+                        <span className="font-medium text-rf-primary">Doctor Name: </span>
+                        <span>{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
+                    </div>
+                }
+
                 {/* Doctor speciality */}
                 <div className="justify-self-start flex gap-x-2 text-sm ">
                     <span className="font-medium text-rf-primary">Speciality: </span>
                     <span className="capitalize">{item["doctor-speciality"]}</span>
+                </div>
+
+                {/* Doctor fee */}
+                <div className="justify-self-start flex gap-x-2 text-sm ">
+                    <span className="font-medium text-rf-primary">Fee: </span>
+                    <span className="capitalize">${item["doctor-fee"]}</span>
                 </div>
 
                 {/* Appointment status */}
@@ -142,6 +148,14 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                     <span className="font-medium text-rf-primary">Payment Status: </span>
                     <span className="capitalize flex items-center gap-x-1">{item["payment-status"]} {item["payment-status"] === "paid" && <PiSealCheckFill className="fill-green-600" />}</span>
                 </div>
+
+                {/* Payment mode */}
+                {item["payment-status"] === "paid" && 
+                    <div className="justify-self-start flex gap-x-2 text-sm ">
+                        <span className="font-medium text-rf-primary">Payment Mode: </span>
+                        <span className="capitalize flex items-center gap-x-1">{item["payment-mode"]}</span>
+                    </div>
+                }
 
                 {/* Action buttons (Complete / Cancel / Delete) */}
                 <div className=" flex flex-col items-center justify-center gap-2 mt-2 2xs:w-full xs:flex-row">

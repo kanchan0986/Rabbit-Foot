@@ -2053,6 +2053,7 @@ export const adminArr : Administrator[] = [
 export type Appointment = {
   "customer-id": string;
   "customer-name": string;
+  "customer-email": string;
   "customer-imageUrl"?: string;
   "customer-dob"?: string;
   "customer-gender"?: 'male' | 'female';

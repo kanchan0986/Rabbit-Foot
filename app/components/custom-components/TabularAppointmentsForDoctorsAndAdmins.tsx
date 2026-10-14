@@ -61,8 +61,9 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
             {/* Doctor column headers */}
             <span className="flex flex-col items-center">
                 <span className="py-2">Doctor</span> 
-                <div className="w-full flex justify-evenly border-t border-rf-primary">
+                <div className="w-full grid grid-cols-[1.5fr_2fr_1.2fr] border-t border-rf-primary">
                     <span className="py-2 w-full">Name</span>
+                    <span className="py-2 border-l border-rf-primary w-full">Speciality</span>
                     <span className="py-2 border-l border-rf-primary w-full">Fee</span>
                 </div>
             </span>
@@ -87,7 +88,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
 
             return (
 
-                <div key={item["appointment-id"]} className="grid grid-cols-[2.5fr_2fr_1.5fr_1fr_0.5fr] items-baseline text-sm text-center capitalize not-last:border-b border-rf-primary">
+                <div key={item["appointment-id"]} className={`${item["appointment-status"] === 'complete' && 'bg-gray-300'} grid grid-cols-[2.5fr_2fr_1.5fr_1fr_0.5fr] items-baseline text-sm text-center capitalize not-last:border-b border-rf-primary`}>
 
                     {/* Patient details row */}
                     <div className="w-full grid grid-cols-[0.7fr_2fr_0.8fr_1.2fr_2fr] items-baseline h-full">
@@ -112,7 +113,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                         <span className="py-2 border-r border-rf-primary w-full h-full">{item["customer-gender"] ?? 'N/A'}</span>
 
                         {/* Patient phone */}
-                        <span className="py-2 border-r border-rf-primary w-full h-full">{item["customer-phone"] ?? 'N/A'}</span>
+                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{item["customer-phone"] ?? 'N/A'}</span>
                     </div>
 
                     {/* Appointment details row */}
@@ -129,13 +130,16 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                     </div>
 
                     {/* Doctor details row */}
-                    <div className="w-full flex justify-evenly items-baseline h-full">
+                    <div className="w-full  grid grid-cols-[1.5fr_2fr_1.2fr] items-baseline h-full">
 
                         {/* Doctor name */}
-                        <span className="py-2 border-r border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
+                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
+
+                        {/* Doctor speciality */}
+                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{item["doctor-speciality"]}</span>
 
                         {/* Doctor fee */}
-                        <span className="py-2 border-r border-rf-primary w-full h-full">{item["doctor-fee"]}</span>
+                        <span className="py-2 border-r border-rf-primary w-full h-full">${item["doctor-fee"]}</span>
                     </div>
 
                     {/* Payment details row */}
@@ -171,7 +175,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                         {(item["payment-status"] === "paid" && item["appointment-status"] === "complete") &&
                             <Form method="DELETE" className="w-full h-full">
                                 <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
-                                <button className="text-rf-primary hover:text-red-600 hover:cursor-pointer"><MdDeleteForever className="size-6 xl:-mb-2"/></button>
+                                <button className="text-rf-grey-100 hover:text-red-600 hover:cursor-pointer"><MdDeleteForever className="size-6 xl:-mb-2"/></button>
                             </Form>
                         }
                     </div>
