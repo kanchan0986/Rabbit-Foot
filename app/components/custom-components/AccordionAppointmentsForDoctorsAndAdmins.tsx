@@ -1,6 +1,6 @@
 import { FaUserInjured } from "react-icons/fa6"
 import { PiSealCheckFill } from "react-icons/pi"
-import { Form, Link } from "react-router"
+import { Form, Link, useMatch } from "react-router"
 import {
   Accordion,
   AccordionContent,
@@ -18,6 +18,10 @@ type AccordionAppointmentsForDoctorsAndAdminsProps = {
 
 // AccordionAppointmentsForDoctorsAndAdmins component to display upcoming appointments in an accordion view
 export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData, activeLink}: AccordionAppointmentsForDoctorsAndAdminsProps) {
+
+    // Check current route to adjust links accordingly
+    const isDashboard = useMatch("/dashboard");
+    const isAppointments = useMatch("/dashboard/appointments");
 
     // if no upcoming appointments, show fallback message depending upon the active link
     if(!appointments || appointments.length === 0) {
@@ -67,7 +71,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
             <div className="px-4 pt-2 text-md flex flex-col items-center justify-center gap-2 2xs:flex-row flex-wrap lg:text-lg">
 
                 {/* Customer image or fallback icon */}
-                <Link to={`./appointments/${item["appointment-id"]}`} className="peer">
+                <Link to={isDashboard ? `appointments/${item["appointment-id"]}` : isAppointments ? `./${item["appointment-id"]}` : ''} className="peer">
                     {item["customer-imageUrl"] ?
                         <div style={{backgroundImage: `url(${item["customer-imageUrl"]})`}} className="bg-cover bg-center bg-no-repeat size-15 rounded-full border border-rf-primary shadow-rf-direct-300 2xs:mx-auto" />
                         :
@@ -76,7 +80,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                 </Link>
 
                 {/* Customer Name */}
-                <Link to={`./appointments/${item["appointment-id"]}`} className="2xs:w-full 2xs:text-center no-underline! hover:underline! peer-hover:underline!">
+                <Link to={isDashboard ? `appointments/${item["appointment-id"]}` : isAppointments ? `./${item["appointment-id"]}` : ''} className="2xs:w-full 2xs:text-center no-underline! hover:underline! peer-hover:underline!">
                     <h2>{item["customer-name"]}</h2>
                 </Link>
 
@@ -122,7 +126,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                 {item["appointment-slot"] &&
                     <div className="justify-self-start flex gap-x-2 text-sm capitalize">
                         <span className="font-medium text-rf-primary">Doctor Name: </span>
-                        <span>{isLoggedInDoctorsId ? 'myself' : `${item["doctor-name"]}`}</span>
+                        <span>{isLoggedInDoctorsId ? 'myself' : <Link to="." className="no-underline! underline-offset-2 hover:underline! decoration-[1.5px]">{item["doctor-name"]}</Link>}</span>
                     </div>
                 }
 

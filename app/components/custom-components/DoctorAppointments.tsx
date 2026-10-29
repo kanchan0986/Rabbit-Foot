@@ -6,14 +6,14 @@ import { AccordionAppointmentsForDoctorsAndAdmins } from "./AccordionAppointment
 import { TabularAppointmentsForDoctorsAndAdmins } from "./TabularAppointmentsForDoctorsAndAdmins";
 
 type DoctorAppointmentsProps = {
-    userDoctorData: Doctor | null;
+    userDoctorData?: Doctor | null;
     appointmentsData: Appointment[];
 }
 
 export default function DoctorAppointments({userDoctorData, appointmentsData}: DoctorAppointmentsProps) {
     
-    // Filter all appointments belonging to the logged-in doctor
-    const userAllAppointmentsData = (appointmentsData || []).filter(item => item["doctor-id"] === userDoctorData?.id);
+    // Filter all appointments belonging to the logged-in doctor if the user is a logged-in doctor otherwise return the same item without doing the comparison
+    const userAllAppointmentsData = (appointmentsData || []).filter(item => item["doctor-id"] === (userDoctorData?.id ?? item["doctor-id"]));
 
     // Separate appointments by status
     const userPendingAppointmentsData = userAllAppointmentsData.filter(item => item["appointment-status"] === "pending");

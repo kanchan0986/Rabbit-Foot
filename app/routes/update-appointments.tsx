@@ -111,7 +111,7 @@ export default function UpdateAppointments({loaderData, actionData}: Route.Compo
 
   {/* UI for administrators */}
   if(userData.type === "administrator") {
-    <div>Update Appointments related to Administrators</div>
+    return <CustomerProfile appointmentsData={appointmentsData} />
   } 
 
 }

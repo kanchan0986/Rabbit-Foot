@@ -100,7 +100,7 @@ export default function Appointments({loaderData}: Route.ComponentProps) {
 
 
         {/* appointments UI for administrators */}
-        {userData.type === "administrator" && <div>Appointments related to Administrators</div>}
+        {userData.type === "administrator" && <DoctorAppointments appointmentsData={appointmentsData} />}
 
       </Wrapper>
   )

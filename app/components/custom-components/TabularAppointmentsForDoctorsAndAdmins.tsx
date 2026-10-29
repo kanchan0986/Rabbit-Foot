@@ -134,7 +134,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                     <div className="w-full  grid grid-cols-[1.5fr_2fr_1.2fr] items-baseline h-full">
 
                         {/* Doctor name */}
-                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : `${item["doctor-name"]}`}</span>
+                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : <Link to="." className="underline-offset-2 hover:underline decoration-[1.5px]">{item["doctor-name"]}</Link>}</span>
 
                         {/* Doctor speciality */}
                         <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{item["doctor-speciality"]}</span>
