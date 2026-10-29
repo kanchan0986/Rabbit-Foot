@@ -25,7 +25,7 @@ import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
 import SlideInRight from "~/components/custom-components/animations/SlideInRight";
 import SlideInUp from "~/components/custom-components/animations/SlideInUp";
 import FadeIn from "~/components/custom-components/animations/FadeIn";
-import { servicesArray, galleryArray, testimonialArray, doctorArray, specialityArray, type BookingDataType, type Customer } from "~/data/static-data";
+import { servicesArray, galleryArray, testimonialArray, specialityArray, type BookingDataType, type Customer, type Doctor } from "~/data/static-data";
 import { tabLabel } from "~/helper/tabLabel";
 import validateBookingForm from "~/helper/validateBookingForm";
 import handleErrorFreeBookings from "~/helper/handleErrorFreeBookings";
@@ -48,7 +48,8 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
   const customerArr: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
   const customerData = (customerArr || []).find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
-  const doctorData = doctorArray
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorData: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
   const specialityData = specialityArray;
   return {servicesData, customerData, doctorData, specialityData};
  }

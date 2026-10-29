@@ -1,5 +1,5 @@
 import { tabLabel } from "~/helper/tabLabel";
-import { doctorArray, type Administrator, type Appointment, type BookingDataType, type Customer, type Doctor, type UpdateDataType } from "~/data/static-data";
+import { type Administrator, type Appointment, type BookingDataType, type Customer, type Doctor, type UpdateDataType } from "~/data/static-data";
 import { redirect, useNavigation } from "react-router";
 import type { Route } from "./+types/update-appointments";
 import { validateAppointmentsUpdateForm } from "~/helper/validateAppointmentsUpdateForm";
@@ -20,7 +20,8 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
 
   const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object (if it exists)
 
-  const doctorArr = doctorArray; // import list of doctors
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorArr: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
 
   if(!userData) return redirect('/login'); // If no user data found, redirect to login page
 

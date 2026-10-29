@@ -1,4 +1,4 @@
-import { doctorArray, type BookingDataType, type Customer } from "~/data/static-data";
+import { type BookingDataType, type Customer, type Doctor } from "~/data/static-data";
 import type { Route } from "./+types/doctor-details";
 import Wrapper from "~/components/custom-components/Wrapper";
 import SlideInLeft from "~/components/custom-components/animations/SlideInLeft";
@@ -27,8 +27,13 @@ export function meta({loaderData}: Route.MetaArgs) {
 export const clientLoader = async ({params}: Route.ClientLoaderArgs) => { 
   const doctorId = params["doctor-id"];
   // fetch data from api
-  const doctorData = doctorArray.find(doctor => doctor.id === doctorId);
-  const relatedDoctorArray = doctorArray.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId)
+
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
+  const doctorData = doctorDataParsed.find(doctor => doctor.id === doctorId); // Find the doctor whose profile matches the selected doctor ID
+  const relatedDoctorArray = doctorDataParsed.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId) // Find other doctors who share at least one specialty with the selected doctor, excluding the currently selected doctor from the results
+  
   const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
   const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
 

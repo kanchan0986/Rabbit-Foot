@@ -9,7 +9,7 @@ import { PiCalendarXDuotone } from "react-icons/pi";
 
 type TabularAppointmentsForDoctorsAndAdminsProps = {
     appointments: Appointment[];
-    userData: Doctor | null;
+    userData?: Doctor | null;
     activeLink?: "all" | "pending" | "complete";
 }
 
@@ -27,7 +27,8 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
         }else if(activeLink === 'all'){
             return <div className="text-center">Sorry! You do not have any appointments yet.</div>
         }else{
-            return <div className="text-center">Sorry! You do not have any pending appointments yet.</div>
+            if(userData?.type === "doctor")  return (<div className="text-center">Sorry! You do not have any pending appointments yet.</div>)
+            return (<div className="text-center">Sorry! There is no pending appointments yet.</div>)
         }
     }
 
@@ -133,7 +134,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                     <div className="w-full  grid grid-cols-[1.5fr_2fr_1.2fr] items-baseline h-full">
 
                         {/* Doctor name */}
-                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
+                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : `${item["doctor-name"]}`}</span>
 
                         {/* Doctor speciality */}
                         <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{item["doctor-speciality"]}</span>
@@ -158,6 +159,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                         {/* Mark appointment as completed (only if pending) */}
                         {item["appointment-status"] === "pending" && 
                             <Form method="PUT" className="w-full h-full">
+                                <input type="hidden" name="action" defaultValue="update-appointment" /> {/* Hidden form differentiator field for common method */}
                                 <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
                                 <button className="text-rf-primary hover:text-green-600 hover:cursor-pointer"><IoMdDoneAll className="size-6 xl:-mb-2"/></button>
                             </Form>

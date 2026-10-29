@@ -10,7 +10,7 @@ import { Button } from '~/components/ui/button';
 import SpacerVectorRabitTwoParts from '~/components/custom-components/vectors/SpacerVectorRabitTwoParts';
 import Logo from '~/components/custom-components/vectors/Logo';
 import { FaClipboardCheck, FaRegCircle } from 'react-icons/fa6';
-import { doctorArray, funToKnowFacts, goodToKnowFacts, specialityArray, type BookingDataType, type Customer } from '~/data/static-data';
+import { funToKnowFacts, goodToKnowFacts, specialityArray, type BookingDataType, type Customer, type Doctor } from '~/data/static-data';
 import SpacerVector from '~/components/custom-components/vectors/SpacerVector';
 import SpacerVectorDoubleOrange from '~/components/custom-components/vectors/SpacerVectorDoubleOrange';
 import FadeIn from '~/components/custom-components/animations/FadeIn';
@@ -35,7 +35,10 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const customerArr: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
 
   const customerData = (customerArr || []).find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
-  const doctorData = doctorArray
+
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorData: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
   return { specialityData, customerData, doctorData };
  }
 

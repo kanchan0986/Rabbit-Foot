@@ -10,7 +10,7 @@ import { IoLogIn, IoLogInOutline } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import type { Route } from './+types/sign-up';
 import ValidateSignupForm from '~/helper/validateSignupForm';
-import type { BookingDataType, Customer, SignUpDataType, User } from '~/data/static-data';
+import type { BookingDataType, Customer, Doctor, SignUpDataType, User } from '~/data/static-data';
 import { useState } from 'react';
 import handleErrorFreeBookings from '~/helper/handleErrorFreeBookings';
 
@@ -34,7 +34,14 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   // If validation errors exist, return them to display on UI
   const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
   const customerDataParsed: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
-  const { errors, user } = ValidateSignupForm({data: data as unknown as SignUpDataType, customerArr: customerDataParsed});
+
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
+  // Validate signup input and check for conflicts with existing users, then extract the resulting errors and validated user data.
+  const { errors, user } = ValidateSignupForm({data: data as unknown as SignUpDataType, customerArr: customerDataParsed, doctorArray: doctorDataParsed});
+
+  // Prevent user registration from continuing when validation fails for the name, email, phone number, or password fields.
   if(errors.name || errors.email || errors.phone || errors.password) return { errors };
 
   // If booking data exists and user is a customer, update booking info with customer details
@@ -58,6 +65,11 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
       sessionStorage.removeItem("bookingData")
       sessionStorage.removeItem("redirectPath")
     }
+
+    sessionStorage.setItem(
+      "doctorData",
+      JSON.stringify([...doctorDataParsed, user]),
+    ); // Save signed-up doctor to sessionStorage
 
     // redirect to under-review page 
     return redirect('/under-review')

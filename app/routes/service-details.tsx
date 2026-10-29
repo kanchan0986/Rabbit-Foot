@@ -1,6 +1,6 @@
 import { tabLabel } from "~/helper/tabLabel";
 import type { Route } from "./+types/service-details";
-import { doctorArray, servicesArray } from "~/data/static-data";
+import { servicesArray, type Doctor } from "~/data/static-data";
 import ServiceDetailsAndSubDetails from "~/components/custom-components/ServiceDetailsAndSubDetails";
 
 export function meta({loaderData, location}: Route.MetaArgs) {
@@ -14,8 +14,15 @@ export function meta({loaderData, location}: Route.MetaArgs) {
 export const clientLoader = ({params} : Route.ClientLoaderArgs) => { 
     const serviceId = params["service-id"]
   // make api call
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
+  // Find the service that matches the selected service ID
   const servicesData = servicesArray.find(service => service.id === serviceId)
-  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality?.some(speciality => servicesData?.speciality.includes(speciality) ))
+
+  // Find doctors whose specialties match at least one specialty associated with the selected service
+  const relatedDoctorsData = doctorDataParsed.filter(doctor => doctor.speciality?.some(speciality => servicesData?.speciality.includes(speciality) ))
+  
   return { servicesData, relatedDoctorsData };
  }
 

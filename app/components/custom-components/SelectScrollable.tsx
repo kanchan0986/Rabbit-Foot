@@ -11,7 +11,7 @@ type SelectScrollableProps = {
 
 export default function SelectScrollable({ data, name, changeHandler }: SelectScrollableProps) {
   const selectId = useId(); // generate a unique ID for the <select> element to link with its <label>
-  const isSpeciality = typeof data[0] === 'string' // check to find out, if the data passed is a list of specialities (strings) or doctors (objects)
+  const isSpeciality = typeof data?.[0] === 'string' // check to find out, if the data passed is a list of specialities (strings) or doctors (objects)
   const [val, setVal] = useState<string>(isSpeciality ? "all" : 'select-doctor') // initial value depends on type: "all" for speciality dropdown, "select-doctor" for doctor dropdown
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => { 
     // update local state when user selects an option
@@ -40,7 +40,7 @@ export default function SelectScrollable({ data, name, changeHandler }: SelectSc
               Select doctor
             </option>
             {/* render actual doctor options */}
-            {(data as Doctor[]).map(item => <option value={item.name} key={item.id} className="bg-rf-primary-200 capitalize">{item.name}</option>)}            
+            {((data as Doctor[]) || []).map(item => <option value={item.name} key={item.id} className="bg-rf-primary-200 capitalize">{item.name}</option>)}            
           </>
         }
       </select>

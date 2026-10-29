@@ -38,7 +38,14 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   // If validation errors exist, return them to display on UI
   const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
   const customerDataParsed: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
-  const { errors, user } = validateLoginForm({data: data as LoginDataType, customerArr: customerDataParsed});
+
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
+  // Validate the login credentials against existing customer and doctor records, then extract any validation errors and the matching user data
+  const { errors, user } = validateLoginForm({data: data as LoginDataType, customerArr: customerDataParsed, doctorArray: doctorDataParsed});
+
+  // If the username or password validation fails, stop the login process and return the validation errors
   if(errors.username || errors.password) return { errors };
 
   // If booking data exists and user is a customer, update booking info with customer details

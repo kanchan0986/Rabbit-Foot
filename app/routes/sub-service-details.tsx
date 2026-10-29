@@ -1,6 +1,6 @@
 import type { Route } from './+types/sub-service-details';
 import { tabLabel } from '~/helper/tabLabel';
-import { doctorArray, servicesArray } from '~/data/static-data';
+import { servicesArray, type Doctor } from '~/data/static-data';
 import ServiceDetailsAndSubDetails from '~/components/custom-components/ServiceDetailsAndSubDetails';
 
 export function meta({loaderData, location}: Route.MetaArgs) {
@@ -13,8 +13,14 @@ export function meta({loaderData, location}: Route.MetaArgs) {
 
 export const clientLoader = ({ params }: Route.ClientLoaderArgs) => {
   const subServiceId = params['sub-service-id'];
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
+  // Find the sub-service details that match the current sub-service ID
   const subServicesData = servicesArray.flatMap(services => services.serviceNiche).find(subService => subService?.id === subServiceId)
-  const relatedDoctorsData = doctorArray.filter(doctor => doctor.speciality?.some(speciality => subServicesData?.speciality.includes(speciality) ))
+
+  // Filter doctors whose specialties match at least one specialty required by the selected sub-service
+  const relatedDoctorsData = doctorDataParsed.filter(doctor => doctor.speciality?.some(speciality => subServicesData?.speciality.includes(speciality) ))
   return { subServicesData, relatedDoctorsData };
 };
 

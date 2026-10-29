@@ -1,6 +1,6 @@
 import Wrapper from '~/components/custom-components/Wrapper';
 import type { Route } from './+types/our-doctors';
-import { doctorArray, specialityArray, type Speciality } from '~/data/static-data';
+import { specialityArray, type Doctor, type Speciality } from '~/data/static-data';
 import { SpecialityDropdownMenuRadioGroup } from '~/components/custom-components/SpecialityDropdownMenuRadioGroup';
 import { useEffect, useState } from 'react';
 import DoctorCard from '~/components/custom-components/cards/DoctorCard';
@@ -20,7 +20,8 @@ export function meta({location}: Route.MetaArgs) {
 
 export const clientLoader = async ({}: Route.ClientLoaderArgs) => {
   // fetch data from api
-  const doctorData = doctorArray;
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorData: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
   const specialityData = specialityArray
   return { doctorData, specialityData }
  }

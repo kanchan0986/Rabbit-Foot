@@ -12,7 +12,7 @@ import { calculateAge } from "~/helper/calculateAge"
 
 type AccordionAppointmentsForDoctorsAndAdminsProps = {
     appointments: Appointment[];
-    userData: Doctor | null;
+    userData?: Doctor | null;
     activeLink?: "all" | "pending" | "complete";
 }
 
@@ -26,7 +26,8 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
         }else if(activeLink === 'all'){
             return <div className="text-center">Sorry! You do not have any appointments yet.</div>
         }else{
-            return <div className="text-center">Sorry! You do not have any pending appointments yet.</div>
+            if(userData?.type === "doctor")  return (<div className="text-center">Sorry! You do not have any pending appointments yet.</div>)
+            return (<div className="text-center">Sorry! There is no pending appointments yet.</div>)
         }
     }
 
@@ -121,7 +122,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                 {item["appointment-slot"] &&
                     <div className="justify-self-start flex gap-x-2 text-sm capitalize">
                         <span className="font-medium text-rf-primary">Doctor Name: </span>
-                        <span>{isLoggedInDoctorsId ? 'myself' : 'N/A'}</span>
+                        <span>{isLoggedInDoctorsId ? 'myself' : `${item["doctor-name"]}`}</span>
                     </div>
                 }
 
@@ -163,6 +164,7 @@ export function AccordionAppointmentsForDoctorsAndAdmins({appointments, userData
                     {/* Mark appointment as completed (only if pending) */}
                     {item["appointment-status"] === "pending" &&
                         <Form method="PUT" className="flex gap-x-2">
+                            <input type="hidden" name="action" defaultValue="update-appointment" /> {/* Hidden form differentiator field for common method */}
                             <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
                             <button className="bg-rf-primary/80 w-40 text-sm hover:bg-rf-primary hover:cursor-pointer rounded-full px-4 py-1 font-medium text-rf-white-100">Mark Completed</button>
                         </Form>
