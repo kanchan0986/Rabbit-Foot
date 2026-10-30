@@ -31,7 +31,7 @@ import { PiToothFill } from "react-icons/pi";
 import { TbEmergencyBed } from "react-icons/tb";
 import { MdChildCare } from "react-icons/md";
 import { BsEmojiLaughing } from "react-icons/bs";
-import { FaRegFaceGrimace } from "react-icons/fa6";
+import { FaRegFaceGrimace, FaUserDoctor } from "react-icons/fa6";
 import alexa_thomas from '~/assets/alexa-thomas.jpg';
 import stella_davidson from '~/assets/stella_davidson.jpg';
 import taylor_adams from '~/assets/taylor_adams.jpg';
@@ -1944,6 +1944,7 @@ export const dashboardMenuArr: DashboardMenu[] = [
   { to: ".", content: "Overview", icon: LuLayoutList  },
   { to: "profile", content: "Profile", icon: RiProfileLine  },
   { to: "appointments", content: "Appointments", icon: IoCalendarOutline },
+  { to: "doctors", content: "Doctors", icon: FaUserDoctor },
   { to: "/logout", content: "Logout", icon: IoLogOutOutline },
 ];
 

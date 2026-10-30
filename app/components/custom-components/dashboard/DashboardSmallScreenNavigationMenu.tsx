@@ -17,18 +17,28 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
 
   const isCustomer = data.userData.type === "customer"; // type check for customer
 
+  const isDoctor = data.userData.type === "doctor"; // type check for doctor
+
   const isDashboardActive =  useMatch("/dashboard"); // Match the exact "/dashboard" route
 
   const isProfileActive =  useMatch("/dashboard/profile/*"); // Match the exact "/dashboard/profile" route 
 
   const isAppointmentsActive = useMatch("/dashboard/appointments/*"); // any nested route under appointments should be under Appointments
+  
+  const isDoctorsActive = useMatch("/dashboard/doctors/*"); // any nested route under doctors should be under Doctors
 
   return (
     // provide an animated slide-in-up effect for the menu bar
     <SlideInUp inView={false}>
         <nav className="fixed bottom-0 h-10 inset-x-4 z-2 flex items-center justify-center bg-rf-primary-300 shadow-rf-direct-300 rounded-t-sm">
             <ul className={`w-full flex items-center justify-center gap-x-3 ${isSmallTablet && 'justify-evenly'}`}>
-                {(isCustomer ? data.dashboardMenu.filter(item => item.to !== ".") : data.dashboardMenu).map((item) => (
+                {(isCustomer ? 
+                    data.dashboardMenu.filter(item => item.to !== "." && item.to !== "doctors") // don't show overview menu & doctors menu for patients
+                  : isDoctor ?                  
+                    data.dashboardMenu.filter(item => item.to !== "doctors") // don't show doctors menu for doctors
+                  : 
+                    data.dashboardMenu
+                 ).map((item) => (
                 <li key={item.content}>
                     <NavLink
                         to={item.to}
@@ -48,6 +58,12 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
 
                             // Appointments menu: highlight if any appointment-related route is active or hover on it's in-active state
                             if(item.to === "appointments") return isAppointmentsActive ?
+                                `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
+                            : 
+                                'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
+
+                            // Doctors menu: highlight if any doctor-related route is active or hover on it's in-active state
+                            if(item.to === "doctors") return isDoctorsActive ?
                                 `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
                             : 
                                 'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links

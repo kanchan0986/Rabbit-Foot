@@ -29,7 +29,7 @@ export default function AccordionUsersForAdmins({userData, selectedTab}: Accordi
       // Accordion wrapper for Doctors
       <Accordion
         key={(userData as Doctor[])[0].id} // remount the accordion to show the first item opened
-        className="w-full rounded-lg border border-rf-primary overflow-hidden 2xmd:w-10/12 lg:h-9/12 xl:w-8/12 bg-white"
+        className="w-full rounded-lg border border-rf-primary overflow-hidden 2xmd:w-10/12 lg:h-9/12 xl:w-8/12 bg-white mx-auto"
         defaultValue={(userData as Doctor[])[0].id}
         type="single"
       >
@@ -45,7 +45,7 @@ export default function AccordionUsersForAdmins({userData, selectedTab}: Accordi
       // Accordion wrapper for Customers
       <Accordion
         key={(userData as Customer[])[0].id} // remount the accordion to show the first item opened
-        className="w-full rounded-lg border border-rf-primary overflow-hidden 2xmd:w-10/12 lg:h-9/12 xl:w-8/12 bg-white"
+        className="w-full rounded-lg border border-rf-primary overflow-hidden 2xmd:w-10/12 lg:h-9/12 xl:w-8/12 bg-white mx-auto"
         defaultValue={(userData as Customer[])[0].id}
         type="single"
       >

@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useMatch } from "react-router";
 import { SwitchVerificationStatus } from "./SwitchVerificationStatus";
 import type { Doctor } from "~/data/static-data";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -15,13 +15,18 @@ export default function DoctorRow({ doctor }: Props) {
   const specialities = doctor.speciality;
   const degrees = doctor.degree;
 
+
+  // Check current route to adjust links accordingly
+  const isDashboard = useMatch("/dashboard");
+  const isDoctors = useMatch("/dashboard/doctors");
+
   return (
     <div className="grid grid-cols-[11fr_0.5fr] items-baseline text-sm text-center not-last:border-b border-rf-primary">
       {/* Doctor details row */}
       <div className="w-full grid grid-cols-[2.7fr_2.8fr_1.4fr_3fr_1.3fr_2.5fr_1fr_0.8fr_1.2fr_1.2fr] items-baseline h-full">
         <div className="w-full grid grid-cols-[0.7fr_2fr] items-baseline h-full capitalize">
           {/* Doctor image or fallback icon */}
-          <Link to="." className="py-2 w-full h-full peer">
+          <Link to={isDashboard ? `doctors/${doctor.id}` : isDoctors ? `./${doctor.id}` : ''} className="py-2 w-full h-full peer">
             {doctor.imageUrl ? (
               <div
                 style={{ backgroundImage: `url(${doctor.imageUrl})` }}
@@ -33,7 +38,7 @@ export default function DoctorRow({ doctor }: Props) {
           </Link>
           {/* Doctor name */}
           <Link
-            to="."
+            to={isDashboard ? `doctors/${doctor.id}` : isDoctors ? `./${doctor.id}` : ''}
             className="py-2 border-r border-rf-primary w-full h-full text-start underline-offset-2 hover:underline decoration-[1.5px] peer-hover:underline"
           >
             <span>{doctor.name}</span>

@@ -13,18 +13,28 @@ export default function   DashboardLargeScreenNavigationMenu({items, userData}: 
 
   const isCustomer = userData.type === "customer"; // type check for customer
 
+  const isDoctor = userData.type === "doctor"; // type check for doctor
+
   const isDashboardActive =  useMatch("/dashboard"); // Match the exact "/dashboard" route
 
   const isProfileActive =  useMatch("/dashboard/profile/*"); // Match the exact "/dashboard/profile" route 
 
   const isAppointmentsActive = useMatch("/dashboard/appointments/*"); // any nested route under appointments should be under Appointments
 
+  const isDoctorsActive = useMatch("/dashboard/doctors/*"); // any nested route under doctors should be under Doctors
+
   return (
     // Wrapping with TooltipProvider ensures tooltips to show up on collapsed view in tablet and above breakpoints
     <TooltipProvider>
       {/* align the menu icons at the center when sidebar is collapsed */}
         <SidebarMenu  className={`w-full flex gap-y-1 ${open && 'items-center'}`}>
-          {(isCustomer ? items.filter(item => item.to !== ".") : items).map((item) => (
+          {(isCustomer ? 
+              items.filter(item => item.to !== "." && item.to !== "doctors") // don't show overview menu & doctors menu for patients
+            : isDoctor ? 
+              items.filter(item => item.to !== "doctors") // don't show doctors menu for doctors
+            : 
+              items
+            ).map((item) => (
             <SidebarMenuItem key={item.content}>
                 <NavLink
                     to={item.to}
@@ -38,6 +48,9 @@ export default function   DashboardLargeScreenNavigationMenu({items, userData}: 
 
                       // Appointments menu: highlight if any appointment-related route is active or hover on it's in-active state
                       if(item.to === "appointments") return isAppointmentsActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
+                      
+                      // Doctors menu: highlight if any doctors-related route is active or hover on it's in-active state
+                      if(item.to === "doctors") return isDoctorsActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
 
                       // Default menu: highlight on hover only
                       return "hover:text-rf-primary-100";

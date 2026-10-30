@@ -1,5 +1,5 @@
 import { FaUserDoctor } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useMatch } from "react-router";
 import {
   AccordionContent,
   AccordionItem,
@@ -21,6 +21,10 @@ export default function DoctorAccordionItem({doctor}: DoctorAccordionItemProps) 
   const firstName = doctor.name.split(" ")[0]; // extract the first name
   const specialities = doctor.speciality;
   const degrees = doctor.degree;
+
+  // Check current route to adjust links accordingly
+  const isDashboard = useMatch("/dashboard");
+  const isDoctors = useMatch("/dashboard/doctors");
 
 
   return (
@@ -46,7 +50,7 @@ export default function DoctorAccordionItem({doctor}: DoctorAccordionItemProps) 
       <AccordionContent className="bg-rf-primary-300 h-fit">
         <div className="px-4 pt-2 text-md flex flex-col items-center justify-center gap-2 2xs:flex-row flex-wrap lg:text-lg">
           {/* Doctor image or fallback icon */}
-          <Link to="." className="peer">
+          <Link to={isDashboard ? `doctors/${doctor.id}` : isDoctors ? `./${doctor.id}` : ''} className="peer">
             {doctor.imageUrl ? (
               <div
                 style={{ backgroundImage: `url(${doctor.imageUrl})` }}
@@ -59,7 +63,7 @@ export default function DoctorAccordionItem({doctor}: DoctorAccordionItemProps) 
 
           {/* Doctor Name */}
           <Link
-            to="."
+            to={isDashboard ? `doctors/${doctor.id}` : isDoctors ? `./${doctor.id}` : ''}
             className="2xs:w-full 2xs:text-center capitalize no-underline! hover:underline! peer-hover:underline!"
           >
             <h2>{doctor.name}</h2>

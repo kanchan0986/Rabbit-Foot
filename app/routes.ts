@@ -33,6 +33,12 @@ export default [
                     route("payments", "routes/payments.tsx"),
                 ]),
             ]),
+            ...prefix("doctors", [
+                index("routes/doctors.tsx"),
+                ...prefix(":doctor-id", [
+                    index("routes/update-doctor.tsx"),
+                ]),
+            ]),
         ]),
         route("thank-you", "routes/thank-you.tsx"),
         route("under-review", "routes/under-review.tsx"),
