@@ -3,6 +3,7 @@ import type { Administrator, Customer, DashboardMenu, Doctor } from "~/data/stat
 import SlideInUp from "../animations/SlideInUp";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
 import { twMerge } from "tailwind-merge";
+import { TooltipSides } from "../TooltipSides";
 
 
 type DashboardSmallScreenNavigationMenuProps = {
@@ -13,7 +14,7 @@ type DashboardSmallScreenNavigationMenuProps = {
 }
 
 export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmallScreenNavigationMenuProps) {
- const isSmallTablet = useMediaQuery("(min-width: 470px)"); // check if the screen width is from small tablet to larger tablets
+ const isSmallTablet = useMediaQuery("(min-width: 700px)"); // check if the screen width is from small tablet to larger tablets
 
   const isCustomer = data.userData.type === "customer"; // type check for customer
 
@@ -27,15 +28,17 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
   
   const isDoctorsActive = useMatch("/dashboard/doctors/*"); // any nested route under doctors should be under Doctors
 
+  const isCustomersActive = useMatch("/dashboard/patients/*"); // any nested route under customers should be under Customers
+
   return (
     // provide an animated slide-in-up effect for the menu bar
     <SlideInUp inView={false}>
         <nav className="fixed bottom-0 h-10 inset-x-4 z-2 flex items-center justify-center bg-rf-primary-300 shadow-rf-direct-300 rounded-t-sm">
             <ul className={`w-full flex items-center justify-center gap-x-3 ${isSmallTablet && 'justify-evenly'}`}>
                 {(isCustomer ? 
-                    data.dashboardMenu.filter(item => item.to !== "." && item.to !== "doctors") // don't show overview menu & doctors menu for patients
+                    data.dashboardMenu.filter(item => item.to !== "." && item.to !== "doctors" && item.to !== "patients") // don't show overview menu, doctors & patients menu for patients
                   : isDoctor ?                  
-                    data.dashboardMenu.filter(item => item.to !== "doctors") // don't show doctors menu for doctors
+                    data.dashboardMenu.filter(item => item.to !== "doctors" && item.to !== "patients") // don't show doctors & patients menu for doctors
                   : 
                     data.dashboardMenu
                  ).map((item) => (
@@ -68,6 +71,12 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
                             : 
                                 'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
 
+                            // Customers menu: highlight if any customer-related route is active or hover on it's in-active state
+                            if(item.to === "patients") return isCustomersActive ?
+                                `${twMerge('text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-7', isSmallTablet && '[&>svg]:size-5')}` // active icon size increases in mobile screen sizes
+                            : 
+                                'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5' // Hover styling for inactive links
+
                             // Default menu: highlight on hover only
                             return 'hover:text-rf-primary-100 flex items-center gap-x-1 [&>svg]:size-5'
 
@@ -75,7 +84,12 @@ export default function DashboardSmallScreenNavigationMenu({data}: DashboardSmal
                         
                         end={false} // disables exact matching, so nested routes can still mark the parent link as active
                     >
-                        <item.icon />
+                        {!isSmallTablet ? // show icons with tooltip for tablets and above screen sizes
+                        <TooltipSides side="top" content={item.content}>
+                            <item.icon />
+                        </TooltipSides>
+                        : <item.icon /> // show only icons for small screens
+                        } 
                         {/* Show text label only on small tablets and larger */}
                         {isSmallTablet && <span className="font-normal text-[15px] min-[676px]:text-[1rem]">{item.content}</span>}
                     </NavLink>

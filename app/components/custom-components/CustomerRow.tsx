@@ -1,5 +1,5 @@
 import { FaUserInjured } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useMatch } from "react-router";
 import type { Customer } from "~/data/static-data";
 import { calculateAge } from "~/helper/calculateAge";
 import { SwitchSubscriptionStatus } from "./SwitchSubscriptionStatus";
@@ -15,13 +15,17 @@ export default function CustomerRow({ customer }: CustomerRowProps) {
 
   const customerAge = customer.dob && calculateAge(customer.dob); // Calculate customer's age if DOB exists
 
+  // Check current route to adjust links accordingly
+  const isDashboard = useMatch("/dashboard");
+  const isCustomers = useMatch("/dashboard/patients");
+
   return (
     <div className="grid grid-cols-[11fr_0.5fr] items-baseline text-sm text-center capitalize not-last:border-b border-rf-primary">
       {/* Patient details row */}
       <div className="w-full grid grid-cols-[2.7fr_0.8fr_1.2fr_2fr_2fr_5fr_1.2fr] items-baseline h-full">
         <div className="w-full grid grid-cols-[0.7fr_2fr] items-baseline h-full capitalize">
           {/* Patient image or fallback icon */}
-          <Link to="." className="py-2 w-full h-full peer">
+          <Link to={isDashboard ? `patients/${customer.id}` : isCustomers ? `./${customer.id}` : ''} className="py-2 w-full h-full peer">
             {customer.imageUrl ? (
               <div
                 style={{ backgroundImage: `url(${customer.imageUrl})` }}
@@ -33,7 +37,7 @@ export default function CustomerRow({ customer }: CustomerRowProps) {
           </Link>
           {/* Patient name */}
           <Link
-            to="."
+            to={isDashboard ? `patients/${customer.id}` : isCustomers ? `./${customer.id}` : ''}
             className="py-2 border-r border-rf-primary w-full h-full text-start underline-offset-2 hover:underline decoration-[1.5px] peer-hover:underline"
           >
             <span>{customer.name}</span>

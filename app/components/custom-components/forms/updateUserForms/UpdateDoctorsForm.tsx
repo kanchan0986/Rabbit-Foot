@@ -1,31 +1,33 @@
-import Wrapper from "~/components/custom-components/Wrapper";
-import type { Doctor } from "~/data/static-data";
-import { SlBadge } from "react-icons/sl";
-import Loader from "~/components/custom-components/Loader";
-import SlideInUp from "~/components/custom-components/animations/SlideInUp";
-import { TbPhoneCall } from "react-icons/tb";
+import { useState } from "react";
 import { Link, useNavigation } from "react-router";
-import { HiOutlineMail } from "react-icons/hi";
+import type { Doctor } from "~/data/static-data";
+import Loader from "../../Loader";
+import Wrapper from "../../Wrapper";
 import { FaRegAddressCard, FaUserDoctor } from "react-icons/fa6";
+import { HiOutlineMail } from "react-icons/hi";
+import { TbPhoneCall } from "react-icons/tb";
 import { BiMessageDetail } from "react-icons/bi";
-import { IoEyeOutline } from "react-icons/io5";
 import { RiMoneyDollarCircleLine, RiUserStarLine, RiVerifiedBadgeFill } from "react-icons/ri";
 import { PiCertificate } from "react-icons/pi";
-import { SwitchVerificationStatus } from "./SwitchVerificationStatus";
-import { useState } from "react";
+import { SlBadge } from "react-icons/sl";
+import { IoEyeOutline } from "react-icons/io5";
 import { VscUnverified } from "react-icons/vsc";
+import { SwitchVerificationStatus } from "../../SwitchVerificationStatus";
+import SlideInUp from "../../animations/SlideInUp";
 
-type DoctorProfileProps = {
+type UpdateDoctorsFormProps = {
     doctor: Doctor;
 }
 
-export default function DoctorProfile({ doctor }: DoctorProfileProps) {
-  
+export default function UpdateDoctorsForm({doctor}: UpdateDoctorsFormProps) {
   const navigation = useNavigation();
   const [verificationStatus, setVerificationStatus] = useState<boolean>(doctor.isVerified ? true : false); // Doctor verification status
 
   // Show loader if the route is rendering
   if(navigation.state === "loading") return <Loader/>
+
+  // for no customer, show fallback
+  if(!doctor) return <div className="text-center py-4">Sorry! Doctor does not exists.</div>
 
   return (
     <aside className="overflow-hidden pb-20 xl:pb-30 3xl:pb-40">
@@ -99,10 +101,10 @@ export default function DoctorProfile({ doctor }: DoctorProfileProps) {
 
         </div>
 
-        {/******************* Doctor's Basic Information section  *******************/}
+        {/******************* Doctor's User Information section  *******************/}
 
         <div className="border border-rf-grey-100/40 rounded-md p-2 flex flex-col gap-y-4">
-          <h2 className="text-rf-primary text-center lg:text-2xl">Basic Information</h2>
+          <h2 className="text-rf-primary text-center lg:text-2xl">User Information</h2>
 
           {/* Experience */}
           <h3 className="flex items-center gap-x-1">

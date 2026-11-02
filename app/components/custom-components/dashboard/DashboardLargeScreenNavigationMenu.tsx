@@ -23,15 +23,17 @@ export default function   DashboardLargeScreenNavigationMenu({items, userData}: 
 
   const isDoctorsActive = useMatch("/dashboard/doctors/*"); // any nested route under doctors should be under Doctors
 
+  const isCustomersActive = useMatch("/dashboard/patients/*"); // any nested route under customers should be under Customers
+
   return (
     // Wrapping with TooltipProvider ensures tooltips to show up on collapsed view in tablet and above breakpoints
     <TooltipProvider>
       {/* align the menu icons at the center when sidebar is collapsed */}
         <SidebarMenu  className={`w-full flex gap-y-1 ${open && 'items-center'}`}>
           {(isCustomer ? 
-              items.filter(item => item.to !== "." && item.to !== "doctors") // don't show overview menu & doctors menu for patients
+              items.filter(item => item.to !== "." && item.to !== "doctors" && item.to !== "patients") // don't show overview menu, doctors & patients menu for patients
             : isDoctor ? 
-              items.filter(item => item.to !== "doctors") // don't show doctors menu for doctors
+              items.filter(item => item.to !== "doctors" && item.to !== "patients") // don't show doctors & patients menu for doctors
             : 
               items
             ).map((item) => (
@@ -51,6 +53,9 @@ export default function   DashboardLargeScreenNavigationMenu({items, userData}: 
                       
                       // Doctors menu: highlight if any doctors-related route is active or hover on it's in-active state
                       if(item.to === "doctors") return isDoctorsActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
+                      
+                      // Custoemrs menu: highlight if any customers-related route is active or hover on it's in-active state
+                      if(item.to === "patients") return isCustomersActive ? "text-rf-primary-100" : "hover:text-rf-primary-100";
 
                       // Default menu: highlight on hover only
                       return "hover:text-rf-primary-100";

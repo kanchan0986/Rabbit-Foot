@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaUserInjured } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useMatch } from "react-router";
 import {
   AccordionContent,
   AccordionItem,
@@ -22,6 +22,10 @@ export default function CustomerAccordionItem({customer}: CustomerAccordionItemP
     // Extract first name and age of the customer
     const firstName = customer.name.split(" ")[0] // extract the first name
     const customerAge = customer.dob && calculateAge(customer.dob) // calculate age
+
+    // Check current route to adjust links accordingly
+    const isDashboard = useMatch("/dashboard");
+    const isCustomers = useMatch("/dashboard/patients");
 
     return (
         <AccordionItem
@@ -45,7 +49,7 @@ export default function CustomerAccordionItem({customer}: CustomerAccordionItemP
                 <div className="px-4 pt-2 text-md flex flex-col items-center justify-center gap-2 2xs:flex-row flex-wrap lg:text-lg">
 
                     {/* Customer image or fallback icon */}
-                    <Link to="." className="peer">
+                    <Link to={isDashboard ? `patients/${customer.id}` : isCustomers ? `./${customer.id}` : ''} className="peer">
                         {customer.imageUrl ?
                             <div style={{backgroundImage: `url(${customer.imageUrl})`}} className="bg-cover bg-center bg-no-repeat size-15 rounded-full border border-rf-primary shadow-rf-direct-300 2xs:mx-auto" />
                             :
@@ -54,7 +58,7 @@ export default function CustomerAccordionItem({customer}: CustomerAccordionItemP
                     </Link>
 
                     {/* Customer Name */}
-                    <Link to="." className="2xs:w-full 2xs:text-center no-underline! hover:underline! peer-hover:underline!">
+                    <Link to={isDashboard ? `patients/${customer.id}` : isCustomers ? `./${customer.id}` : ''} className="2xs:w-full 2xs:text-center no-underline! hover:underline! peer-hover:underline!">
                         <h2>{customer.name}</h2>
                     </Link>
 

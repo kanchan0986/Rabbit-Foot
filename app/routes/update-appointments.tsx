@@ -5,7 +5,7 @@ import type { Route } from "./+types/update-appointments";
 import { validateAppointmentsUpdateForm } from "~/helper/validateAppointmentsUpdateForm";
 import UpdateCustomerAppointmentsForm from "~/components/custom-components/forms/updateAppointmentForms/UpdateCustomerAppointmentsForm";
 import Loader from "~/components/custom-components/Loader";
-import CustomerProfile from "~/components/custom-components/CustomerProfile";
+import UpdateDoctorAndAdminAppointmentsForm from "~/components/custom-components/forms/updateAppointmentForms/UpdateDoctorAndAdminAppointmentsForm";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -38,10 +38,13 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
 
   const formData = await request.formData() // get submitted form data
   const inputData = Object.fromEntries(formData) // convert formData into a plain object for easier handling
+  const action = formData.get("action")?.toString(); // get the action field from the formData (differentiator field)
+  const customerId = formData.get("customerId")?.toString(); // get the customerId field from the formData
+  const appointmentId = formData.get("appointmentId")?.toString(); // get the appointmentId field from the formData
 
-  // Validate appointment update form (date and slot)
+  // Validate appointment update form (date and slot) if action (differentiator field) is not present
   const { errors } = validateAppointmentsUpdateForm(inputData as UpdateDataType)
-  const appointmentUpdateError = errors.appointmentDate || errors.appointmentSlot
+  const appointmentUpdateError = (errors.appointmentDate || errors.appointmentSlot) && !action
 
   const userData = sessionStorage.getItem("userData"); // get user data stored in sessionStorage (if exists)
   const parsedUserData : Customer = userData && JSON.parse(userData) // parse user data back into a Customer object (if it exists)
@@ -57,37 +60,91 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
     return { errors } // Return errors to display in UI
   }
 
-
-  // For valid appointments updation
-  let updatedUserData : Customer = parsedUserData // Create a userData variable with default imported userData
-  updatedUserData = {
-    ...parsedUserData, // spread the existing userData
-    appointments: parsedUserData.appointments?.map(item => item["appointment-id"] === inputData["appointment-id"] ? // if the appointment to be updated matches with appointment from the imported userData
-      ({
-        ...item, // spread the matching appointment
-        "appointment-date": inputData["appointment-date"], // update the date
-        "appointment-slot": inputData?.["appointment-slot"] // update the slot (if exists)
-      } as BookingDataType)
-      : item // OR return the non-matching appointment
-  )}
-  sessionStorage.setItem("userData", JSON.stringify(updatedUserData)) // update the userData on the session storage
-
   const appointmentsDataStringified = sessionStorage.getItem("appointmentsData");  // get appointments data stored in sessionStorage (if exists)
   const appointmentsDataParsed : Appointment[] = appointmentsDataStringified && JSON.parse(appointmentsDataStringified); // parse appointments data back into appointmentsData array (if it exists)
 
-  // update the selected appointment with changed date & slot
-  const appointmentsDataUpdated : Appointment[] = appointmentsDataParsed.map(item => item["appointment-id"] === inputData["appointment-id"] ? ({
-      ...item,
-      "appointment-date": inputData['appointment-date'] as string,
-      "appointment-slot": inputData['appointment-slot'] as string,
-    })
-    : item
-  )
+  const customerDataStringified = sessionStorage.getItem("customerData"); // get customer data stored in sessionStorage (if exists)
+  const customerData: Customer[] =
+    customerDataStringified && JSON.parse(customerDataStringified); // parse customer data back into customerData array (if it exists)
 
-  sessionStorage.setItem("appointmentsData", JSON.stringify(appointmentsDataUpdated)); // store the updated changes to the session storage
+  // Handle PUT request
+  if (request.method === "PUT") {
+      switch (action) {
+
+        case "update-appointment-slots": // For valid appointments updation (by Customers)
+
+            // update the user data with changed appointment date & slot
+            let updatedUserData : Customer = parsedUserData // Create a userData variable with default imported userData
+            updatedUserData = {
+              ...parsedUserData, // spread the existing userData
+              appointments: parsedUserData.appointments?.map(item => item["appointment-id"] === inputData["appointment-id"] ? // if the appointment to be updated matches with appointment from the imported userData
+                ({
+                  ...item, // spread the matching appointment
+                  "appointment-date": inputData["appointment-date"], // update the date
+                  "appointment-slot": inputData?.["appointment-slot"] // update the slot (if exists)
+                } as BookingDataType)
+                : item // OR return the non-matching appointment
+            )}
+            sessionStorage.setItem("userData", JSON.stringify(updatedUserData)) // update the userData on the session storage
 
 
-  return redirect("../appointments") // redirect to appointments route after successful update
+            // update the selected appointment with changed date & slot
+            const appointmentsDataUpdated : Appointment[] = appointmentsDataParsed.map(item => item["appointment-id"] === inputData["appointment-id"] ? ({
+                ...item,
+                "appointment-date": inputData['appointment-date'] as string,
+                "appointment-slot": inputData['appointment-slot'] as string,
+              })
+              : item
+            )
+
+            sessionStorage.setItem("appointmentsData", JSON.stringify(appointmentsDataUpdated)); // store the updated changes to the session storage
+
+          return redirect("../appointments"); // redirect to appointments route after successful update
+
+
+        case "update-subscription-status": // toggle customer's subscription status (by Administrator)
+          
+            const updatedCustomers = customerData.map(
+              (item) =>
+                ({
+                  ...item,
+                  subscriber: item.id === customerId ? !item.subscriber : item.subscriber
+                }),
+            ); // Update the selected customer's subscription status while leaving all other customer records unchanged.
+
+            sessionStorage.setItem(
+              "customerData",
+              JSON.stringify(updatedCustomers),
+            ); // Save updated customer back to sessionStorage
+
+          break;
+
+      
+        case "update-appointment-status": // mark appointment as paid and complete (by Doctors and Administrators)
+
+          const updatedAppointment = appointmentsDataParsed.map(item => item["appointment-id"] === appointmentId ? ({
+            ...item,
+            "payment-mode": "cash",
+            "payment-status": "paid",
+            "appointment-status": "complete"
+          }) : item)
+      
+          sessionStorage.setItem("appointmentsData", JSON.stringify(updatedAppointment)); // Save updated appointments back to sessionStorage along with remaining appointments
+
+          break;
+      }
+  }
+
+
+  // Handle DELETE request and remove selected appointment (by Customers / Doctors / Administrators)
+  if(request.method === "DELETE"){
+    if(action === "delete-appointment"){
+      const remainingAppointments = appointmentsDataParsed.filter(item => item["appointment-id"] !== appointmentId)
+      sessionStorage.setItem("appointmentsData", JSON.stringify(remainingAppointments)); // update the appointmentsData with remaining unselected appointments
+    }
+    return redirect("../appointments") // redirect to appointments route after successful update
+  }
+
 
  }
 
@@ -106,12 +163,12 @@ export default function UpdateAppointments({loaderData, actionData}: Route.Compo
 
   {/* UI for doctors */}
   if(userData.type === "doctor") {
-    return <CustomerProfile appointmentsData={appointmentsData} />
+    return <UpdateDoctorAndAdminAppointmentsForm appointmentsData={appointmentsData} userData={userData} />
   } 
 
   {/* UI for administrators */}
   if(userData.type === "administrator") {
-    return <CustomerProfile appointmentsData={appointmentsData} />
+    return <UpdateDoctorAndAdminAppointmentsForm appointmentsData={appointmentsData} />
   } 
 
 }

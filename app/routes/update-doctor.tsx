@@ -2,8 +2,8 @@ import { tabLabel } from "~/helper/tabLabel";
 import type { Route } from "./+types/update-doctor";
 import type { Administrator, Doctor } from "~/data/static-data";
 import { redirect, useNavigation } from "react-router";
-import DoctorProfile from "~/components/custom-components/DoctorProfile";
 import Loader from "~/components/custom-components/Loader";
+import UpdateDoctorsForm from "~/components/custom-components/forms/updateUserForms/UpdateDoctorsForm";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -77,6 +77,6 @@ export default function UpdateDoctor({loaderData, params}: Route.ComponentProps)
   if(!doctor) return <div className="text-center">Sorry! There is no doctors enlisted yet.</div>
 
   return (
-    <DoctorProfile doctor={doctor} />
+    <UpdateDoctorsForm doctor={doctor} />
   )
 }

@@ -2,10 +2,11 @@ import type { Appointment, Doctor } from "~/data/static-data"
 import { calculateAge } from "~/helper/calculateAge"
 import Wrapper from "./Wrapper"
 import { FaUserInjured } from "react-icons/fa6";
-import { Form, Link, useMatch } from "react-router";
+import { Link, useFetcher, useMatch } from "react-router";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdDoneAll } from "react-icons/io";
 import { PiCalendarXDuotone } from "react-icons/pi";
+import { TooltipSides } from "./TooltipSides";
 
 type TabularAppointmentsForDoctorsAndAdminsProps = {
     appointments: Appointment[];
@@ -19,13 +20,17 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
     // Check current route to adjust links accordingly
     const isDashboard = useMatch("/dashboard");
     const isAppointments = useMatch("/dashboard/appointments");
+    const fetcher = useFetcher(); // to redirection to "?index" on url bar
+    const isDoctor = userData?.type === "doctor"; // check for doctor type user
 
     // if no upcoming appointments, show fallback message depending upon the active link
     if(!appointments || appointments.length === 0) {
         if(activeLink === 'complete'){
-            return <div className="text-center">Sorry! You do not have any completed appointments yet.</div>
+            if(userData?.type === "doctor") return (<div className="text-center">Sorry! You do not have any completed appointments yet.</div>)
+            return (<div className="text-center">Sorry! There is no completed appointments yet.</div>)
         }else if(activeLink === 'all'){
-            return <div className="text-center">Sorry! You do not have any appointments yet.</div>
+            if(userData?.type === "doctor") return (<div className="text-center">Sorry! You do not have any appointments yet.</div>)
+            return (<div className="text-center">Sorry! There is no appointments yet.</div>)
         }else{
             if(userData?.type === "doctor")  return (<div className="text-center">Sorry! You do not have any pending appointments yet.</div>)
             return (<div className="text-center">Sorry! There is no pending appointments yet.</div>)
@@ -34,6 +39,9 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
 
   return (
     <Wrapper className="w-full pt-0 [&>div]:w-full">
+        {!isDoctor && <h2 className="w-full mb-4 text-center">
+            Pending Appointments
+        </h2>}
 
         {/* Table header section */}
         <div className="mt-2 grid grid-cols-[2.5fr_2fr_1.5fr_1fr_0.5fr] items-center text-sm leading-3 text-center bg-rf-primary/50 border-x border-t border-rf-primary rounded-t-md [&>span]:not-last:border-r [&>span]:border-rf-primary">
@@ -134,7 +142,7 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
                     <div className="w-full  grid grid-cols-[1.5fr_2fr_1.2fr] items-baseline h-full">
 
                         {/* Doctor name */}
-                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : <Link to="." className="underline-offset-2 hover:underline decoration-[1.5px]">{item["doctor-name"]}</Link>}</span>
+                        <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{isLoggedInDoctorsId ? 'myself' : <Link to={isDashboard ? `doctors/${item["doctor-id"]}` : isAppointments ? `../doctors/${item["doctor-id"]}` : ''} className="underline-offset-2 hover:underline decoration-[1.5px]">{item["doctor-name"]}</Link>}</span>
 
                         {/* Doctor speciality */}
                         <span className="py-2 border-r wrap-anywhere border-rf-primary w-full h-full">{item["doctor-speciality"]}</span>
@@ -158,27 +166,33 @@ export function TabularAppointmentsForDoctorsAndAdmins({appointments, userData, 
 
                         {/* Mark appointment as completed (only if pending) */}
                         {item["appointment-status"] === "pending" && 
-                            <Form method="PUT" className="w-full h-full">
+                            <fetcher.Form method="PUT" className="w-full h-full">
                                 <input type="hidden" name="action" defaultValue="update-appointment" /> {/* Hidden form differentiator field for common method */}
                                 <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
-                                <button className="text-rf-primary hover:text-green-600 hover:cursor-pointer"><IoMdDoneAll className="size-6 xl:-mb-2"/></button>
-                            </Form>
+                                <TooltipSides side="left" content="Mark Appointment Complete">
+                                    <button className="text-rf-primary hover:text-green-600 hover:cursor-pointer"><IoMdDoneAll className="size-6 xl:-mb-2"/></button>
+                                </TooltipSides>
+                            </fetcher.Form>
                         }
 
                         {/* Cancel appointment (only if unpaid) */}
                         {item["payment-status"] !== "paid" &&
-                            <Form method="DELETE" className="w-full h-full">
+                            <fetcher.Form method="DELETE" className="w-full h-full">
                                 <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
-                                <button className="text-rf-primary hover:text-red-600 hover:cursor-pointer"><PiCalendarXDuotone className="size-6 xl:-mb-2"/></button>
-                            </Form>
+                                <TooltipSides side="left" content="Cancel Appointment">
+                                    <button className="text-rf-primary hover:text-red-600 hover:cursor-pointer"><PiCalendarXDuotone className="size-6 xl:-mb-2"/></button>
+                                </TooltipSides>
+                            </fetcher.Form>
                         }
 
                         {/* Delete appointment (only if paid and completed) */}
                         {(item["payment-status"] === "paid" && item["appointment-status"] === "complete") &&
-                            <Form method="DELETE" className="w-full h-full">
+                            <fetcher.Form method="DELETE" className="w-full h-full">
                                 <input type="hidden" name="appointment-id" defaultValue={item["appointment-id"]} />
-                                <button className="text-rf-grey-100 hover:text-red-600 hover:cursor-pointer"><MdDeleteForever className="size-6 xl:-mb-2"/></button>
-                            </Form>
+                                <TooltipSides side="left" content="Delete Appointment">
+                                    <button className="text-rf-grey-100 hover:text-red-600 hover:cursor-pointer"><MdDeleteForever className="size-6 xl:-mb-2"/></button>
+                                </TooltipSides>
+                            </fetcher.Form>
                         }
                     </div>
 

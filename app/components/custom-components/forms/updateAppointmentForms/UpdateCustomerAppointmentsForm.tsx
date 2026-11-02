@@ -132,7 +132,10 @@ export default function UpdateCustomerAppointmentsForm({
                     </div>
                 }
 
-                <Form method="put" className="w-full pr-6 flex flex-col items-center gap-2 sm:self-start sm:w-[62%] md:w-2/3 xmd:w-[80%]">
+                <Form method="put" action={`/dashboard/appointments/${appointment['appointment-id']}`} className="w-full pr-6 flex flex-col items-center gap-2 sm:self-start sm:w-[62%] md:w-2/3 xmd:w-[80%]">
+
+                    {/* hidden differentiator field as action */}
+                    <input type="hidden" name="action" value="update-appointment-slots" />
 
                     {/* hidden appointment-id input to send appointment details */}
                     <input type="hidden" name="appointment-id" value={appointment["appointment-id"]} />
