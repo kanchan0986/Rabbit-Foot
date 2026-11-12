@@ -100,7 +100,7 @@ export default function TabletFooterNavigation({navMenu}: TabletFooterNavigation
                 </div>
               </a>
               <a
-                href="mailto:dev.kanchan.sanyal@gmail.com"
+                href="mailto:anomymous.email@email.com"
                 className="group md:w-5/12"
               >
                 <div className="flex justify-center items-center gap-x-2 md:flex-col md:gap-y-1">
@@ -110,7 +110,7 @@ export default function TabletFooterNavigation({navMenu}: TabletFooterNavigation
                       Email:{" "}
                     </strong>
                     <span className="text-center">
-                      dev.kanchan.sanyal@gmail.com
+                      anomymous.email@email.com
                     </span>
                   </p>
                 </div>

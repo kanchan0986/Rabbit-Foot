@@ -113,7 +113,7 @@ export default function Login({loaderData, actionData}: Route.ComponentProps) {
       <Sky className="fill-rf-primary-200/40"/>
       <Wrapper
         as={"section"}
-        className="py-10 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-10 xs:py-16 xs:[&>div]:gap-y-16 xmd:[&>div]:flex-row xmd:[&>div]:justify-center xmd:[&>div]:gap-x-8 xl:py-40 xl:[&>div]:gap-y-20"
+        className="py-10 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:gap-y-10 xs:py-16 xs:[&>div]:gap-y-16  xmd:[&>div]:justify-center xmd:[&>div]:gap-x-8 xl:py-40 xl:[&>div]:gap-y-20"
       >
         <Form method='post' className="flex flex-col gap-6 w-full xs:w-md">
           <div className="flex flex-col item-center gap-4">
@@ -176,6 +176,25 @@ export default function Login({loaderData, actionData}: Route.ComponentProps) {
 
           </div>
         </Form>
+
+        {/* login hint */}
+        <div className="flex flex-col gap-4 min-[650px]:flex-row">
+          <div className="flex flex-col bg-rf-primary-200 p-2 rounded-sm">
+            <span className='text-center'>Patient Login Hint:</span>
+            <span className="text-xs">Username: philip.kotler@gmail.com</span>
+            <span className="text-xs">Password: 12345</span>
+          </div>
+          <div className="flex flex-col bg-rf-primary-200 p-2 rounded-sm">
+            <span className='text-center'>Doctor Login Hint:</span>
+            <span className="text-xs">Username: alexa.thomas@gmail.com</span>
+            <span className="text-xs">Password: 12345</span>
+          </div>
+          <div className="flex flex-col bg-rf-primary-200 p-2 rounded-sm">
+            <span className='text-center'>Admin Login Hint:</span>
+            <span className="text-xs">Username: david.jones@gmail.com</span>
+            <span className="text-xs">Password: 12345</span>
+          </div>
+        </div>
       </Wrapper>
     </main>
   )

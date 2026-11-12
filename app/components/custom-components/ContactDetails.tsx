@@ -50,7 +50,7 @@ const contactDetails = (
                 </div>
             </a>
             {/* email info */}
-            <a href="mailto:dev.kanchan.sanyal@gmail.com" className="group">
+            <a href="mailto:anomymous.email@email.com" className="group">
                 <div className="flex flex-col items-center xs:flex-row xs:items-start gap-x-2">
                 <IoIosMail className="size-5 fill-rf-secondary group-active:fill-rf-primary-100 group-hover:fill-rf-primary" />
                 <p className="flex flex-col items-center xs:flex-row xs:items-start xs:gap-x-2">
@@ -58,7 +58,7 @@ const contactDetails = (
                     Email:{" "}
                     </strong>
                     <span className="text-center xs:text-start">
-                    dev.kanchan.sanyal@gmail.com
+                    anomymous.email@email.com
                     </span>
                 </p>
                 </div>

@@ -98,7 +98,7 @@ export default function MobileFooterNavigation({navMenu}: MobileFooterNavigation
                 </p>
               </div>
             </a>
-            <a href="mailto:dev.kanchan.sanyal@gmail.com" className="group">
+            <a href="mailto:anomymous.email@email.com" className="group">
               <div className="flex flex-col items-center xs:flex-row xs:items-start gap-x-2">
                 <IoIosMail className="size-5 fill-rf-secondary group-active:fill-rf-primary-100" />
                 <p className="flex flex-col items-center xs:flex-row xs:items-start xs:gap-x-2">
@@ -106,7 +106,7 @@ export default function MobileFooterNavigation({navMenu}: MobileFooterNavigation
                     Email:{" "}
                   </strong>
                   <span className="wrap-anywhere text-center xs:text-start">
-                    dev.kanchan.sanyal@gmail.com
+                    anomymous.email@email.com
                   </span>
                 </p>
               </div>
