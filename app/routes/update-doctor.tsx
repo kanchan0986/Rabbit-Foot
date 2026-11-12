@@ -4,6 +4,7 @@ import type { Administrator, Doctor } from "~/data/static-data";
 import { redirect, useNavigation } from "react-router";
 import Loader from "~/components/custom-components/Loader";
 import UpdateDoctorsForm from "~/components/custom-components/forms/updateUserForms/UpdateDoctorsForm";
+import CustomError from "~/components/custom-components/CustomError";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -58,6 +59,23 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
         ); // Save updated doctors back to sessionStorage
 
     }
+
+    if(action === "update-availability") {
+      // toggle doctor's availability
+
+        const updatedDoctorsAvailability = doctorData.map(
+          (item) =>
+            ({
+              ...item,
+              availability: item.id === doctorId ? !item.availability : item.availability
+            }),
+        ); // Update the selected doctor's availability while leaving all other doctor records unchanged.
+
+        sessionStorage.setItem(
+          "doctorData",
+          JSON.stringify(updatedDoctorsAvailability),
+        ); // Save updated doctors back to sessionStorage
+    }
   }
 };
 
@@ -74,7 +92,7 @@ export default function UpdateDoctor({loaderData, params}: Route.ComponentProps)
   const doctor = doctorData.find(doct => doct.id === doctorId) // get the selected doctor
 
   // for no doctor, show fallback
-  if(!doctor) return <div className="text-center">Sorry! There is no doctors enlisted yet.</div>
+  if(!doctor) return <CustomError>Sorry! Doctor does not exists.</CustomError>
 
   return (
     <UpdateDoctorsForm doctor={doctor} />

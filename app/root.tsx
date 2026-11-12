@@ -8,10 +8,21 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
+import stylesheet from "./app.css?url"; // added "?url" at the end of the import, to solve the css flash out
 import Loader from "./components/custom-components/Loader";
+import CustomError from "./components/custom-components/CustomError";
+import Wrapper from "./components/custom-components/Wrapper";
+import TopNavigation from "./components/custom-components/navigation/header/TopNavigation";
+import NavbarLayout from "./layouts/navbar-layout";
+import FooterLayout from "./layouts/footer-layout";
+import { navMenuArr, type Administrator, type Customer, type Doctor } from "./data/static-data";
+import spacer from "~/assets/spacer-vector-footer.png";
+import { useEffect, useState } from "react";
+
+const cleanStylesheet = stylesheet.split("?")[0]; // used to solve the hydration error
 
 export const links: Route.LinksFunction = () => [
+  { rel: "stylesheet", href: cleanStylesheet }, // stylesheet added at the head, to solve the css flash out issue
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -66,15 +77,45 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     stack = error.stack;
   }
 
+  const navMenuData = navMenuArr;
+
+  const [userData, setUserData] = useState<Customer | Doctor | Administrator>();
+
+  useEffect(() => {
+    const userDataStringified = sessionStorage.getItem("userData");
+    const userDataParsed: Customer | Doctor | Administrator = JSON.parse(userDataStringified || "null");
+    setUserData(userDataParsed);
+  }, [])
+
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <>
+      {/* Top bar navigation always visible */}
+      <Wrapper className="bg-rf-primary-100 py-2">
+        <TopNavigation />
+      </Wrapper>
+
+      {/* Responsive navigation menu (mobile/tablet/laptop) */}
+      <NavbarLayout navMenuData={navMenuData} userData={userData} />
+
+      {/* Error message, details and stack to be rendered below */}
+      <CustomError>
+        <div className="container mx-auto">
+          <span>{message}</span>
+          <p>{details}</p>
+          {stack && (
+            <pre className="w-full overflow-x-auto">
+              <code>{stack}</code>
+            </pre>
+          )}
+        </div>
+      </CustomError>
+
+      {/* Decorated curvy spacer before the footer */}
+      <img src={spacer} alt="spacer" className="w-full object-cover object-center -mt-18 relative z-1 drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]" />
+
+      {/* Responsive footer navigation menu (mobile/tablet/laptop) */}
+      <FooterLayout navMenuData={navMenuData} />
+
+    </>
   );
 }

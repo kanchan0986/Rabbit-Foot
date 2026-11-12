@@ -24,6 +24,7 @@ export default [
             ...prefix("profile", [
                 index("routes/profile.tsx"),
                 route("edit-profile", "routes/edit-profile.tsx"),
+                route("delete-profile", "routes/delete-profile.tsx"),
                 route("change-password", "routes/change-password.tsx"),
             ]),
             ...prefix("appointments", [

@@ -10,10 +10,14 @@ import { BiMessageDetail } from "react-icons/bi";
 import { RiMoneyDollarCircleLine, RiUserStarLine, RiVerifiedBadgeFill } from "react-icons/ri";
 import { PiCertificate } from "react-icons/pi";
 import { SlBadge } from "react-icons/sl";
-import { IoEyeOutline } from "react-icons/io5";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { VscUnverified } from "react-icons/vsc";
 import { SwitchVerificationStatus } from "../../SwitchVerificationStatus";
 import SlideInUp from "../../animations/SlideInUp";
+import { TooltipSides } from "../../TooltipSides";
+import { SwitchAvailability } from "../../SwitchAvailability";
+import { useMediaQuery } from "~/hooks/useMediaQuery";
+import CustomError from "../../CustomError";
 
 type UpdateDoctorsFormProps = {
     doctor: Doctor;
@@ -22,12 +26,16 @@ type UpdateDoctorsFormProps = {
 export default function UpdateDoctorsForm({doctor}: UpdateDoctorsFormProps) {
   const navigation = useNavigation();
   const [verificationStatus, setVerificationStatus] = useState<boolean>(doctor.isVerified ? true : false); // Doctor verification status
+  const [availability, setAvailability] = useState<boolean>(Boolean(doctor.availability)); // Doctor availability state
+
+  // Detect if screen size is large (≥768px) to adjust switch size
+  const isTablet = useMediaQuery("(min-width:768px)");
 
   // Show loader if the route is rendering
   if(navigation.state === "loading") return <Loader/>
 
   // for no customer, show fallback
-  if(!doctor) return <div className="text-center py-4">Sorry! Doctor does not exists.</div>
+  if(!doctor) return <CustomError>Sorry! Doctor does not exists.</CustomError>
 
   return (
     <aside className="overflow-hidden pb-20 xl:pb-30 3xl:pb-40">
@@ -164,16 +172,37 @@ export default function UpdateDoctorsForm({doctor}: UpdateDoctorsFormProps) {
             <span className="text-xbase lg:text-xl capitalize">{doctor.fee ? `$${doctor.fee}` : 'Not Available'}</span>
           </h3>
 
-          {/* Availability */}
-          <h3 className="flex items-center gap-x-1">
-            <span className="w-[10%] [&>svg]:text-rf-primary 2xs:w-[8%] min-[376px]:w-[6%]! xs:w-[4%]! md:w-[5%]! 2xmd:w-[6%]! 2xmd:[&>svg]:size-6 lg:w-[5%]! xl:w-[4%]! 2xl:w-[3%]!">
-              <IoEyeOutline />
-            </span>
-            <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Availability: </span>
-            <span className="capitalize text-xbase lg:text-xl">{doctor.availability ? "available" : "unavailable"}</span>
-          </h3>
-
         {/****************** Action buttons ******************/}
+
+          {/* Availability */}
+          <h3 className="flex items-baseline gap-x-1">
+            <span className="w-[10%] [&>svg]:text-rf-primary 2xs:w-[8%] min-[376px]:w-[6%]! xs:w-[4%]! md:w-[5%]! 2xmd:w-[6%]! 2xmd:[&>svg]:size-6 lg:w-[5%]! xl:w-[4%]! 2xl:w-[3%]!">
+              {availability ? <IoEyeOutline className="fill-rf-secondary -mb-0.5 2xmd:-mb-1 size-4 2xmd:size-5"/> : <IoEyeOffOutline className="fill-rf-primary -mb-0.5 2xmd:-mb-1 size-4 2xmd:size-5"/>}
+            </span>
+            <span className="text-rf-primary text-xbase lg:text-xl">
+                {availability ? 
+                  <div className="flex items-center gap-x-1">Available: </div>
+                :
+                  <div className="flex items-center gap-x-1">Unavailable: </div>
+                }
+            </span>
+            <span className="flex items-center flex-wrap gap-2 capitalize text-xbase lg:text-xl">
+            <TooltipSides 
+              side={!isTablet ? "top" : "right"} // Adjust tooltip position based on page type and screen size for better visibility.
+              content="Switch Availability"
+              >
+                <div>
+                  <SwitchAvailability
+                    name='availability'
+                    doctorId={doctor.id}
+                    availability={availability}
+                    setAvailability={setAvailability}
+                    label={false}
+                  />
+                </div>
+            </TooltipSides>
+            </span>
+          </h3>
 
           {/* Verification Status */}
           <h3 className="flex items-baseline gap-x-1">

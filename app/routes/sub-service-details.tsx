@@ -16,11 +16,13 @@ export const clientLoader = ({ params }: Route.ClientLoaderArgs) => {
   const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
   const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
 
+  const verifiedDoctors = (doctorDataParsed || []).filter(doctor => doctor.isVerified); // list of verified doctors
+
   // Find the sub-service details that match the current sub-service ID
   const subServicesData = servicesArray.flatMap(services => services.serviceNiche).find(subService => subService?.id === subServiceId)
 
   // Filter doctors whose specialties match at least one specialty required by the selected sub-service
-  const relatedDoctorsData = doctorDataParsed.filter(doctor => doctor.speciality?.some(speciality => subServicesData?.speciality.includes(speciality) ))
+  const relatedDoctorsData = verifiedDoctors.filter(doctor => doctor.speciality?.some(speciality => subServicesData?.speciality.includes(speciality) ))
   return { subServicesData, relatedDoctorsData };
 };
 

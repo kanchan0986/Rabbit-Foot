@@ -1,4 +1,3 @@
-import { useMediaQuery } from "~/hooks/useMediaQuery";
 import { Button } from "~/components/ui/button";
 import { Link, useLocation } from "react-router";
 import { useEffect, useState } from "react";
@@ -6,7 +5,6 @@ import { useEffect, useState } from "react";
 type TopNavigationProps = {};
 
 export default function TopNavigation({}: TopNavigationProps) {
-  const isTablet = useMediaQuery("(min-width: 567px)");
   
   const pathname = useLocation().pathname;
   const [bookAppointmentLink, setBookAppointmenLink] = useState('./#book-appointment')
@@ -26,7 +24,7 @@ export default function TopNavigation({}: TopNavigationProps) {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-x-4 text-center gap-y-2 ${isTablet ? "flex-row" : ""}`}
+      className={`flex flex-col justify-center items-center gap-x-4 text-center gap-y-2 min-[567px]:flex-row`}
     >
       <span className="text-sm">
         Get seen today! Same day appointments available.

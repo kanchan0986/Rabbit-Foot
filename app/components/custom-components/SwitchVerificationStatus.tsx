@@ -20,12 +20,13 @@ export function SwitchVerificationStatus({
 
   // Detect if screen size is large (≥1024px) to adjust switch size
   const islargeScreen = useMediaQuery("(min-width:1024px)");
+  const isTablet = useMediaQuery("(min-width:768px)");
   const fetcher = useFetcher(); // useFetcher hook to submit the form (with differentiator for common method) and avoid redirecting to "?index" in the url bar
   const isDoctorsPage = useMatch('/dashboard/doctors/*');
 
   return (
     <TooltipSides 
-      side={isDoctorsPage ? "right" : (!islargeScreen ? "right" : "left")} // Adjust tooltip position based on page type and screen size for better visibility.
+      side={isDoctorsPage ? (!isTablet ? "top" : "right") : (isTablet ? "right" : islargeScreen ? "left" : "top")} // Adjust tooltip position based on page type and screen size for better visibility.
       content="Switch Verification Status"
       >
       <div className="flex h-full items-baseline justify-center space-x-2">

@@ -20,8 +20,10 @@ export const clientLoader = ({params} : Route.ClientLoaderArgs) => {
   // Find the service that matches the selected service ID
   const servicesData = servicesArray.find(service => service.id === serviceId)
 
+  const verifiedDoctors = (doctorDataParsed || []).filter(doctor => doctor.isVerified); // list of verified doctors
+
   // Find doctors whose specialties match at least one specialty associated with the selected service
-  const relatedDoctorsData = doctorDataParsed.filter(doctor => doctor.speciality?.some(speciality => servicesData?.speciality.includes(speciality) ))
+  const relatedDoctorsData = verifiedDoctors.filter(doctor => doctor.speciality?.some(speciality => servicesData?.speciality.includes(speciality) ))
   
   return { servicesData, relatedDoctorsData };
  }

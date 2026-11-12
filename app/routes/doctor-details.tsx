@@ -14,6 +14,7 @@ import DoctorCard from "~/components/custom-components/cards/DoctorCard";
 import { tabLabel } from "~/helper/tabLabel";
 import { validateBookingFormAdvanced } from "~/helper/validateBookingFormAdvanced";
 import handleErrorFreeBookings from "~/helper/handleErrorFreeBookings";
+import CustomError from "~/components/custom-components/CustomError";
 
 export function meta({loaderData}: Route.MetaArgs) {
   // if the loaderData is null or undefined fallback to empty object
@@ -31,8 +32,11 @@ export const clientLoader = async ({params}: Route.ClientLoaderArgs) => {
   const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
   const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
 
-  const doctorData = doctorDataParsed.find(doctor => doctor.id === doctorId); // Find the doctor whose profile matches the selected doctor ID
-  const relatedDoctorArray = doctorDataParsed.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId) // Find other doctors who share at least one specialty with the selected doctor, excluding the currently selected doctor from the results
+  const doctorData = (doctorDataParsed || []).find(doctor => doctor.id === doctorId); // Find the doctor whose profile matches the selected doctor ID
+
+  const verifiedDoctors = (doctorDataParsed || []).filter(doctor => doctor.isVerified); // list of verified doctors
+  
+  const relatedDoctorArray = verifiedDoctors.filter(doctor => doctor.speciality.some(speciality => doctorData?.speciality.includes(speciality)) && doctor.id !== doctorId) // Find other doctors who share at least one specialty with the selected doctor, excluding the currently selected doctor from the results
   
   const userDataStringified = sessionStorage.getItem("userData") // Retrieve user data string from session storage (if it exists)
   const customer: Customer = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object (only if data exists)
@@ -81,7 +85,8 @@ export const clientAction = async ({request, url}: Route.ClientActionArgs) => {
 
 export default function DoctorDetails({loaderData, actionData}: Route.ComponentProps) {
   const { doctorData, relatedDoctorArray, customerData } = loaderData;
-  if(!doctorData || !relatedDoctorArray) return null;
+  if(!doctorData || !relatedDoctorArray) return <CustomError>No Records Found!</CustomError>;
+  if(!doctorData.isVerified) return <CustomError>No Records Found!</CustomError>
   const errors = actionData?.errors
   return (
     <main className="overflow-hidden">

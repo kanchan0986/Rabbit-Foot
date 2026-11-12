@@ -39,7 +39,9 @@ export const clientLoader = ({}: Route.ClientLoaderArgs) => {
   const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
   const doctorData: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
 
-  return { specialityData, customerData, doctorData };
+  const verifiedDoctors = (doctorData || []).filter(doctor => doctor.isVerified); // list of verified doctors
+
+  return { specialityData, customerData, verifiedDoctors };
  }
 
 export const clientAction = async ({ request, url }: Route.ClientActionArgs) => { 
@@ -71,7 +73,7 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
  }
 
 export default function AboutUs({loaderData}: Route.ComponentProps) {
-  const { specialityData, customerData, doctorData } = loaderData;
+  const { specialityData, customerData, verifiedDoctors } = loaderData;
   return (
     <main className="overflow-x-hidden">
       {/*********************************************** Banner section ***********************************************/}
@@ -337,7 +339,7 @@ export default function AboutUs({loaderData}: Route.ComponentProps) {
             </h3>
             <FadeIn className="relative">
               {/* Booking form of split type */}
-              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formType="split" userData={customerData} doctorData={doctorData} specialityData={specialityData} />
+              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formType="split" userData={customerData} doctorData={verifiedDoctors} specialityData={specialityData} />
             </FadeIn>
           </div>
         </div>

@@ -16,6 +16,7 @@ import { Link } from "react-router";
 import DoctorCard from "./cards/DoctorCard";
 import { FaStethoscope } from "react-icons/fa6";
 import heart from "~/assets/Heart.png";
+import CustomError from "./CustomError";
 
 type ServiceDetailsAndSubDetailsProps = {
     servicesData?: Service | ServiceNiche;
@@ -23,6 +24,7 @@ type ServiceDetailsAndSubDetailsProps = {
 }
 
 export default function ServiceDetailsAndSubDetails({servicesData, relatedDoctorsData}: ServiceDetailsAndSubDetailsProps) {
+  if(!servicesData) return <CustomError>Page Not Found!</CustomError>;
   const isService = servicesData?.type === "service";
   return (
     <main className="overflow-hidden relative">

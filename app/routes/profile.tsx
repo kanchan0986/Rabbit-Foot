@@ -11,7 +11,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { TbPhoneCall } from "react-icons/tb";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
-import { Link, redirect, useNavigation } from "react-router";
+import { Form, Link, redirect, useNavigation } from "react-router";
 import { PiCertificate } from "react-icons/pi";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { RiMoneyDollarCircleLine, RiUserStarLine, RiVerifiedBadgeFill } from "react-icons/ri";
@@ -122,7 +122,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
             </span>
             <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Details: </span>
             <div className="flex flex-col gap-2">
-              {userData.details ? userData.details.map((detail, idx) => (
+              {/* doctor must be present to show availability */}
+              {(userData.details && userData.details.length > 0) ? 
+                userData.details.map((detail, idx) => (
                 <span key={idx} className="text-xbase lg:text-xl">{detail}</span>
               )) :
                 <span className="text-xbase lg:text-xl">Not Available</span>
@@ -176,7 +178,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               <IoNewspaperOutline />
             </span>
             <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Newsletter: </span>
-            <span className="text-xbase lg:text-xl capitalize">{userData.subscriber ? 'subscribed' : 'non-subscribed'}</span>
+            <span className="text-xbase lg:text-xl capitalize">{userData.subscriber ? 'subscribed' : 'Unsubscribed'}</span>
           </h3>}
 
           {/* Verification Status (only for doctors and Administrators) */}
@@ -238,7 +240,8 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
             </span>
             <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Degree: </span>
             <div className="flex items-center flex-wrap gap-2 capitalize">
-              {userData.degree ? userData.degree.map((degree, idx) => (
+              {(userData.degree && userData.degree.length > 0) ? 
+                userData.degree.map((degree, idx) => (
                 // ensures the comma is added only if the current degree is not the last one
                 <span key={idx} className="text-xbase lg:text-xl">{degree}{(idx !== (userData.degree && userData.degree.length - 1)) && ","}</span>
               )) :
@@ -279,9 +282,13 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
         {/* Delete Account button*/}
         <SlideInUp delay={0.1} className="rounded-full 2xmd:hover:shadow-rf-direct-100">
-          <button className="w-full flex gap-x-2 items-center justify-center outline outline-rf-secondary bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
-            <span className="xl:text-xbase lg:text-xl">Delete Account</span>
-          </button>
+          <Form method="DELETE" action="delete-profile">
+            <input type="hidden" name="id" value={userData.id} />
+            <input type="hidden" name="type" value={userData.type} />
+            <button className="w-full flex gap-x-2 items-center justify-center outline outline-rf-secondary bg-rf-primary text-rf-white-100 rounded-full hover:bg-rf-primary-100/90 active:bg-rf-primary-100/90 py-1 px-3 hover:cursor-pointer 2xmd:col-start-2 sm:py-1.5 2xmd:py-2">
+              <span className="xl:text-xbase lg:text-xl">Delete Account</span>
+            </button>
+          </Form>
         </SlideInUp>
 
         {/* Logout button*/}

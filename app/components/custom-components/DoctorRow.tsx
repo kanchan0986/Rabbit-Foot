@@ -3,6 +3,9 @@ import { SwitchVerificationStatus } from "./SwitchVerificationStatus";
 import type { Doctor } from "~/data/static-data";
 import { FaUserDoctor } from "react-icons/fa6";
 import { useState } from "react";
+import { SwitchAvailability } from "./SwitchAvailability";
+import { TooltipSides } from "./TooltipSides";
+import { useMediaQuery } from "~/hooks/useMediaQuery";
 
 type Props = {
   doctor: Doctor;
@@ -11,6 +14,7 @@ type Props = {
 // Row format to be used for Doctor's when exploring as an administrator
 export default function DoctorRow({ doctor }: Props) {
   const [verificationStatus, setVerificationStatus] = useState<boolean>(doctor.isVerified ? true : false); // Doctor verification status
+  const [availability, setAvailability] = useState<boolean>(Boolean(doctor.availability)); // Doctor availability state
 
   const specialities = doctor.speciality;
   const degrees = doctor.degree;
@@ -19,6 +23,9 @@ export default function DoctorRow({ doctor }: Props) {
   // Check current route to adjust links accordingly
   const isDashboard = useMatch("/dashboard");
   const isDoctors = useMatch("/dashboard/doctors");
+
+  // Detect if screen size is large (≥1024px) to adjust switch size
+  const islargeScreen = useMediaQuery("(min-width:1024px)");
 
   return (
     <div className="grid grid-cols-[11fr_0.5fr] items-baseline text-sm text-center not-last:border-b border-rf-primary">
@@ -98,7 +105,7 @@ export default function DoctorRow({ doctor }: Props) {
 
         {/* Doctor availability */}
         <span className="py-2 border-r border-rf-primary w-full h-full">
-          {doctor.availability ? "Available" : "N/A"}
+          {availability ? "Available" : "N/A"}
         </span>
 
         {/* Doctor verification status */}
@@ -107,13 +114,31 @@ export default function DoctorRow({ doctor }: Props) {
         </span>
       </div>
 
+      <div className="flex flex-col items-center gap-y-3">
       {/* Action Form to toggle verification status */}
-      <SwitchVerificationStatus
-        name="isVerified"
-        doctorId={doctor.id}
-        verificationStatus={verificationStatus}
-        setVerificationStatus={setVerificationStatus}
-      />
+        <SwitchVerificationStatus
+          name="isVerified"
+          doctorId={doctor.id}
+          verificationStatus={verificationStatus}
+          setVerificationStatus={setVerificationStatus}
+        />
+        
+        {/* Action Form to toggle Availability status */}
+      <TooltipSides 
+        side={isDoctors ? "right" : (!islargeScreen ? "right" : "left")} // Adjust tooltip position based on page type and screen size for better visibility.
+        content="Switch Availability"
+        >
+          <div>
+            <SwitchAvailability
+              name='availability'
+              doctorId={doctor.id}
+              availability={availability}
+              setAvailability={setAvailability}
+              label={false}
+            />
+          </div>
+      </TooltipSides>
+      </div>
     </div>
   );
 }

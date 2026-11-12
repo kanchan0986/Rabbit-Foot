@@ -11,6 +11,7 @@ import { BsGenderAmbiguous } from "react-icons/bs";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { SwitchSubscriptionStatus } from "../../SwitchSubscriptionStatus";
 import SlideInUp from "../../animations/SlideInUp";
+import CustomError from "../../CustomError";
 
 type UpdateCustomersFormProps = {
     customer: Customer;
@@ -28,7 +29,7 @@ export default function UpdateCustomersForm({customer}: UpdateCustomersFormProps
   if(navigation.state === "loading") return <Loader/>
 
   // for no customer, show fallback
-  if(!customer) return <div className="text-center py-4">Sorry! Patient does not exists.</div>
+  if(!customer) return <CustomError>Sorry! Patient does not exists.</CustomError>
 
   return (
     <aside className="overflow-hidden pb-20 xl:pb-30 3xl:pb-40">

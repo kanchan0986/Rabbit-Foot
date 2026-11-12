@@ -8,6 +8,9 @@ import {
 import type { Doctor } from "~/data/static-data";
 import { SwitchVerificationStatus } from "./SwitchVerificationStatus";
 import { useState } from "react";
+import { TooltipSides } from "./TooltipSides";
+import { SwitchAvailability } from "./SwitchAvailability";
+import { useMediaQuery } from "~/hooks/useMediaQuery";
 
 type DoctorAccordionItemProps = {
   doctor: Doctor;
@@ -17,6 +20,7 @@ type DoctorAccordionItemProps = {
 export default function DoctorAccordionItem({doctor}: DoctorAccordionItemProps) {
 
   const [verificationStatus, setVerificationStatus] = useState<boolean>(doctor.isVerified ? true : false); // Doctor verification status
+  const [availability, setAvailability] = useState<boolean>(Boolean(doctor.availability)); // Doctor availability state
 
   const firstName = doctor.name.split(" ")[0]; // extract the first name
   const specialities = doctor.speciality;
@@ -25,6 +29,9 @@ export default function DoctorAccordionItem({doctor}: DoctorAccordionItemProps) 
   // Check current route to adjust links accordingly
   const isDashboard = useMatch("/dashboard");
   const isDoctors = useMatch("/dashboard/doctors");
+
+  // Detect if screen size is large (≥768px) to adjust switch size
+  const isTablet = useMediaQuery("(min-width:768px)");
 
 
   return (
@@ -144,17 +151,36 @@ export default function DoctorAccordionItem({doctor}: DoctorAccordionItemProps) 
             </div>
 
           {/* Action button wrapper */}
-          <div className=" flex items-center justify-center gap-2 mt-2 2xs:w-full">
-            <span className="font-medium text-sm text-rf-primary">{verificationStatus ? "Verified" : "Unverified"}: </span>
-            {/* Form to toggle verification status */}
-            <SwitchVerificationStatus
-              name="isVerified"
-              doctorId={doctor.id}
-              verificationStatus={verificationStatus}
-              setVerificationStatus={setVerificationStatus}
-            />
+          <div className="flex flex-col items-center justify-center gap-2 mt-2 2xs:flex-row 2xs:gap-4 w-full">
+            <div className="flex items-center justify-center gap-1">
+              <span className="font-medium text-sm text-rf-primary">{verificationStatus ? "Verified" : "Unverified"}: </span>
+              {/* Form to toggle verification status */}
+              <SwitchVerificationStatus
+                name="isVerified"
+                doctorId={doctor.id}
+                verificationStatus={verificationStatus}
+                setVerificationStatus={setVerificationStatus}
+              />
+            </div>
+            <div className="flex items-center justify-center gap-1">
+              <span className="font-medium text-sm text-rf-primary">{availability ? "Available" : "Unavailable"}: </span>
+              {/* Form to toggle availability */}
+              <TooltipSides 
+                side={isDoctors ? (!isTablet ? "top" : "right") : (!isTablet ? "top" : "left")} // Adjust tooltip position based on page type and screen size for better visibility.
+                content="Switch Availability"
+                >
+                  <div>
+                    <SwitchAvailability
+                      name='availability'
+                      doctorId={doctor.id}
+                      availability={availability}
+                      setAvailability={setAvailability}
+                      label={false}
+                    />
+                  </div>
+              </TooltipSides>
+            </div>
           </div>
-
         </div>
       </AccordionContent>
     </AccordionItem>

@@ -1,19 +1,14 @@
 import { Outlet, useMatch } from "react-router";
-import CopyrightInformation from "~/components/custom-components/navigation/footer/CopyrightInformation";
-import MobileFooterNavigation from "~/components/custom-components/navigation/footer/MobileFooterNavigation";
-import MobileNavigation from "~/components/custom-components/navigation/header/MobileNavigation";
-import RootFooterNavigation from "~/components/custom-components/navigation/footer/RootFooterNavigation";
-import RootNavigation from "~/components/custom-components/navigation/header/RootNavigation";
-import TabletFooterNavigation from "~/components/custom-components/navigation/footer/TabletFooterNavigation";
-import TabletNavigation from "~/components/custom-components/navigation/header/TabletNavigation";
 import TopNavigation from "~/components/custom-components/navigation/header/TopNavigation";
 import SpacerVector from "~/components/custom-components/vectors/SpacerVector";
 import Wrapper from "~/components/custom-components/Wrapper";
 import { useMediaQuery } from "~/hooks/useMediaQuery";
 import type { Route } from "./+types/root-layout";
-import { navMenuArr, type Administrator, type Customer, type Doctor, customerArr, doctorArray } from "~/data/static-data";
+import { navMenuArr, type Administrator, type Customer, type Doctor, customerArr, doctorArray, adminArr } from "~/data/static-data";
 import spacer from '~/assets/spacer-vector-footer.png'
 import { useEffect } from "react";
+import NavbarLayout from "./navbar-layout";
+import FooterLayout from "./footer-layout";
 
 export const clientLoader = ({}:Route.ClientLoaderArgs) => { 
   // fetch data from api
@@ -22,13 +17,13 @@ export const clientLoader = ({}:Route.ClientLoaderArgs) => {
   const userData: Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // Parse the stringified data into a Customer object or Doctor Object (only if data exists)
   const customerData = customerArr; // fetch the customer array data from the server at app reload
   const doctorData = doctorArray; // fetch the doctor array data from the server at app reload
-  return { navMenuData, userData, customerData, doctorData }
+  const adminData = adminArr; // fetch the admin array data from the server at app reload
+  return { navMenuData, userData, customerData, doctorData, adminData }
  }
 
 export default function RootLayout({loaderData}: Route.ComponentProps) {
-  const { navMenuData, userData, customerData, doctorData } = loaderData
-  const isTablet = useMediaQuery("(min-width: 640px)");
-  const isLaptop = useMediaQuery("(min-width: 992px)");
+  const { navMenuData, userData, customerData, doctorData, adminData } = loaderData
+
   const isTabletAndAbove = useMediaQuery("(min-width: 768px)");
 
   const isHomepage = useMatch("/");
@@ -39,74 +34,8 @@ export default function RootLayout({loaderData}: Route.ComponentProps) {
   useEffect(() => {
     sessionStorage.setItem("customerData", JSON.stringify(customerData)) // store the customerData to the session storage and watch for it's changes
     sessionStorage.setItem("doctorData", JSON.stringify(doctorData)) // store the doctorData to the session storage and watch for it's changes
-  }, [customerData, doctorData])
-
-  // Default navigation menu (mobile)
-  let navigationMenu = (
-    <Wrapper as={"header"} className="bg-rf-primary-300 sticky inset-0 w-full z-10">
-      <MobileNavigation navMenu={navMenuData} userData={userData} />
-    </Wrapper>
-  );
-
-  // Override with tablet navigation if breakpoint matches
-  if (isTablet)
-    navigationMenu = (
-      <Wrapper
-        as={"header"}
-        className="bg-rf-primary-300 sticky inset-0 w-full z-10"
-      >
-        <TabletNavigation navMenu={navMenuData} userData={userData} />
-      </Wrapper>
-    );
-
-  // Override again with laptop navigation if breakpoint matches
-  if (isLaptop)
-    navigationMenu = (
-      <Wrapper
-        as={"header"}
-        className="bg-rf-primary-300 sticky inset-0 w-full z-10"
-      >
-        <RootNavigation navMenu={navMenuData} userData={userData} />
-      </Wrapper>
-    );
-
-  // Default footer navigation menu (mobile)
-  let footerMenu = (
-    <Wrapper
-      as={"footer"}
-      className="bg-rf-primary-300 w-full p-0 [&>div]:w-full"
-    >
-      <MobileFooterNavigation navMenu={navMenuData} />
-      {/* Copyright information always visible */}
-      <CopyrightInformation />
-    </Wrapper>
-  );
-
-  // Override with tablet footer navigation if breakpoint matches
-  if (isTablet)
-    footerMenu = (
-      <Wrapper
-        as={"footer"}
-        className="bg-rf-primary-300 w-full p-0 [&>div]:w-full"
-      >
-        <TabletFooterNavigation navMenu={navMenuData} />
-        {/* Copyright information always visible */}
-        <CopyrightInformation />
-      </Wrapper>
-    );
-
-  // Override again with laptop footer navigation if breakpoint matches
-  if (isLaptop)
-    footerMenu = (
-      <Wrapper
-        as={"footer"}
-        className="bg-rf-primary-300 w-full p-0 [&>div]:w-full"
-      >
-        <RootFooterNavigation navMenu={navMenuData} />
-        {/* Copyright information always visible */}
-        <CopyrightInformation />
-      </Wrapper>
-    );
+    sessionStorage.setItem("adminData", JSON.stringify(adminData)) // store the adminData to the session storage and watch for it's changes
+  }, [customerData, doctorData, adminData])
 
   return (
     <>
@@ -116,7 +45,7 @@ export default function RootLayout({loaderData}: Route.ComponentProps) {
       </Wrapper>
 
       {/* Responsive navigation menu (mobile/tablet/laptop) */}
-      {navigationMenu}
+      <NavbarLayout navMenuData={navMenuData} userData={userData} />
 
       {/* Outlet for nested routes */}
       <Outlet />
@@ -128,7 +57,7 @@ export default function RootLayout({loaderData}: Route.ComponentProps) {
       {isDashboardPage && <img src={spacer} alt="spacer" className="object-cover object-center -mt-18 relative z-1 drop-shadow-[0_-4px_2px_rgba(0,0,0,0.12)]" />}
       
       {/* Responsive footer navigation menu (mobile/tablet/laptop) */}
-      {footerMenu}
+      <FooterLayout navMenuData={navMenuData} />
 
       {(!isTabletAndAbove && isDashboardPage) && <div className="h-10 bg-rf-secondary"/>}
     </>

@@ -20,12 +20,15 @@ export function SwitchSubscriptionStatus({
 
   // Detect if screen size is large (≥1024px) to adjust switch size
   const islargeScreen = useMediaQuery("(min-width:1024px)");
+  // Detect if screen size is large (≥768px) to adjust switch size
+  const isTablet = useMediaQuery("(min-width:768px)");
+  
   const fetcher = useFetcher(); // useFetcher hook to submit the form (with differentiator for common method) and avoid redirecting to "?index" in the url bar
   const isCustomersPage = useMatch('/dashboard/patients/*');
 
   return (
     <TooltipSides 
-      side={isCustomersPage ? "right" : (!islargeScreen ? "right" : "left")} // Adjust tooltip position based on page type and screen size for better visibility.
+      side={isCustomersPage ? (!isTablet ? "top" : "right") : (!islargeScreen ? "right" : "left")} // Adjust tooltip position based on page type and screen size for better visibility.
       content="Switch Subscription Status"
       >
       <div className="flex h-full items-baseline justify-center space-x-2">

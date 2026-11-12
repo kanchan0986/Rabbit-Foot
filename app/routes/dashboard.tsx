@@ -130,6 +130,24 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
       
         break;
 
+      // toggle doctor's availability (as an admin)
+      case "update-availability":
+
+        const updatedDoctorsAvailability = doctorData.map(
+          (item) =>
+            ({
+              ...item,
+              availability: item.id === doctorId ? !item.availability : item.availability
+            }),
+        ); // Update the selected doctor's availability while leaving all other doctor records unchanged.
+
+        sessionStorage.setItem(
+          "doctorData",
+          JSON.stringify(updatedDoctorsAvailability),
+        ); // Save updated doctors back to sessionStorage
+      
+        break;
+
       // toggle customer's subscription status (as an admin)
       case "update-subscription-status": 
 

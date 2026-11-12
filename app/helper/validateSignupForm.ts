@@ -1,13 +1,13 @@
 import { type Customer, type Doctor, type SignUpDataType } from "~/data/static-data"
 import { generateDoctorId } from "./generateDoctorId";
 
-type ValidateSignupFormProps = {
+type validateSignupFormProps = {
     data: SignUpDataType;
     customerArr: Customer[];
     doctorArray: Doctor[]
 }
 
-export default function ValidateSignupForm({data, customerArr, doctorArray}: ValidateSignupFormProps) {
+export default function validateSignupForm({data, customerArr, doctorArray}: validateSignupFormProps) {
 
     // Initialize error messages for username, email, phone and password
     const errors: Omit<SignUpDataType, "type"> = {

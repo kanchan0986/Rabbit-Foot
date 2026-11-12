@@ -6,6 +6,7 @@ import type { ValidationAppointmentUpdateTypes } from '~/helper/validateAppointm
 import { twMerge } from 'tailwind-merge';
 import { availabilitySlots } from '../BookingFormAdvanced';
 import { FaUserDoctor } from 'react-icons/fa6';
+import CustomError from '../../CustomError';
 
 type UpdateCustomerAppointmentsFormProps = {
     appointmentsData: Appointment[];
@@ -23,7 +24,7 @@ export default function UpdateCustomerAppointmentsForm({
 
   const { "appointment-id": appointmentId } = useParams<{ "appointment-id": string; }>(); // Get appointment ID from URL params
 
-  const appointment = appointmentsData?.find(appointment => appointment["appointment-id"] === appointmentId) // Find the customer's appointment from the appointmentsData, that matches the appointment ID
+  const appointment = (appointmentsData || []).find(appointment => appointment["appointment-id"] === appointmentId) // Find the customer's appointment from the appointmentsData, that matches the appointment ID
   
   const doctorData = doctorArr.find(doctor => doctor.name === (appointment && appointment["doctor-name"])) // Find doctor details based on the doctor name in the appointment
 
@@ -113,7 +114,8 @@ export default function UpdateCustomerAppointmentsForm({
         setSelectedSlot(previousSelectedSlot || '')
      }
 
-    if(!appointment) return
+    // for no appointment, show fallback
+    if(!appointment) return <CustomError>Sorry! Appointment does not exists.</CustomError>
 
     return (        
         // Wrapper for profile Information sections

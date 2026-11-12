@@ -63,7 +63,9 @@ export default function OurDoctors({ loaderData }: Route.ComponentProps) {
   // if there is not doctor data or speciality data return null
   if (!doctorData || !specialityData) return null;
 
-  const filteredDoctorData = doctorData.filter(
+  const verifiedDoctors = (doctorData || []).filter(doctor => doctor.isVerified); // list of verified doctors
+
+  const filteredDoctorData = verifiedDoctors.filter(
     // If "all" is selected, return every doctor. Otherwise, only include doctors whose speciality array contains the selected speciality.
     doctor => selectedSpeciality === "all" || doctor.speciality.includes(selectedSpeciality)
   );

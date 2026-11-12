@@ -2073,3 +2073,25 @@ export type Appointment = {
   "payment-mode": "cash" | "online";
   "payment-status": "paid" | "unpaid";
 }
+
+  export type ProfileUpdateType = {
+    name: string,
+    imageUrl: string,
+    phone: number,
+    address: string,
+    gender?: 'male' | 'female', // customers only
+    dob?: string, // customers only
+    subscriber?: boolean, // customers only
+    details?: string[], // doctors only
+    availability?: boolean, // doctors only
+    speciality?: Speciality[], // doctors only
+    experience?: number, // doctors only
+    degree?: Degree[], // doctors only
+    fee?: number, // doctors only
+    type: 'doctor' | 'customer'
+  }
+
+  export type ProfileUpdateErrorType = {
+    name: string;
+    phone: string;
+  }

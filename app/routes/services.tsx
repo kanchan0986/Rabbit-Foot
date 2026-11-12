@@ -36,7 +36,8 @@ export const clientLoader = ({} : Route.ClientLoaderArgs) => {
   const customerData = (customerArr || []).find(item => item.id === customer?.id) // Find the matching customer record from customerArr using the parsed customer's id
   const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
   const doctorData: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
-  return { servicesData, specialityData, customerData, doctorData };
+  const verifiedDoctors = (doctorData || []).filter(doctor => doctor.isVerified); // list of verified doctors
+  return { servicesData, specialityData, customerData, verifiedDoctors };
  }
 
 export const clientAction = async ({ request, url }: Route.ClientActionArgs) => { 
@@ -67,7 +68,7 @@ export const clientAction = async ({ request, url }: Route.ClientActionArgs) => 
  }
 
 export default function Services({ loaderData }: Route.ComponentProps) {
-  const { servicesData, specialityData, customerData, doctorData } = loaderData
+  const { servicesData, specialityData, customerData, verifiedDoctors } = loaderData
   return (
     <main className="overflow-hidden">
       {/*********************************************** Summary section ***********************************************/}
@@ -277,7 +278,7 @@ export default function Services({ loaderData }: Route.ComponentProps) {
             </h3>
             <FadeIn className="relative min-h-90 xs:min-h-fit lg:min-h-90">
               {/* Booking form of split type */}
-              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formType="split" userData={customerData} doctorData={doctorData} specialityData={specialityData} />
+              <BookingForm inputBoxStyles="bg-rf-secondary" buttonStyles="text-rf-secondary" formType="split" userData={customerData} doctorData={verifiedDoctors} specialityData={specialityData} />
             </FadeIn>
           </div>
         </div>

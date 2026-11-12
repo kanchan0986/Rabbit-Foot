@@ -42,8 +42,11 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
   const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
 
+  const administratorDataStringified = sessionStorage.getItem("adminData"); // get admin data stored in sessionStorage (if exists)
+  const administratorDataParsed: Administrator[] = administratorDataStringified && JSON.parse(administratorDataStringified); // parse admin data back into adminData array (if it exists)
+
   // Validate the login credentials against existing customer and doctor records, then extract any validation errors and the matching user data
-  const { errors, user } = validateLoginForm({data: data as LoginDataType, customerArr: customerDataParsed, doctorArray: doctorDataParsed});
+  const { errors, user } = validateLoginForm({data: data as LoginDataType, customerArr: customerDataParsed, doctorArray: doctorDataParsed, adminArray: administratorDataParsed});
 
   // If the username or password validation fails, stop the login process and return the validation errors
   if(errors.username || errors.password) return { errors };

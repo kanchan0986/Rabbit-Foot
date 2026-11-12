@@ -4,6 +4,7 @@ import { redirect, useNavigation } from "react-router";
 import Loader from "~/components/custom-components/Loader";
 import type { Route } from "./+types/update-customer";
 import UpdateCustomersForm from "~/components/custom-components/forms/updateUserForms/UpdateCustomersForm";
+import CustomError from "~/components/custom-components/CustomError";
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -74,7 +75,7 @@ export default function UpdateCustomer({loaderData, params}: Route.ComponentProp
   const customer = customerData.find(cust => cust.id === customerId) // get the selected customer
 
   // for no customer, show fallback
-  if(!customer) return <div className="text-center">Sorry! There is no patients registered yet.</div>
+  if(!customer) return <CustomError>Sorry! Patient does not exists.</CustomError>
 
   return (
     <UpdateCustomersForm customer={customer} />

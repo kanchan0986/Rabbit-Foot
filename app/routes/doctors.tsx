@@ -61,6 +61,24 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
         ); // Save updated doctors back to sessionStorage
 
     }
+
+
+    if(action === "update-availability") {
+      // toggle doctor's availability
+
+        const updatedDoctorsAvailability = doctorData.map(
+          (item) =>
+            ({
+              ...item,
+              availability: item.id === doctorId ? !item.availability : item.availability
+            }),
+        ); // Update the selected doctor's availability while leaving all other doctor records unchanged.
+
+        sessionStorage.setItem(
+          "doctorData",
+          JSON.stringify(updatedDoctorsAvailability),
+        ); // Save updated doctors back to sessionStorage
+    }
   }
 };
 

@@ -1,4 +1,4 @@
-import { degreeArr, specialityArray, type Administrator, type Customer, type Degree, type Doctor, type Speciality } from '~/data/static-data';
+import { degreeArr, specialityArray, type Administrator, type Customer, type Degree, type Doctor, type ProfileUpdateType, type Speciality } from '~/data/static-data';
 import type { Route } from './+types/edit-profile';
 import { tabLabel } from '~/helper/tabLabel';
 import Loader from '~/components/custom-components/Loader';
@@ -20,6 +20,7 @@ import { BiMessageDetail } from 'react-icons/bi';
 import { SwitchAvailability } from '~/components/custom-components/SwitchAvailability';
 import { RiMoneyDollarCircleLine, RiUserStarLine } from 'react-icons/ri';
 import ComboboxCreatableDegree from '~/components/custom-components/ComboboxCreatableDegree';
+import validateProfileUpdate from '~/helper/validateProfileUpdate';
 
 export function meta({location}: Route.MetaArgs) {
   return [
@@ -45,6 +46,113 @@ export const clientAction = async ({request}: Route.ClientActionArgs) => {
   // Extract submitted form data
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
+  const userId = formData.get('id');
+
+  // Validate signup input and check for conflicts with existing users, then extract the resulting errors and validated user data.
+  const { errors } = validateProfileUpdate({data: data as unknown as ProfileUpdateType});
+
+  // Prevent user registration from continuing when validation fails for the name, email, phone number, or password fields.
+  if(errors.name || errors.phone) return { errors };
+
+  const userDataStringified = sessionStorage.getItem("userData") // get user data stored in sessionStorage (if exists)
+  const userData : Customer | Doctor | Administrator = userDataStringified && JSON.parse(userDataStringified) // parse user data back into an object (Customer, Doctor, or Administrator) (if it exists)
+
+  const customerDataStringified = sessionStorage.getItem("customerData") // Retrieve customer data string from session storage (if it exists)
+  const customerDataParsed: Customer[] = customerDataStringified && JSON.parse(customerDataStringified) // Parse the stringified data into a Customer array (only if data exists)
+
+  const doctorDataStringified = sessionStorage.getItem("doctorData"); // get doctor data stored in sessionStorage (if exists)
+  const doctorDataParsed: Doctor[] = doctorDataStringified && JSON.parse(doctorDataStringified); // parse doctor data back into doctorData array (if it exists)
+
+  const adminDataStringified = sessionStorage.getItem("adminData"); // get admin data stored in sessionStorage (if exists)
+  const adminDataParsed: Administrator[] = adminDataStringified && JSON.parse(adminDataStringified); // parse admin data back into adminData array (if it exists)
+
+
+  if(userData.type === "customer" && userData.id === userId){
+
+    let updatedDob: string | undefined;
+
+    if(data.dob && data.dob.toString().trim() !== ""){
+      const updatedDate = new Date(data.dob.toString());
+      const updatedMonth = updatedDate.toLocaleDateString("en-US", {month: 'short'});
+      const updatedDay = updatedDate.getDate();
+      const updatedYear = updatedDate.getFullYear();
+      updatedDob = `${updatedMonth}-${updatedDay}-${updatedYear}`
+    }
+
+    const unSelectedCustomers = customerDataParsed.filter(customers => customers.id !== userData.id);
+
+    const updatedCustomerData: Customer = {
+      ...userData,
+      imageUrl: data.imageFile ? `/app/assets/${data.imageFile}` : userData.imageUrl,
+      name: data.name !== undefined ? data.name : userData.name,
+      address: data.address !== undefined ? data.address : userData.address,
+      gender: data.gender !== undefined ? data.gender : userData.gender,
+      dob: updatedDob !== undefined ? updatedDob : userData.dob,
+      subscriber: data.subscriber !== undefined ? (data.subscriber === "on" ? true : false) : userData.subscriber, // Use the updated availability by turning "on" as true or else false making it Boolean if defined, otherwise use existing availability
+      phone: data.phone !== undefined ? data.phone : userData.phone,
+    } as Customer
+
+    // store the updated customerData in session storage of userData
+    sessionStorage.setItem("userData", JSON.stringify(updatedCustomerData)) 
+
+    // store the updated customerData in session storage
+    sessionStorage.setItem("customerData", JSON.stringify([...unSelectedCustomers, updatedCustomerData])) 
+
+    // Redirect doctors to their profile page after update
+    return redirect('..')
+  }
+
+  
+
+  if(userData.type === "doctor" && userData.id === userId){
+
+    const unSelectedDoctors = doctorDataParsed.filter(doctors => doctors.id !== userData.id);
+
+    const updatedDoctorData: Doctor = {
+      ...userData,
+      imageUrl: data.imageFile ? `/app/assets/${data.imageFile}` : userData.imageUrl,
+      name: data.name !== undefined ? data.name : userData.name,
+      address: data.address !== undefined ? data.address : userData.address,
+      experience: data.experience !== undefined ? data.experience : userData.experience,
+      degree: data.degree !== undefined ? (Array.isArray(data.degree) ? data.degree : data.degree.toString().split(",").filter(Boolean)) as Degree[] : userData.degree, // Use the updated degree value if defined and is in an array form otherwise, convert it to a string, split by commas, and remove empty values using filter and use it as Degree array
+      fee: data.fee !== undefined ? data.fee : userData.fee,
+      details: data.details !== undefined ? (Array.isArray(data.details) ? data.details : data.details.toString().split(",").filter(Boolean)) as string[] : userData.details,
+      availability: data.availability !== undefined ? (data.availability === "on" ? true : false) : userData.availability, // Use the updated availability by turning "on" as true or else false making it Boolean if defined, otherwise use existing availability
+      speciality: data.speciality ? data.speciality.toString().split(",") as unknown as Speciality : userData.speciality,
+      phone: data.phone !== undefined ? data.phone : userData.phone,
+    } as Doctor
+
+    // store the updated doctorData in session storage of userData
+    sessionStorage.setItem("userData", JSON.stringify(updatedDoctorData)) 
+
+    // store the updated doctorData in session storage
+    sessionStorage.setItem("doctorData", JSON.stringify([...unSelectedDoctors, updatedDoctorData])) 
+
+    // Redirect doctors to their profile page after update
+    return redirect('../profile')
+  }
+  
+
+  if(userData.type === "administrator" && userData.id === userId){
+
+    const unSelectedAdmins = adminDataParsed.filter(admins => admins.id !== userData.id);
+
+    const updatedAdminData: Administrator = {
+      ...userData,
+      imageUrl: data.imageFile ? `/app/assets/${data.imageFile}` : userData.imageUrl,
+      name: data.name !== undefined ? data.name : userData.name,
+      phone: data.phone !== undefined ? data.phone : userData.phone,
+    } as Administrator
+
+    // store the updated adminData in session storage of userData
+    sessionStorage.setItem("userData", JSON.stringify(updatedAdminData)) 
+
+    // store the updated adminData in session storage
+    sessionStorage.setItem("adminData", JSON.stringify([...unSelectedAdmins, updatedAdminData])) 
+
+    // Redirect admins to their profile page after update
+    return redirect('../profile')
+  }
 
  }
 
@@ -54,7 +162,7 @@ type Gender = "male" | "female" | undefined
 const gender : Gender[] = ["male", "female"]
 
 
-export default function EditProfile({loaderData}: Route.ComponentProps) {
+export default function EditProfile({loaderData, actionData}: Route.ComponentProps) {
   
   const { userData } = loaderData; // Extract userData from loaderData  
 
@@ -77,13 +185,13 @@ export default function EditProfile({loaderData}: Route.ComponentProps) {
 
   const [details, setDetails] = useState<string>(isDoctor && userData.details ? userData.details.join("\n\n") : ''); // Doctor details (joined with spacing)
 
-  const [availability, setAvailability] = useState<boolean>(isDoctor && userData.availability ? true : false); // Doctor availability
+  const [availability, setAvailability] = useState<boolean>(Boolean(isDoctor && userData.availability)); // Doctor availability
 
   const [selectedGender, setSelectedGender] = useState<Gender | undefined>((isCustomer && userData.gender) ? userData.gender : undefined); // Gender (only for customer)
 
   const [dob, setDob] = useState<Date | undefined>((isCustomer && userData.dob) ? new Date(userData.dob) : undefined); // Date of birth (customer only)
   
-  const [subscriber, setSubscriber] = useState<boolean>((isCustomer && userData.subscriber) && userData.subscriber); // Subscription status (customer only)
+  const [subscriber, setSubscriber] = useState<boolean>(Boolean(isCustomer && userData.subscriber)); // Subscription status (customer only)
 
   const [speciality, setSpeciality] = useState<Speciality[]>((isDoctor && userData.speciality) ? userData.speciality : []); // Doctor speciality list
 
@@ -128,7 +236,10 @@ export default function EditProfile({loaderData}: Route.ComponentProps) {
   if(navigation.state === "loading") return <Loader/>
 
   return (
-    <Form method='post' className="overflow-hidden pb-20 xl:pb-30 3xl:pb-40">
+    <Form method='PUT' className="overflow-hidden pb-20 xl:pb-30 3xl:pb-40">
+      
+      {/* Hidden input to store userId for form submission */}
+      <input name="id" hidden defaultValue={userData.id} />
       
       {/* Wrapper for profile Information sections */}
       <Wrapper className="[&>div]:grid [&>div]:grid-cols-1 [&>div]:gap-y-8 md:[&>div]:w-full md:[&>div]:pl-4 md:[&>div]:pr-8 md:[&>div]:grid-cols-[40%_60%] md:[&>div]:gap-x-4 md:[&>div]:gap-y-4" as={"section"}>
@@ -165,13 +276,17 @@ export default function EditProfile({loaderData}: Route.ComponentProps) {
         </div>
 
         {/************ Username input section ************/}
-        <h1 className="flex justify-center gap-x-2 font-flavours text-rf-primary text-center text-3xl xmd:w-auto lg:text-4xl capitalize md:content-center">
-          {isDoctor && <span>Dr. </span>}
-          <input type='text' className="h-10 w-full box-border resize-none rounded-[3px] indent-2 border-2 font-flavours border-rf-grey-100/30 focus:outline-rf-primary text-3xl 2xs:w-60 lg:text-4xl" placeholder='Not Available' id='name' name='name' value={name} onChange={(event) => setName(event.currentTarget.value)}/>
-          <label htmlFor='name' className='ml-1 hover:cursor-pointer'>
-              <FaRegEdit className='fill-rf-primary size-4 2xmd:size-5' />
-          </label>
-        </h1>
+        <div className="flex flex-col item-center text-center gap-2">
+          <h1 className="flex justify-center gap-x-2 font-flavours text-rf-primary text-center text-3xl xmd:w-auto lg:text-4xl capitalize md:content-center">
+            {isDoctor && <span>Dr. </span>}
+            <input type='text' className="h-10 w-full box-border resize-none rounded-[3px] indent-2 border-2 font-flavours border-rf-grey-100/30 focus:outline-rf-primary text-3xl 2xs:w-60 lg:text-4xl" placeholder='Not Available' id='name' name='name' value={name} onChange={(event) => setName(event.currentTarget.value)}/>
+            <label htmlFor='name' className='ml-1 hover:cursor-pointer'>
+                <FaRegEdit className='fill-rf-primary size-4 2xmd:size-5' />
+            </label>
+          </h1>
+          {/* show validation error if name is blank */}
+          {actionData?.errors.name && <small className="font-normal mr-6 font-sans text-red-500">{actionData.errors.name}</small>}
+        </div>
 
         {/************ Contact Information section ************/}
         <div className="border border-rf-grey-100/40 rounded-md p-2 flex flex-col gap-y-4 ">
@@ -181,16 +296,20 @@ export default function EditProfile({loaderData}: Route.ComponentProps) {
           <input type="email" name="email" hidden defaultValue={email} />
 
           {/* Phone input */}
-          <h3 className="flex items-center gap-x-1">
-            <span className="w-[10%] [&>svg]:text-rf-primary 2xs:w-[8%] min-[376px]:w-[6%]! xs:w-[4%]! md:w-[5%]! 2xmd:w-[6%]! 2xmd:[&>svg]:size-6 lg:w-[5%]! xl:w-[4%]! 2xl:w-[3%]!">
-            <TbPhoneCall />
-            </span>
-            <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Phone: </span>
-            <input type='tel' className="w-full box-border resize-none rounded-[3px] indent-2 border border-rf-grey-100/30 focus:outline-rf-primary text-xbase 2xs:w-50 lg:text-xl" placeholder='Not Available' id='phone' name='phone' value={phone} onChange={(event) => setPhone(event.currentTarget.value)}/>
-            <label htmlFor='phone' className='ml-1 hover:cursor-pointer'>
-                <FaRegEdit className='fill-rf-primary 2xmd:size-5' />
-            </label>
-          </h3>
+          <div className="flex flex-col item-center gap-2">
+            <h3 className="flex items-center gap-x-1">
+              <span className="w-[10%] [&>svg]:text-rf-primary 2xs:w-[8%] min-[376px]:w-[6%]! xs:w-[4%]! md:w-[5%]! 2xmd:w-[6%]! 2xmd:[&>svg]:size-6 lg:w-[5%]! xl:w-[4%]! 2xl:w-[3%]!">
+              <TbPhoneCall />
+              </span>
+              <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Phone: </span>
+              <input type='tel' className="w-full box-border resize-none rounded-[3px] indent-2 border border-rf-grey-100/30 focus:outline-rf-primary text-xbase 2xs:w-50 lg:text-xl" placeholder='Not Available' id='phone' name='phone' value={phone} onChange={(event) => setPhone(event.currentTarget.value)}/>
+              <label htmlFor='phone' className='ml-1 hover:cursor-pointer'>
+                  <FaRegEdit className='fill-rf-primary 2xmd:size-5' />
+              </label>
+            </h3>
+          {/* show validation error if phone is blank or invalid */}
+          {actionData?.errors.phone && <small className="font-normal font-sans ml-8 text-red-500">{actionData.errors.phone}</small>}
+          </div>
 
           {/* Address input (only for customers and doctors)  */}
           {(userData && (isCustomer || isDoctor)) &&
@@ -230,6 +349,8 @@ export default function EditProfile({loaderData}: Route.ComponentProps) {
             </span>
             <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Availability: </span>
             <div className="flex items-center gap-2 2xmd:ml-2">
+              {/* hidden input to  make the availability boolean */}
+              <input type="hidden" name="availability" value={availability ? "true" : "false"} />
               <SwitchAvailability availability={availability} setAvailability={setAvailability} name='availability'/>
             </div>
           </h3>}
@@ -280,9 +401,11 @@ export default function EditProfile({loaderData}: Route.ComponentProps) {
             </span>
             <span className="hidden text-rf-primary text-xbase lg:text-xl 2xmd:block">Newsletter: </span>
             <div className="flex items-center gap-2 2xmd:ml-2">
+              {/* hidden input to  make the subscriber boolean */}
+              <input type="hidden" name="subscriber" value={subscriber ? "true" : "false"} />
               {/* Checkbox to subscribe/unsubscribe */}
               <input type="checkbox" name="subscriber" id="subscriber" checked={subscriber} onChange={() => setSubscriber(prev => !prev)} className='appearance-none w-6 max-w-4 h-4 border border-rf-primary rounded-xs checked:bg-rf-primary relative before:content-["✔"] before:absolute before:inset-0 before:leading-none before:text-white before:flex before:justify-center before:items-center' />
-              <label htmlFor="subscriber" className='text-xbase lg:text-xl'>{subscriber ? "Unsubscribe" : "Subscribe"}</label>
+              <label htmlFor="subscriber" className='text-xbase lg:text-xl'>{subscriber ? "Subscribed" : "Unsubscribed"}</label>
             </div>
           </h3>}
 

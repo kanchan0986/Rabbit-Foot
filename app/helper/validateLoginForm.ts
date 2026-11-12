@@ -1,12 +1,13 @@
-import { adminArr, type Administrator, type Customer, type Doctor, type LoginDataType } from "~/data/static-data";
+import { type Administrator, type Customer, type Doctor, type LoginDataType } from "~/data/static-data";
 
 type validateLoginFormProps = {
     data: LoginDataType;
     customerArr: Customer[];
     doctorArray: Doctor[]
+    adminArray: Administrator[]
 }
 
-export const validateLoginForm = ({data, customerArr, doctorArray}: validateLoginFormProps) => { 
+export const validateLoginForm = ({data, customerArr, doctorArray, adminArray}: validateLoginFormProps) => { 
     // Initialize error messages for username and password as empty string
     const errors: LoginDataType = {
         username: '',
@@ -20,41 +21,35 @@ export const validateLoginForm = ({data, customerArr, doctorArray}: validateLogi
     const usernameInput = data.username.trim();
     const passwordInput = data.password.trim();
 
+    // Check for user validity, if the entered credentials (email & password) match a customer, or doctor, or admin account
+    const validUser = customerArr.some(customer => customer.email === usernameInput && customer.password === passwordInput) || 
+    doctorArray.some(doctor => doctor.email === usernameInput && doctor.password === passwordInput) || 
+    adminArray.some(admin => admin.email === usernameInput && admin.password === passwordInput);
+
     // Validate username
     if(!usernameInput){
         // If username is empty, set error
         errors.username = 'Username empty!';
     }else{
         // Check if username does not exists in either customer or doctor or admin arrays, set error
-        if(!customerArr.some(item => item.email === usernameInput) && !doctorArray.some(item => item.email === usernameInput) && !adminArr.some(item => item.email === usernameInput)) {
-            errors.username = 'Invalid username!'
+        const userName = customerArr.some(customer => customer.email === usernameInput) || doctorArray.some(doctor => doctor.email === usernameInput) || adminArray.some(admin => admin.email === usernameInput);
+
+        // If provided username doesn't exists in database, set error
+        if(!userName){
+            errors.username = 'Invalid username!';
         }
     }
-
+    
     // Validate password
     if(!passwordInput){
         // If password is empty, set error
         errors.password = 'Password empty!'
+    }else if(!validUser){
+        // If provided password dosen't matches with provided username, set error
+        errors.password = "Invalid password!"
     }else{
-        // Check if password does not exists in either customer or doctor or admin arrays, set error
-        if(!customerArr.some(item => item.password === passwordInput) && !doctorArray.some(item => item.password === passwordInput)  && !adminArr.some(item => item.password === passwordInput)) {
-            errors.password = 'Invalid password!'
-        }
-    }
-
-    // If both username and password match in customer array, assign user
-    if(customerArr.some(item => item.email === usernameInput) && customerArr.some(item => item.password === passwordInput)) {
-        user = customerArr.find(item => item.email === usernameInput)
-    }
-
-    // If both username and password match in doctor array, assign user
-    if(doctorArray.some(item => item.email === usernameInput) && doctorArray.some(item => item.password === passwordInput)) {
-        user = doctorArray.find(item => item.email === usernameInput)
-    }
-
-    // If both username and password match in admin array, assign user
-    if(adminArr.some(item => item.email === usernameInput) && adminArr.some(item => item.password === passwordInput)) {
-        user = adminArr.find(item => item.email === usernameInput)
+        // Return user whose provided email matches with the valid username / email from the database
+        user = customerArr.find(item => item.email === usernameInput) || doctorArray.find(item => item.email === usernameInput) || adminArray.find(item => item.email === usernameInput)
     }
 
     // Return both errors and the matched user (if any)

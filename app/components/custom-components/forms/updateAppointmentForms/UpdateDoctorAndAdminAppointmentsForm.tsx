@@ -16,6 +16,7 @@ import { PiCalendarDots } from 'react-icons/pi';
 import { FaRegCreditCard, FaUserDoctor, FaUserInjured } from 'react-icons/fa6';
 import { LuCircleDollarSign } from 'react-icons/lu';
 import { VscUnverified, VscVerified } from 'react-icons/vsc';
+import CustomError from '../../CustomError';
 
 type UpdateDoctorAndAdminAppointmentsFormProps = {
     appointmentsData: Appointment[];
@@ -30,7 +31,7 @@ export default function UpdateDoctorAndAdminAppointmentsForm({appointmentsData, 
 
   const { "appointment-id": appointmentId } = useParams<{ "appointment-id": string; }>(); // Get appointment ID from URL params
 
-  const appointment = appointmentsData.find(appointment => appointment["appointment-id"] === appointmentId) // Find the customer's appointment from the appointmentsData, that matches the appointment ID
+  const appointment = (appointmentsData || []).find(appointment => appointment["appointment-id"] === appointmentId) // Find the customer's appointment from the appointmentsData, that matches the appointment ID
 
   const isLoggedInDoctor = appointment?.['doctor-id'] === userData?.id // Check if logged-in doctor id matches appointment's doctor id
 
@@ -42,7 +43,7 @@ export default function UpdateDoctorAndAdminAppointmentsForm({appointmentsData, 
   if(navigation.state === "loading") return <Loader/>
 
   // for no customer, show fallback
-  if(!appointment) return <div className="text-center py-4">Sorry! Patient does not exists.</div>
+  if(!appointment) return <CustomError>Sorry! Appointment does not exists.</CustomError>
 
   return (
     <aside className="overflow-hidden pb-20 xl:pb-30 3xl:pb-40">
